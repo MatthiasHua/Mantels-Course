@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% block content %}
+    <link href="https://cdn.bootcss.com/smalot-bootstrap-datetimepicker/2.4.4/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/smalot-bootstrap-datetimepicker/2.4.4/js/bootstrap-datetimepicker.min.js"></script>
+    <style>
+      .form-control[readonly] {
+        background-color:white;
+      }
+    </style>
+    <div class="container" style="margin-top: 30px">
+        <div class="row">
+            <div class="col-xs-3">
+                <ul class="nav nav-pills nav-stacked">
+                    {% for i in leftbar %}
+                    {% if loop.index - 1 == active %}
+                    <li role="presentation" class="active">
+                    {% else %}
+                    <li role="presentation">
+                    {% endif %}
+                        <a href="/teacher/{{i[0]}}">{{i[1]}}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="col-md-9">
+                <ul class="list-group">
+                    <a class="list-group-item active"> 创建新课程 </a>
+                    <div class="list-group-item">
+                        <!-- 表单 -->
+
+                        <div style="padding: 10px 10px 10px;">
+                        	<form class="bs-example bs-example-form" role="form">
+                            <div class="input-group col-md-6">
+                            	<span class="input-group-addon">课程名称</span>
+                            	<input type="text" class="form-control" placeholder="课程名称">
+                            </div>
+                        		<br>
+                        		<div class="input-group col-md-6">
+                            	<span class="input-group-addon">课程代码</span>
+                        			<input type="text" class="form-control" placeholder="课程代码">
+                        		</div>
+                        		<br>
+                            <div class="input-group date form_date col-md-6" data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                            	<span class="input-group-addon">开始时间</span>
+                              <input type="text" class="form-control" value="" readonly>
+                              <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                      				<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+                            <br>
+                            <div class="input-group date form_date col-md-6" data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                            	<span class="input-group-addon">结束时间</span>
+                              <input type="text" class="form-control" value="" readonly>
+                              <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                      				<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+                          <br>
+                            <div class="form-group">
+                              <p for="name" style="font-size:15px">课程介绍</p>
+                              <textarea class="form-control" rows="6"></textarea>
+                            </div>
+                            <div class="form-group">
+                          		<div class="col-sm-offset-0 col-sm-10">
+                          			<button type="button" class="btn btn-default" onclick="postform()">创建课程</button>
+                          		</div>
+                          	</div>
+                          </form>
+                        </div>
+                        <br><br>
+                    </div>
+                </ul>
+                </div>
+        </div>
+    </div>
+    <script>
+    $.fn.datetimepicker.dates['zh-CN'] = {
+            days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
+            daysShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+            daysMin:  ["日", "一", "二", "三", "四", "五", "六", "日"],
+            months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+            monthsShort: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+            today: "今天",
+            suffix: [],
+            meridiem: ["上午", "下午"]
+    };
+    function postform() {
+      $.post("./newcourse",
+      {
+          coursename: $("input")[0].value,
+          courseid:   $("input")[1].value,
+          start:      $("input")[2].value,
+          end:        $("input")[3].value,
+          introduction: $("textarea")[0].value,
+      },
+      function(data,status){
+          console.log(data)
+          if (data == 'Done') {
+              alert('创建新课程成功!')
+              window.location.href="./";
+          }
+          else {
+              alert('创建新课程失败')
+          }
+      });
+    }
+    $(".form_date").datetimepicker({
+      format: "yyyy-mm-dd",
+      autoclose: true,
+      todayBtn: true,
+      startView: 2,
+  		minView: 2,
+      language:'zh-CN',
+      pickerPosition:"bottom-left"
+    });
+    </script>
+{% endblock %}

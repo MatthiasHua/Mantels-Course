@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta charset="utf-8">
+   <title>Mantels | Courses</title>
+   <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+   <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+   <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+   <style text='text/css'>
+       h1 {
+         font-size: 30px;
+         font-weight: 600;
+       }
+
+       h2 {
+         font-size: 28px;
+         font-weight: 600;
+       }
+
+       h3 {
+         font-size: 24px;
+       }
+
+       h4 {
+         font-size: 20px;
+       }
+
+       h5 {
+         font-size: 16px;
+       }
+   </style>
+</head>
+<body>
+  <nav class="navbar navbar-default " role="navigation">
+  	<div class="container-fluid">
+  	<div class="navbar-header">
+  		<a class="navbar-brand" href="/index">Mantels | Courses</a>
+  	</div>
+  	<div>
+  		<ul class="nav navbar-nav navbar-right">
+        {% if role == 'Teacher' %}
+  			<li class="dropdown">
+  				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+  					{{username}}
+  					<b class="caret"></b>
+  				</a>
+  				<ul class="dropdown-menu">
+  					<li><a href="#">个人中心</a></li>
+  					<li class="divider"></li>
+  					<li><a href="/teacher">课程中心</a></li>
+  					<li><a href="#">帮助文档</a></li>
+  					<li><a href="#">关于</a></li>
+  					<li class="divider"></li>
+  					<li><a href="/user_base/logout">注销</a></li>
+  				</ul>
+  			</li>
+        {% else %}
+			<li><a href="/user_base/signin">登录</a></li>
+			<li><a href="/user_base/register">注册</a></li>
+        {% endif %}
+  		</ul>
+  	</div>
+  	</div>
+  </nav>
+  <div class="container">
+      <div class="row">
+          <div class="col-sm-6 col-lg-6 col-md-6 left">
+              <textarea id="mdin" class="form-control child" style="height: 680px">
+{% block content %}{% endblock %}
+              </textarea>
+          </div>
+          <div class="col-lg-6 col-sm-6 col-md-6 right" id="rr" style="border: solid 1px darkgrey; border-radius: 5px; height: 680px; overflow-y: auto">
+            <div id="mdout" class="child"></div>
+          </div>
+      </div>
+  </div>
+  <br>
+  <p style="text-align: center"><a href="https://github.com/MatthiasHua/Mantels-Markdown-Editor"> Mantels Markdown Editor</a> Copyright © 2018</p>
+  <script src="https://cdn.bootcss.com/marked/0.3.9/marked.min.js"></script>
+  <script>
+  window.onload=function(){
+    $('#mdout').html(marked($("#mdin").val()))
+
+    const c=document.getElementById('container')
+    const l=document.querySelector('.left')
+    const r=document.querySelector('.right')
+    const lc=l.querySelector('.child')
+    const rc=r.querySelector('.child')
+
+
+    console.log(rc.offsetHeight, r.offsetHeight, lc.offsetHeight, l.offsetHeight)
+    console.log(rc.scrollHeight, r.scrollHeight, lc.scrollHeight, l.scrollHeight)
+    console.log($("#mdout").height())
+    console.log((rc.offsetHeight - r.offsetHeight) / (lc.scrollHeight - l.offsetHeight))
+
+    //有边框宽度
+    scale = (rc.offsetHeight - r.offsetHeight + 22) / (lc.scrollHeight - l.offsetHeight + 2)
+
+    console.log(scale)
+
+    lc.addEventListener('scroll', ()=>{
+      if (currentTab !== 1) return
+      $("#rr").scrollTop($("#mdin").scrollTop()*scale);
+    })
+    r.addEventListener('scroll', ()=>{
+      if (currentTab !== 2) return
+      $("#mdin").scrollTop($("#rr").scrollTop()/scale);
+    })
+    lc.addEventListener('mouseover', ()=>{
+      currentTab = 1
+    })
+    rc.addEventListener('mouseover', ()=>{
+        currentTab = 2
+    })
+
+  }
+  $("#mdin").on("keyup blur",function () {
+    $('#mdout').html(marked($("#mdin").val()))
+  })
+  </script>
+</body>
+</html>

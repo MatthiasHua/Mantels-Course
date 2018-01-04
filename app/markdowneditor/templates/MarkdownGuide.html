@@ -1,0 +1,117 @@
+{% extends "basemarkdowneditor.html" %}
+{% block content %}
+# Mantels Markdown 入门手册
+
+---
+
+### 1.分级标题
+---
+使用`#`可以标明标题，井号的个数同可以表示不同级别的标题，通常使用一到五级。
+
+示例：
+```
+# 一级标题
+## 二级标题
+### 三级标题
+#### 四级标题
+##### 五级标题
+```
+效果：
+# 一级标题
+## 二级标题
+### 三级标题
+#### 四级标题
+##### 五级标题
+
+---
+### 2.粗体和斜体
+---
+使用`*`可以标明粗体和斜体，使用`*文字*`可将文字变为斜体，使用`**文字**`可将文字变为粗体。
+
+示例：
+```
+*斜体*
+**加粗**
+```
+效果：
+
+*斜体*
+
+**加粗**
+
+---
+### 3.外部链接
+---
+使用`[内容](链接)`可以绑定外部连接。
+
+示例：
+```
+[Mantels Markdown Editor](https://github.com/MatthiasHua/Mantels-Markdown-Editor)
+```
+效果：
+[Mantels Markdown Editor](https://github.com/MatthiasHua/Mantels-Markdown-Editor)
+
+---
+### 4.列表
+---
+使用`-`可以构建列表。
+
+示例：
+```
+- 这是
+- 一个
+- 列表
+```
+效果：
+- 这是
+- 一个
+- 列表
+
+### 5.代码块
+---
+使用<code>\`代码\`</code>可以创建代码块。
+
+示例：
+```
+`print('Hello World!')`
+```
+效果：
+`print('Hello World!')`
+
+### 6.代码段
+---
+使用<code>\```代码\```</code>可以创建代码段。
+
+示例：
+<pre><code>
+\`\`\`
+window.onload = function() {
+    $("body").html("Hello World")
+}
+\`\`\`
+</code></pre>
+效果：
+```
+window.onload = function() {
+    $("body").html("Hello World")
+}
+```
+
+### 7.图片
+---
+使用`[描述](图片连接)`可以在文档中加入图片。
+
+示例：
+```
+![图片范例](https://github.com/MatthiasHua/Mantels-Markdown-Editor/blob/master/img.png?raw=true)
+```
+效果：
+
+![图片范例](https://github.com/MatthiasHua/Mantels-Markdown-Editor/blob/master/img.png?raw=true)
+
+`tip`:可以使用GitHub作为图片仓库，并使用外链来添图片。
+
+---
+[返回首页](./)
+
+{% endblock %}

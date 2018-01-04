@@ -1,0 +1,80 @@
+<html>
+    <head>
+        <title>欢迎使用Mantels</title>
+        <style type="text/css">
+            body {
+          	 background: #FEFFF2
+            }
+            h1 {
+           	  font-family: Helvetica;
+      	      font-size: 55px;
+      	      text-align: left;
+       	      color: #303030;
+       	      line-height: 10px;
+            }
+            h2 {
+           	  font-family: Helvetica;
+       	      font-size: 35px;
+       	      text-align: left;
+       	      letter-spacing: -0.5px;
+       	      color: #303030;
+       	      line-height: 10px;
+            }
+            h3 {
+           	  font-family: "Lucida Console";
+       	      font-size: 18px;
+       	      text-align: left;
+       	      color: #303030;
+            }
+            p {
+              font-size: 18px;
+       	      text-align: center;
+              vertical-align: middle;
+            }
+            p:hover {
+              cursor: pointer;
+            }
+            .Title {
+              position: absolute;
+              top: 26%;
+              left: 8%;
+            }
+            .Buttons {
+              position: absolute;
+              top: 50%;
+              height: 8%;
+              width: 15%;
+              border: 1px solid #303030;
+            }
+            .Buttons:hover {
+              cursor: pointer;           	
+            }
+            .Button1 {
+              left: 8%;
+            }
+            .Button2 {
+              left: 25%;
+            }
+        </style>
+        <script src="../static/js/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript">
+	        $(document).ready(function(){
+	            $("div.Button1").click(function(){
+	                window.location.href="{{url1}}";
+	            });
+	            $("div.Button2").click(function(){
+	                window.location.href="http://www.baidu.com/";
+	            });
+	        });
+        </script>
+    </head>
+    <body>
+	    <div class = "Title">
+	        <h1>WELCOME TO USE</h1>
+	        <h2>THE OPEN SOURCE PLATFORM "MANTELS"</h2>
+	        <h3>With "Mantels" you can build you own web service and develop your <br>application on the Internet.</h3>
+	    </div>
+	    <div class = "Buttons Button1"><p>安装Mantels</p></div>
+	    <div class = "Buttons Button2"><p>访问官网</p></div>
+    </body>
+</html>

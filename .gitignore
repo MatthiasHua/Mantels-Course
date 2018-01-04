@@ -1,0 +1,6 @@
+# python.gitignore #############
+__pycache__/*
+/flask
+/main.log
+/test.py
+/app/data/data.sqlite

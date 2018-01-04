@@ -1,0 +1,192 @@
+<html>
+    <head>
+        <title>安装包管理 Package Manager</title>
+        <style type="text/css">
+            body {
+          	 background: #FEFFF2
+            }
+            h1 {
+           	  font-family: Helvetica;
+      	      font-size: 55px;
+      	      text-align: left;
+       	      color: #303030;
+       	      line-height: 10px;
+            }
+            h2 {
+           	  font-family: Helvetica;
+       	      font-size: 35px;
+       	      text-align: left;
+       	      letter-spacing: -0.5px;
+       	      color: #303030;
+       	      line-height: 10px;
+            }
+            h3 {
+              font-family: Helvetica;
+       	      font-size: 18px;
+       	      text-align: left;
+       	      color: #303030;
+            }
+            th {
+              width: 80%;
+              font-family: Helvetica;
+              font-size: 16px;
+              text-align: center;
+              color: #303030;
+              font-weight: 400;
+              line-height: 24px;
+            }
+            a {
+              font-family: Helvetica;
+              font-size: 16px;
+              color: #303030;
+              font-weight: 400;
+              text-decoration: none;
+            }
+            p {
+              font-size: 18px;
+       	      text-align: center;
+              vertical-align: middle;
+            }
+            p:hover {
+              cursor: pointer;
+            }
+            table {
+              width: 100%;
+            }
+            .Title {
+              position: relative;
+              top: 7%;
+              left: 8%;
+              width: 84%;
+            }
+            .Buttons {
+              position: relative;
+              top: 10%;
+              height: 8%;
+              width: 15%;
+              border: 1px solid #303030;
+            }
+            .Buttons:hover {
+              cursor: pointer;
+            }
+            .Button1 {
+              left: 8%;
+            }
+            .Button2 {
+              left: 25%;
+            }
+            .table-0 {
+              width: 6%;
+            }
+            .table-1 {
+              width: 20%;
+            }
+            .table-2 {
+              width: 15%;
+            }
+            .table-3 {
+              width: 51%;
+            }
+            .table-4 {
+              width: 8%;
+            }
+        </style>
+        <script src="../static/js/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript">
+	        $(document).ready(function(){
+                a = {{ enablelist_base|safe }};
+                for (var i = 0; i<a.length; i++) {
+                    if (a[i] == 'True') {
+                        $("[name = BASE]").eq(i).attr("checked", true);
+                    }
+                }
+                b = {{ enablelist_application|safe }};
+                for (var i = 0; i<b.length; i++) {
+                    if (b[i] == 'True') {
+                        $("[name = APPLICATION]").eq(i).attr("checked", true);
+                    }
+                }
+                $("div.Button1").click(function(){
+                    base_change = Array(a.length);
+                    for (i = 0; i<a.length; i++) {
+                        base_change[i] = $("[name = BASE]").eq(i).is(':checked');
+                    }
+                    application_change = Array(b.length);
+                    for (i = 0; i<b.length; i++) {
+                        application_change[i] = $("[name = APPLICATION]").eq(i).is(':checked');
+                    }
+                    $.post("/installation/packagemanager",
+                    {
+                        base: base_change,
+                        application: application_change
+                    },
+                    function(data, status){
+                      if (data == "Done") {
+                          alert("应用成功")
+                      }
+                    });
+                });
+  	            $("div.Button1").click(function(){
+  	                window.location.href="{{url1}}";
+  	            });
+  	            $("div.Button2").click(function(){
+  	                window.location.href="http://www.gnu.org/licenses/gpl.html";
+  	            });
+                $("th.selectall").click(function(){
+                    $("[value = " +$(this).attr("value") + "]").attr('checked', true);
+                });
+	        });
+        </script>
+    </head>
+    <body>
+	    <div class = "Title">
+	        <h1>安装包管理</h1>
+	        <h2>Package Manager</h2>
+          <hr>
+	        <h3>BASE</h3>
+          <div>
+              <table>
+                  <tr>
+                      <th class = "table-0 selectall" value="BASE">全选</th>
+                      <th class = "table-1">名称</th>
+                      <th class = "table-2">版本</th>
+                      <th class = "table-3">简介</th>
+                  </tr>
+                  {% for info in infolist_base %}
+                      <tr>
+                          <th class = "table-0"><input name="BASE" type="checkbox" value="BASE" /></th>
+                          <th class = "table-1" id = {{info[0]}}>{{i}}{{info[0]}}</th>
+                          <th class = "table-2">{{info[1]}}</th>
+                          <th class = "table-3">{{info[2]}}</th>
+                          <th class = "table-4"><a href = "{{info[3]}}">访问主页</a></th>
+                      </tr>
+                  {% endfor %}
+              </table>
+          </div>
+          <hr>
+          <h3>APPLICATION</h3>
+          <div>
+              <table>
+                  <tr>
+                      <th class = "table-0 selectall" value="APPLICATION">全选</th>
+                      <th class = "table-1">名称</th>
+                      <th class = "table-2">版本</th>
+                      <th class = "table-3">简介</th>
+                  </tr>
+                  {% for info in infolist_application %}
+                      <tr>
+                          <th class = "table-0"><input name="APPLICATION" type="checkbox" value="APPLICATION" /></th>
+                          <th class = "table-1" id = {{info[0]}}>{{info[0]}}</th>
+                          <th class = "table-2">{{info[1]}}</th>
+                          <th class = "table-3">{{info[2]}}</th>
+                          <th class = "table-4"><a href = "{{info[3]}}">访问主页</a></th>
+                      </tr>
+                  {% endfor %}
+              </table>
+          </div>
+          <hr>
+	    </div>
+	    <div class = "Buttons Button1"><p>应用</p></div>
+
+    </body>
+</html>

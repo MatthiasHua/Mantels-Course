@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container" style="margin-top: 30px">
+        <div class="row">
+            <div class="col-xs-3">
+                <ul class="nav nav-pills nav-stacked">
+                    <li role="presentation" class="active">
+                        <a>章节列表</a>
+                    </li>
+                    {% for i in chapters %}
+                      {% if loop.index - 1 == chapter %}
+                        <li role="presentation">
+                          <a href="../../{{loop.index}}">{{i.name}}</a>
+                        </li>
+                        {% for j in lessons %}
+                          {% if loop.index == lesson %}
+                          <li role="presentation" class="active">
+                            <a href="#">&nbsp;&nbsp;{{j.name}}</a>
+                          </li>
+                          {% else %}
+                          <li role="presentation">
+                            <a href="./{{loop.index}}">&nbsp;&nbsp;{{j.name}}</a>
+                          </li>
+                          {% endif %}
+                        {% endfor %}
+                      {% else %}
+                        <li role="presentation">
+                          <a href="../../{{loop.index}}">{{i.name}}</a>
+                      </li>
+                      {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="col-md-9">
+                <ul class="list-group">
+                    <a class="list-group-item active"> 课件预览 </a>
+                    <div class="list-group-item">
+                      <div id="introduction"></div>
+                      <br>
+                      <button class="btn btn-default" data-toggle="modal" data-target="#lessonBody">修改课件内容</button>
+                      <button class="btn btn-default">修改课件标题</button>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="lessonBody" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    	<div class="modal-dialog">
+    		<div class="modal-content">
+    			<div class="modal-header">
+    				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+    					&times;
+    				</button>
+    				<h4 class="modal-title" id="myModalLabel">
+    					课件
+    				</h4>
+    			</div>
+    			<div class="modal-body">
+    				<textarea class="form-control" rows="7"></textarea>
+            tip: 使用Markdown渲染 | <a href="/markdowneditor"> Mantels Markdown Editor </a>
+    			</div>
+    			<div class="modal-footer">
+    				<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+    				</button>
+    				<button type="button" class="btn btn-primary" onclick="postbody()">
+    					提交更改
+    				</button>
+    			</div>
+    		</div><!-- /.modal-content -->
+    	</div><!-- /.modal -->
+    </div>
+    <div id="rawintroduction" style="display: none">{{body}}</div>
+    <script>
+    function postbody() {
+      $.post("./{{lesson}}",
+      {
+          body: $("textarea")[0].value,
+      },
+      function(data,status){
+          console.log(data)
+          if (data == 'Done') {
+              window.location.href="./{{lesson}}";
+          }
+          else {
+              alert('修改课件失败')
+          }
+      });
+    }
+    window.onload=function(){
+      console.log("233")
+      $('#introduction').html(marked($("#rawintroduction").html()))
+    }
+    </script>
+{% endblock %}

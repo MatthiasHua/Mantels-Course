@@ -1,0 +1,129 @@
+<html>
+    <head>
+        <title>许可证协议</title>
+        <style type="text/css">
+            body {
+          	 background: #FEFFF2
+            }
+            h1 {
+           	  font-family: Helvetica;
+      	      font-size: 55px;
+      	      text-align: left;
+       	      color: #303030;
+       	      line-height: 10px;
+            }
+            h2 {
+           	  font-family: Helvetica;
+       	      font-size: 35px;
+       	      text-align: left;
+       	      letter-spacing: -0.5px;
+       	      color: #303030;
+       	      line-height: 10px;
+            }
+            h3 {
+              font-family: Helvetica;
+       	      font-size: 18px;
+       	      text-align: left;
+       	      color: #303030;
+            }
+            h4 {
+              width: 80%;
+              font-family: Helvetica;
+              font-size: 16px;
+              text-align: left;
+              color: #303030;
+              font-weight: 400; 
+              line-height: 24px;
+            }
+            a {
+              font-family: Helvetica;
+              font-size: 16px;
+              color: #303030;
+              font-weight: 400;        
+            }
+            p {
+              font-size: 18px;
+       	      text-align: center;
+              vertical-align: middle;
+            }
+            p:hover {
+              cursor: pointer;
+            }
+            .Title {
+              position: relative;
+              top: 7%;
+              left: 8%;
+              width: 84%;
+            }
+            .Buttons {
+              position: relative;
+              top: 10%;
+              height: 8%;
+              width: 100%;
+            }
+            .Buttons:hover {
+              cursor: pointer;           	
+            }
+            .Button1 {
+              position: relative;
+              float: left;
+              left: 8%;
+              height: 100%;
+              width: 15%;
+              border: 1px solid #303030;
+            }
+            .Button2 {
+              position: relative;
+              float: left;
+              left: 9%;
+              height: 100%;
+              width: 15%;
+              border: 1px solid #303030;
+            }
+        </style>
+        <script src="../static/js/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript">
+	        $(document).ready(function(){
+	            $("div.Button1").click(function(){
+                  if ($("[type = 'checkbox']").is(':checked')) {
+                      $.post("/installation/license",
+                      {
+                          license: "accepted"
+                      },
+                      function(data,status){
+                          window.location.href="{{url1}}"; 
+                      });                   
+                  }
+                  else{
+    	                alert("请阅读许可证协议并同意相关条款")
+                  }
+	            });
+	            $("div.Button2").click(function(){
+	                window.location.href="http://www.gnu.org/licenses/gpl.html";
+	            });
+	        });
+        </script>
+    </head>
+    <body>
+	    <div class = "Title">
+	        <h1>许可证协议</h1>
+	        <h2>License Agreement</h2>
+	        <h3>在安装Mantels之前，请检阅授权条款(中文翻译仅作参考，以英语原文为准):<br>
+          Please review the License before installing Mantels:</h3>
+          <h4>Copyright (C)2017 Ziying Hua &lt<a href="mailto:matthias@mail.matthias.cn">matthias@mail.matthias.cn</a>&gt<br><br>
+          这一程序是自由软件，你可以遵照自由软件基金会出版的GNU通用公共许可证条款来修改和重新发布这一程序。并使用许可证的第三版，或者任何更新的版本。<br><br>
+          发布这一程序的目的是希望它有用，但没有任何担保。甚至没有适合特定目的的隐含的担保。更详细的情况请参阅GNU通用公共许可证。<br><br>
+
+          This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.<br><br>
+
+          This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.<br><br>
+          特别注意: 未经授权的情况下不得将本程序用作商业用途；如果希望对本程序进行修改并发布，必须公开全部源代码。<br><br>
+          <input name="License" type="checkbox" value="License" /> 
+          我已阅读<a href="http://www.gnu.org/licenses/gpl.html">许可证协议</a>并同意相关条款</h4>
+	    </div>
+      <div class = "Buttons">
+	        <div class = "Button1"><p>同意许可证协议</p></div>
+	        <div class = "Button2"><p>阅读完整的许可证协议</p></div>
+      </div>
+    </body>
+</html>

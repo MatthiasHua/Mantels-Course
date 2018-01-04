@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container" style="margin-top: 30px">
+        <div class="row">
+            <div class="col-xs-3">
+                <ul class="nav nav-pills nav-stacked">
+                    <li role="presentation" class="active">
+                        <a>章节列表</a>
+                    </li>
+                    {% for i in chapters %}
+                    {% if loop.index - 1 == chapter %}
+                    <li role="presentation" class="active">
+                      <a href="#">{{i.name}}</a>
+                    </li>
+                    {% for j in lessons %}
+                    <li role="presentation">
+                      <a href="./{{chapter + 1}}/lesson/{{loop.index}}">&nbsp;&nbsp;{{j.name}}</a>
+                    </li>
+                    {% endfor %}
+                    {% else %}
+                    <li role="presentation">
+                      <a href="./{{loop.index}}">{{i.name}}</a>
+                  </li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="col-md-9">
+                <ul class="list-group">
+                    <a class="list-group-item active"> 章节预览 </a>
+                    <div class="list-group-item">
+                        <div id="introduction"></div>
+                        <br>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div id="rawintroduction" style="display: none">{{introduction}}</div>
+    <script>
+    window.onload=function(){
+      console.log("233")
+      $('#introduction').html(marked($("#rawintroduction").html()))
+    }
+    </script>
+{% endblock %}
