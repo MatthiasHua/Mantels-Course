@@ -1,5 +1,11 @@
+import os
 from app import db
 from app.model import *
+
+if not os.path.exists("app\\data"):
+    print("未发现data目录")
+    os.makedirs("app\\data")
+    print("目录创建完成")
 
 db.create_all()
 
