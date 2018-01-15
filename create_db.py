@@ -12,8 +12,8 @@ db.create_all()
 #默认测试数据
 
 #测试用户
-testUser = User("123", "123@123.com", "123123", 1, 0)
-db.session.add(testUser)
+testTeacher = Teacher("123", "123@123.com", "123123", 1, 0)
+db.session.add(testTeacher)
 
 #测试课程
 introduction = '''### 使用Markdown

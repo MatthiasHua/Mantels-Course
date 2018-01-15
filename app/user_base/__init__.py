@@ -15,11 +15,11 @@ def signin():
     if request.method == 'GET':
         return render_template("Signin.html")
     if request.method == 'POST':
-        user = User.query.filter_by(username = request.form['username']).first()
-        if user != None and user.password == request.form['password']:
-            session['username'] = user.username
+        teacher = Teacher.query.filter_by(username = request.form['username']).first()
+        if teacher != None and teacher.password == request.form['password']:
+            session['username'] = teacher.username
             session['signin'] = True
-            session['id'] = user.id
+            session['id'] = teacher.id
             session['role'] = 'Teacher'
             return 'Done'
         else:
@@ -32,8 +32,8 @@ def register():
         return render_template("Register.html")
     if request.method == 'POST':
         if post_check(request.form):
-            newUser = User(request.form['username'], request.form['email'], request.form['password'], 1, -1)
-            db.session.add(newUser)
+            newTeacher = Teacher(request.form['username'], request.form['email'], request.form['password'], 1, -1)
+            db.session.add(newTeacher)
             db.session.commit()
             return 'Done'
         else:

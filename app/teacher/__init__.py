@@ -16,7 +16,7 @@ leftbarlist = (("mycourses", "我的课程"),\
 @teacher.route('/index', methods=['POST', 'GET'])
 @teacher.route('/mycourses', methods=['POST', 'GET'])
 def mycourses():
-    user = User.query.filter_by(username = session['username']).first()
+    user = Teacher.query.filter_by(username = session['username']).first()
     allclasses = user.classpost.all()
     return render_template("MyCourses.html",\
 	role = session.get('role', ''),\

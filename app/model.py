@@ -1,6 +1,6 @@
 from app import db
 
-class User(db.Model):
+class Teacher(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True)
     email = db.Column(db.String(120), unique=True)
@@ -18,7 +18,7 @@ class User(db.Model):
         self.email_check = email_check
 
     def __repr__(self):
-        return '<User %r>' % self.username
+        return '<Teacher %r>' % self.username
 
 class Class(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -28,18 +28,18 @@ class Class(db.Model):
     end = db.Column(db.String(40), unique=False)
     introduction = db.Column(db.String(1000), unique=False)
     body = db.Column(db.String(1000), unique=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    teacher_id = db.Column(db.Integer, db.ForeignKey('teacher.id'))
     chapter = db.relationship('Chapter', backref = 'class', lazy = 'dynamic')
     administrator = db.relationship('Administrator', backref = 'class', lazy = 'dynamic')
     involed_class = db.relationship('Involed_class', backref = 'class', lazy = 'dynamic')
 
-    def __init__(self, coursename, courseid, start, end, introduction, user_id):
+    def __init__(self, coursename, courseid, start, end, introduction, teacher_id):
         self.coursename = coursename
         self.courseid = courseid
         self.start = start
         self.end = end
         self.introduction = introduction
-        self.user_id = user_id
+        self.teacher_id = teacher_id
         self.body = ''
 
     def __repr__(self):
@@ -80,10 +80,10 @@ class Lesson(db.Model):
 class Administrator(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     class_id = db.Column(db.Integer, db.ForeignKey('class.id'))
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    teacher_id = db.Column(db.Integer, db.ForeignKey('teacher.id'))
 
-    def __init__(self, class_id, user_id):
-        self.user_id = user_id
+    def __init__(self, class_id, teacher_id):
+        self.teacher_id = teacher_id
         self.class_id = class_id
 
     def __repr__(self):

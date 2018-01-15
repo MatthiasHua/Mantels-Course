@@ -16,7 +16,7 @@ leftbarlist = (("teacherbasicinfo", "基本信息"),\
 @teachercenter.route('/index', methods=['POST', 'GET'])
 @teachercenter.route('/teacherbasicinfo', methods=['POST', 'GET'])
 def teacherbasicinfo():
-    user = User.query.filter_by(username = session['username']).first()
+    user = Teacher.query.filter_by(username = session['username']).first()
     #用户名：user.username或者session.get('username', '')
     #邮箱:user.email
     return render_template("TeacherBasicInfo.html",\
@@ -41,7 +41,7 @@ def changepassword():
         active = 1)
     #验证并修改密码
     if request.method == 'POST':
-        user = User.query.filter_by(username = session['username']).first()
+        user = Teacher.query.filter_by(username = session['username']).first()
         print(request.form)
         #验证旧密码是否正确和新密码是否合法
         if checkform_changepassword(request.form):
@@ -58,7 +58,7 @@ def changepassword():
 #需要对表单进行验证
 #现在只简单确认表单不为空
 def checkform_changepassword(form):
-    user = User.query.filter_by(username = session['username']).first()
+    user = Teacher.query.filter_by(username = session['username']).first()
     if form['oldpassword'] != user.password:
         return False
     if form['newpassowrd'] == '':
