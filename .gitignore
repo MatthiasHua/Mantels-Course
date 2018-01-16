@@ -4,3 +4,4 @@ __pycache__/*
 /main.log
 /test.py
 /app/data/data.sqlite
+/migrations/*
