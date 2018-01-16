@@ -17,6 +17,7 @@ app = Flask(__name__)
 #密匙
 #需要写到设置里去
 app.secret_key = 'important!!!the secret key!!!'
+
 ###########
 #数据库设置#
 ###########
