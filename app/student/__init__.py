@@ -15,11 +15,17 @@ leftbarlist = (("studentindex", "课程中心"),\
 @student.route('/', methods=['POST', 'GET'])
 @student.route('/studentindex', methods=['POST', 'GET'])
 def studentindex():
+    involed_class = Involed_class.query.filter_by(student_id = session['id']).all()
+    allclasses = []
+    for i in involed_class:
+        allclasses.append(i.theclass)
+    print(allclasses)
     return render_template("StudentCourseCenter.html",\
     role = session.get('role', 'unknow'),\
     username = session.get('username', ''),\
     leftbar = leftbarlist,\
-    active = 0)
+    active = 0,\
+    allclasses = allclasses)
 
 #选课
 @student.route('/courseselection', methods=['POST', 'GET'])
