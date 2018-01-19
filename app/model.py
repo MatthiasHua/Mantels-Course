@@ -30,8 +30,8 @@ class Class(db.Model):
     body = db.Column(db.String(1000), unique=False)
     teacher_id = db.Column(db.Integer, db.ForeignKey('teacher.id'))
     chapter = db.relationship('Chapter', backref = 'class', lazy = 'dynamic')
-    administrator = db.relationship('Administrator', backref = 'class', lazy = 'dynamic')
-    involed_class = db.relationship('Involed_class', backref = 'class', lazy = 'dynamic')
+    administrator = db.relationship('Administrator', backref = 'theclass', lazy = 'dynamic')
+    involed_class = db.relationship('Involed_class', backref = 'theclass', lazy = 'dynamic')
 
     def __init__(self, coursename, courseid, start, end, introduction, teacher_id):
         self.coursename = coursename
