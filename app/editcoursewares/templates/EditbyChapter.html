@@ -13,16 +13,17 @@
                       <a href="#">{{i.name}}</a>
                     </li>
                     {% for j in lessons %}
-                    <li role="presentation">
+                    <li role="presentation" >
                       <a href="./{{chapter + 1}}/lesson/{{loop.index}}">&nbsp;&nbsp;{{j.name}}</a>
                     </li>
                     {% endfor %}
                     {% else %}
-                    <li role="presentation">
+                    <li role="presentation" >
                       <a href="./{{loop.index}}">{{i.name}}</a>
                   </li>
                     {% endif %}
                     {% endfor %}
+					<a class='btn btn-primary ' href="/editcourses/id/{{id}}/coursewarelist">返回课程主页</a>
                 </ul>
             </div>
 
