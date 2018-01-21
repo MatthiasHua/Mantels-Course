@@ -55,4 +55,14 @@ db.session.add(testLesson21)
 db.session.add(testLesson22)
 db.session.add(testLesson23)
 
+#测试学生
+testStudent1 = Student("teststudent1", "teststudent1@mantels.top", "123123")
+testStudent2 = Student("teststudent2", "teststudent2@mantels.top", "123123")
+db.session.add(testStudent1)
+db.session.add(testStudent2)
+
+#学生2默认选测试课程
+testInvoled_class = Involed_class(1, 2)
+db.session.add(testInvoled_class)
+
 db.session.commit()
