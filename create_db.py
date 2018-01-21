@@ -65,4 +65,12 @@ db.session.add(testStudent2)
 testInvoled_class = Involed_class(1, 2)
 db.session.add(testInvoled_class)
 
+#测试习题
+body = '''### 测试习题
+---
+测试习题
+'''
+testhomework = Homework(1, 1, "testhomework", body)
+db.session.add(testhomework)
+
 db.session.commit()

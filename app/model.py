@@ -32,6 +32,7 @@ class Class(db.Model):
     chapter = db.relationship('Chapter', backref = 'class', lazy = 'dynamic')
     administrator = db.relationship('Administrator', backref = 'theclass', lazy = 'dynamic')
     involed_class = db.relationship('Involed_class', backref = 'theclass', lazy = 'dynamic')
+    homework = db.relationship('Homework', backref = 'theclass', lazy = 'dynamic')
 
     def __init__(self, coursename, courseid, start, end, introduction, teacher_id):
         self.coursename = coursename
@@ -115,3 +116,20 @@ class Involed_class(db.Model):
 
     def __repr__(self):
         return '<Involed_class %r>' % self.class_id
+
+class Homework(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    index = db.Column(db.Integer, unique=False)
+    name = db.Column(db.String(80), unique=False)
+    body = db.Column(db.String(10000), unique=False)
+    class_id = db.Column(db.Integer, db.ForeignKey('class.id'))
+
+
+    def __init__(self, class_id, index, name, body):
+        self.class_id = class_id
+        self.index = index
+        self.name = name
+        self.body = body
+
+    def __repr__(self):
+        return '<Homework %r>' % self.class_id

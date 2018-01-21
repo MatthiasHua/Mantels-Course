@@ -71,6 +71,20 @@ def checkform_newchapter(form):
         return 0
     return 1
 
+#课后练习
+@editcourses.route('/id/<int:id>/homework', methods=['POST', 'GET'])
+def homework_editcourses(id):
+    homeworks = Homework.query.filter_by(class_id = id).all()
+    print(homeworks)
+    return render_template("Homework_editcourses.html",\
+    homeworks = homeworks,\
+    role = session.get('role', 'unknow'),\
+    username = session.get('username', ''),\
+    id = id,\
+    leftbar = leftbarlist,\
+    active = 2)
+
+
 #实验列表
 @editcourses.route('/id/<int:id>/experimentlist', methods=['POST', 'GET'])
 def experiment(id):
