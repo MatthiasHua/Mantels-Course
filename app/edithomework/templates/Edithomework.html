@@ -8,15 +8,55 @@
         <div class="list-group-item">
           <div id="body"></div>
           <br>
-          <button class="btn btn-default">修改试题内容</button>
+          <button class="btn btn-default" data-toggle="modal" data-target="#changebody">修改试题内容</button>
           <button class="btn btn-default">返回</button>
         </ul>
       </div>
     </div>
   </div>
 </div>
+<div class="modal fade" id="changebody" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+          &times;
+        </button>
+        <h4 class="modal-title" id="myModalLabel">
+          修改试题内容
+        </h4>
+      </div>
+      <div class="modal-body">
+        <textarea class="form-control" rows="7"></textarea>
+        tip: 使用Markdown渲染 | <a href="/markdowneditor"> Mantels Markdown Editor </a>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+        </button>
+        <button type="button" class="btn btn-primary" onclick="postbody()">
+          提交更改
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal -->
+</div>
 <div id="raw" style="display: none">{{homework.body}}</div>
 <script>
+function postbody() {
+  $.post("./{{id}}",
+  {
+      body: $("textarea")[0].value,
+  },
+  function(data,status){
+      console.log(data)
+      if (data == 'Done') {
+          window.location.href="./{{id}}";
+      }
+      else {
+          alert('修改试题内容失败')
+      }
+  });
+}
 window.onload = function(){
   $('#body').html(marked($("#raw").html()))
 }
