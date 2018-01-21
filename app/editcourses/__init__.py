@@ -74,6 +74,7 @@ def checkform_newchapter(form):
         return 0
     return 1
 
+#实验列表
 @editcourses.route('/id/<int:id>/experimentlist', methods=['POST', 'GET'])
 def experiment(id):
     currentcourses = Class.query.filter_by(id = id).first()
@@ -86,6 +87,23 @@ def experiment(id):
     leftbar = leftbarlist,\
     active = 3)
 
+#学生列表
+@editcourses.route('/id/<int:id>/studentlist', methods=['POST', 'GET'])
+def studentlist(id):
+    involed_class = Involed_class.query.filter_by(class_id = id).all()
+    students = []
+    for i in involed_class:
+        students.append(i.student)
+    print(students)
+    return render_template("Studentlist.html",\
+    students = students,\
+    role = session.get('role', 'unknow'),\
+    username = session.get('username', ''),\
+    id = id,\
+    leftbar = leftbarlist,\
+    active = 4)
+
+#成绩管理
 @editcourses.route('/id/<int:id>/scoremanager', methods=['POST', 'GET'])
 def score(id):
     return render_template("Scoremanager.html",\
