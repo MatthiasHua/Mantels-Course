@@ -9,7 +9,7 @@
           <div id="body"></div>
           <br>
           <button class="btn btn-default" data-toggle="modal" data-target="#changebody">修改试题内容</button>
-          <button class="btn btn-default">返回</button>
+          <button class="btn btn-default" onclick="window.location.href='/editcourses/id/{{homework.class_id}}/homework'"> 返回</button>
         </ul>
       </div>
     </div>
@@ -45,16 +45,16 @@
 function postbody() {
   $.post("./{{id}}",
   {
-      body: $("textarea")[0].value,
+    body: $("textarea")[0].value,
   },
   function(data,status){
-      console.log(data)
-      if (data == 'Done') {
-          window.location.href="./{{id}}";
-      }
-      else {
-          alert('修改试题内容失败')
-      }
+    console.log(data)
+    if (data == 'Done') {
+      window.location.href="./{{id}}";
+    }
+    else {
+      alert('修改试题内容失败')
+    }
   });
 }
 window.onload = function(){
