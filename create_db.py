@@ -23,7 +23,7 @@ introduction = '''### 使用Markdown
 - 轻松使用[链接](/)
 ---
 
-![图片范例](https://github.com/MatthiasHua/Mantels-Markdown-Editor/blob/master/img.png?raw=true)
+![图片范例](https://gitee.com/Matthias/Mantels-Markdown-Editor/raw/master/img.png)
 
 '''
 testClass = Class("testClass", "1212345", "2018-01-01", "2018-06-30", introduction, 1)
