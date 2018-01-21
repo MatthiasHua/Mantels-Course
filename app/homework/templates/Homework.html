@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container" style="margin-top: 30px">
+  <div class="row">
+    <div class="col-md-12">
+      <ul class="list-group">
+        <a class="list-group-item active">{{homework.name}}</a>
+        <div class="list-group-item">
+          <div id="body"></div>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="raw" style="display: none">{{homework.body}}</div>
+<script>
+window.onload = function(){
+  $('#body').html(marked($("#raw").html()))
+}
+</script>
+{% endblock %}
