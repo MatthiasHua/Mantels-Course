@@ -9,6 +9,7 @@ courses = Blueprint('courses', __name__,  template_folder='templates')
 
 leftbarlist = (("courseindex", "课程主页"),\
                ("courseware", "课件"),\
+               ("homework", "习题"),\
                ("experiment", "实验"),\
                ("score", "成绩"))
 
@@ -62,7 +63,7 @@ def experiment(id):
     username = session.get('username', ''),\
     id = id,\
     leftbar = leftbarlist,\
-    active = 2)
+    active = 3)
 
 @courses.route('/id/<int:id>/score', methods=['POST', 'GET'])
 def score(id):
@@ -71,4 +72,4 @@ def score(id):
     username = session.get('username', ''),\
     id = id,\
     leftbar = leftbarlist,\
-    active = 3)
+    active = 4)
