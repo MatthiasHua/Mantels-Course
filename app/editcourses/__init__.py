@@ -20,7 +20,6 @@ leftbarlist = (("indexpreview", "主页预览"),\
 def courseindex(id):
     currentcourses = Class.query.filter_by(id = id).first()
     if request.method == 'GET':
-        print(currentcourses)
         return render_template("IndexPreview.html",\
         role = session.get('role', 'unknow'),\
         username = session.get('username', ''),\
@@ -29,7 +28,6 @@ def courseindex(id):
         leftbar = leftbarlist,\
         active = 0)
     if request.method == 'POST':
-        print(request.form)
         if request.form.get('introduction', '') != '':
             currentcourses.introduction = request.form['introduction']
             db.session.commit()
@@ -46,7 +44,6 @@ def coursewarelist(id):
         for chapter in chapters:
             chapterlist = []
             for lesson in chapter.lesson.all():
-                print(lesson.name, lesson.id)
                 chapterlist.append([lesson.name, lesson.id])
             lessonlist.append(chapterlist)
         return render_template("Coursewarelsit.html",\
@@ -94,7 +91,6 @@ def studentlist(id):
     students = []
     for i in involed_class:
         students.append(i.student)
-    print(students)
     return render_template("Studentlist.html",\
     students = students,\
     role = session.get('role', 'unknow'),\
