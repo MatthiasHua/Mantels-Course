@@ -9,7 +9,9 @@ editcourses = Blueprint('editcourses', __name__,  template_folder='templates')
 
 leftbarlist = (("indexpreview", "主页预览"),\
                ("coursewarelist", "课件列表"),\
+               ("homework", "课后练习"),\
                ("experimentlist", "实验列表"),\
+               ("studentlist", "学生列表"),\
                ("scoremanager", "成绩管理"))
 
 
@@ -82,7 +84,7 @@ def experiment(id):
     id = id,\
     lesson = lesson,\
     leftbar = leftbarlist,\
-    active = 2)
+    active = 3)
 
 @editcourses.route('/id/<int:id>/scoremanager', methods=['POST', 'GET'])
 def score(id):
@@ -91,4 +93,4 @@ def score(id):
     username = session.get('username', ''),\
     id = id,\
     leftbar = leftbarlist,\
-    active = 3)
+    active = 5)
