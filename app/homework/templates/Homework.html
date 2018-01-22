@@ -8,7 +8,8 @@
         <div class="list-group-item">
           <div id="body"></div>
           <br>
-          <button class="btn btn-default" onclick="window.location.href='/courses/id/{{homework.class_id}}/homework'"> 返回</button>
+          <button class="btn btn-default" onclick="postform()">提交</button>
+          <button class="btn btn-default" onclick="window.location.href='/courses/id/{{homework.class_id}}/homework'">返回</button>
         </ul>
       </div>
     </div>
@@ -16,6 +17,38 @@
 </div>
 <div id="raw" style="display: none">{{homework.body}}</div>
 <script>
+function postform() {
+  check = true
+  body = 'inputlabel'
+  $('.inputlabel').val(function(i, origText){
+    console.log(origText)
+    if (origText == '') {
+      check = false
+    }
+    body += '~'+origText
+    return origText
+  })
+  console.log(body)
+  if (check) {
+    $.post("./{{id}}",
+    {
+      body: body,
+    },
+    function(data,status){
+      console.log(data)
+      if (data == 'Done') {
+        window.location.href="./{{id}}";
+      }
+      else {
+        alert('提交失败，请检查网络连接。')
+      }
+    });
+  }
+  else {
+    alert('请完成所有练习后提交')
+  }
+}
+
 window.onload = function(){
   $('#body').html(marked($("#raw").html()))
   inputlabelindex = 0

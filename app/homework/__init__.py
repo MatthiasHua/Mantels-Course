@@ -9,11 +9,28 @@ homework = Blueprint('homework', __name__,  template_folder='templates')
 
 @homework.route('/id/<int:id>', methods=['POST', 'GET'])
 def homework_edit(id):
-    homework = Homework.query.filter_by(id = id).first()
-    print(homework)
-    return render_template("Homework.html",\
-    homework = homework,\
-    role = session.get('role', 'unknow'),\
-    username = session.get('username', ''),\
-    id = id,\
-    active = 2)
+    if request.method == 'GET':
+        homework = Homework.query.filter_by(id = id).first()
+        print(homework)
+        return render_template("Homework.html",\
+        homework = homework,\
+        role = session.get('role', 'unknow'),\
+        username = session.get('username', ''),\
+        id = id,\
+        active = 2)
+    if request.method == 'POST':
+        if request.form.get('body', '') != '':
+            #旧的提交记录
+            oldanswer = Answer_Student.query.filter_by(homework_id = id, student_id = session.get('username', '')).all()
+            #没提交过
+            if oldanswer == []:
+                answer = Answer_Student(request.form['body'], session.get('username', ''), id)
+                db.session.add(answer)
+                db.session.commit()
+                return 'Done'
+            else:
+                oldanswer[0].body = request.form['body']
+                db.session.commit()
+                return 'Done'
+        print(request.form)
+        return "233"
