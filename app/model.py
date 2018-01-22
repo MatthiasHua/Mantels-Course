@@ -29,7 +29,7 @@ class Class(db.Model):
     introduction = db.Column(db.String(1000), unique=False)
     body = db.Column(db.String(1000), unique=False)
     teacher_id = db.Column(db.Integer, db.ForeignKey('teacher.id'))
-    chapter = db.relationship('Chapter', backref = 'class', lazy = 'dynamic')
+    chapter = db.relationship('Chapter', backref = 'theclass', lazy = 'dynamic')
     administrator = db.relationship('Administrator', backref = 'theclass', lazy = 'dynamic')
     involed_class = db.relationship('Involed_class', backref = 'theclass', lazy = 'dynamic')
     homework = db.relationship('Homework', backref = 'theclass', lazy = 'dynamic')
@@ -96,6 +96,7 @@ class Student(db.Model):
     email = db.Column(db.String(120), unique=True)
     password = db.Column(db.String(80), unique=False)
     involed_class = db.relationship('Involed_class', backref = 'student', lazy = 'dynamic')
+    answer = db.relationship('Answer_Student', backref = 'student', lazy = 'dynamic')
 
     def __init__(self, username, email, password):
         self.username = username
@@ -123,7 +124,8 @@ class Homework(db.Model):
     name = db.Column(db.String(80), unique=False)
     body = db.Column(db.String(10000), unique=False)
     class_id = db.Column(db.Integer, db.ForeignKey('class.id'))
-
+    answer = db.relationship('Answer', backref = 'homework', lazy = 'dynamic')
+    answer_student = db.relationship('Answer_Student', backref = 'homework', lazy = 'dynamic')
 
     def __init__(self, class_id, index, name, body):
         self.class_id = class_id
@@ -132,4 +134,30 @@ class Homework(db.Model):
         self.body = body
 
     def __repr__(self):
-        return '<Homework %r>' % self.class_id
+        return '<Homework %r>' % self.id
+
+class Answer(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.String(10000), unique=False)
+    homework_id = db.Column(db.Integer, db.ForeignKey('homework.id'))
+
+    def __init__(self, body, homework_id):
+        self.homework_id = homework_id
+        self.body = body
+
+    def __repr__(self):
+        return '<Answer of Homework %r>' % self.homework_id
+
+class Answer_Student(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.String(10000), unique=False)
+    student_id =  db.Column(db.Integer, db.ForeignKey('student.id'))
+    homework_id = db.Column(db.Integer, db.ForeignKey('homework.id'))
+
+    def __init__(self, body, student_id, homework_id):
+        self.homework_id = homework_id
+        self.student_id = student_id
+        self.body = body
+
+    def __repr__(self):
+        return '<Answer of Homework %r(Student)>' % self.homework_id
