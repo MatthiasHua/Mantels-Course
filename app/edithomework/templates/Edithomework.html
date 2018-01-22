@@ -9,6 +9,7 @@
           <div id="body"></div>
           <br>
           <button class="btn btn-default" data-toggle="modal" data-target="#changebody">修改试题内容</button>
+          <button class="btn btn-default" onclick="postform()">提交答案</button>
           <button class="btn btn-default" onclick="window.location.href='/editcourses/id/{{homework.class_id}}/homework'"> 返回</button>
         </ul>
       </div>
@@ -27,7 +28,7 @@
         </h4>
       </div>
       <div class="modal-body">
-        <textarea class="form-control" rows="7"></textarea>
+        <textarea class="form-control changebodytextarea" rows="7"></textarea>
         tip: 使用Markdown渲染 | <a href="/markdowneditor"> Mantels Markdown Editor </a>
       </div>
       <div class="modal-footer">
@@ -42,10 +43,42 @@
 </div>
 <div id="raw" style="display: none">{{homework.body}}</div>
 <script>
+function postform() {
+  check = true
+  body = 'inputlabel'
+  $('.inputlabel').val(function(i, origText){
+    console.log(origText)
+    if (origText == '') {
+      check = false
+    }
+    body += '~'+origText
+    return origText
+  })
+  console.log(body)
+  if (check) {
+    $.post("/edithomework/answer/{{id}}",
+    {
+      body: body,
+    },
+    function(data,status){
+      console.log(data)
+      if (data == 'Done') {
+        window.location.href="./{{id}}";
+      }
+      else {
+        alert('提交失败，请检查网络连接。')
+      }
+    });
+  }
+  else {
+    alert('请完成所有练习后提交')
+  }
+}
+
 function postbody() {
   $.post("./{{id}}",
   {
-    body: $("textarea")[0].value,
+    body: $(".changebodytextarea")[0].value,
   },
   function(data,status){
     console.log(data)
