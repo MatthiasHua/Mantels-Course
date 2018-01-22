@@ -36,7 +36,7 @@ def courseselection():
         allclasses = Class.query.all()
         involedclasses = []
         for i in ic:
-            involedclasses.append(i.id)
+            involedclasses.append(i.class_id)
         return render_template("Courseselection.html",\
         allclasses = allclasses,\
         involedclasses = involedclasses,\
