@@ -56,6 +56,19 @@ def courseware(id):
     leftbar = leftbarlist,\
     active = 1)
 
+#习题
+@courses.route('/id/<int:id>/homework', methods=['POST', 'GET'])
+def homework_courses(id):
+    homeworks = Homework.query.filter_by(class_id = id).all()
+    print(homeworks)
+    return render_template("Homework_courses.html",\
+    homeworks = homeworks,\
+    role = session.get('role', 'unknow'),\
+    username = session.get('username', ''),\
+    id = id,\
+    leftbar = leftbarlist,\
+    active = 2)
+
 @courses.route('/id/<int:id>/experiment', methods=['POST', 'GET'])
 def experiment(id):
     return render_template("Experiment.html",\

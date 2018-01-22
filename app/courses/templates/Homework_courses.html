@@ -1,0 +1,33 @@
+{% extends "base_student.html" %}
+{% block content %}
+    <div class="container" style="margin-top: 30px">
+        <div class="row">
+            <div class="col-xs-3">
+                <ul class="nav nav-pills nav-stacked">
+                    {% for i in leftbar %}
+                    {% if loop.index - 1 == active %}
+                    <li role="presentation" class="active">
+                    {% else %}
+                    <li role="presentation">
+                    {% endif %}
+                        <a href="/courses/id/{{id}}/{{i[0]}}">{{i[1]}}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="col-md-9">
+                <ul class="list-group">
+                    <a class="list-group-item active"> 课后练习 </a>
+                    {% for i in homeworks %}
+                    <div class="list-group-item">
+                        <h4 class="list-group-item-heading" style="color:black">{{i.name}}</h4>
+                        <a href="#" style="color:green">进行中</a>
+                        <a href="/homework/id/{{i.id}}" style="float: right">开始答题</a>
+                    </div>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
