@@ -13,6 +13,11 @@
                         <a href="/courses/id/{{id}}/{{i[0]}}">{{i[1]}}</a>
                     </li>
                     {% endfor %}
+                    {% if role == 'Teacher' %}
+                    <li role="presentation" class="active">
+          					<a href="/editcourses/id/{{id}}/indexpreview">管理课程</a>
+          					</li>
+                    {% endif %}
                 </ul>
             </div>
 
@@ -23,7 +28,7 @@
                         欢迎来到 <span style="color: blue"> {{ currentcourses.coursename }} </span> 课程
                     </div>
                     <div class="list-group-item">
-                        课程简介: 
+                        课程简介:
                         <br>
                         <div id="introduction">
                         </div>
