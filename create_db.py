@@ -58,8 +58,10 @@ db.session.add(testLesson23)
 #测试学生
 testStudent1 = Student("teststudent1", "teststudent1@mantels.top", "123123")
 testStudent2 = Student("teststudent2", "teststudent2@mantels.top", "123123")
+testStudent3 = Student("zzz","teststudent3@mantels.top", "123123")
 db.session.add(testStudent1)
 db.session.add(testStudent2)
+db.session.add(testStudent3)
 
 #学生2默认选测试课程
 testInvoled_class = Involed_class(1, 2)
@@ -68,7 +70,10 @@ db.session.add(testInvoled_class)
 #测试习题
 body = '''### 测试习题
 ---
-测试习题
+1. 1+1= ~120-提示~
+
+2. 2*3= ~60~
+
 '''
 testhomework = Homework(1, 1, "testhomework", body)
 db.session.add(testhomework)
