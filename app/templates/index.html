@@ -1,6 +1,106 @@
-{% extends "base.html" %}
-{% block content %}
-    <h1 style = "text-align:center">Index<br>这里是主页<br> 但这里什么都没有
-    </h1>
-    <a href="/courses/"><h1 style = "text-align:center">我是学生</h1><a>
-{% endblock %}
+<!DOCTYPE html>
+<html>
+<head>
+   <meta charset="utf-8">
+   <title>Mantels | Courses</title>
+   <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}"><link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+   <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+   <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+   <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+   <script src="https://gitee.com/Matthias/Mantels-Markdown-Editor/raw/master/marked/marked-alpha.js"></script>
+   <style text='text/css'>
+       html,body{
+         margin: 0;
+         text-align: center;
+         height: 100%;
+         vertical-align: middle;
+       }
+
+       div {
+         height: 100%;
+       }
+
+       .slide {
+         height: calc(100% - 50px);
+       }
+
+       img {
+         width: 100%;
+         height: 100%;
+       }
+       .navbar-default {
+         border: 0;
+         margin: 0;
+         padding: 0;
+       }
+
+       .carousel-indicators li {
+         border: 1px solid white;
+       }
+       .carousel-indicators .active {
+         background: white;
+       }
+   </style>
+</head>
+<body>
+  <nav class="navbar navbar-default " role="navigation">
+  	<div class="container-fluid">
+  	<div class="navbar-header">
+  		<a class="navbar-brand" href="/index">Mantels | Courses</a>
+  	</div>
+  	<div>
+  		<ul class="nav navbar-nav navbar-right">
+        {% if role == 'Teacher' %}
+  			<li class="dropdown">
+  				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+  					{{username}}
+  					<b class="caret"></b>
+  				</a>
+  				<ul class="dropdown-menu">
+  					<li><a href="/teachercenter">个人中心</a></li>
+  					<li class="divider"></li>
+            <li><a href="/teacher">课程中心</a></li>
+            <li><a href="/markdowneditor">Markdown编辑器</a></li>
+  					<li class="divider"></li>
+  					<li><a href="/help">帮助文档</a></li>
+  					<li><a href="/about">关于</a></li>
+  					<li class="divider"></li>
+  					<li><a href="/user_base/logout">注销</a></li>
+  				</ul>
+  			</li>
+        {% else %}
+      <li><a href="/courses/">我是学生</a></li>
+			<li><a href="/user_base/signin">登录</a></li>
+			<li><a href="/user_base/register">注册</a></li>
+        {% endif %}
+  		</ul>
+  	</div>
+  	</div>
+  </nav>
+  <div id="myCarousel" class="carousel slide">
+  	<!-- 轮播（Carousel）指标 -->
+  	<ol class="carousel-indicators">
+  		<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+  		<li data-target="#myCarousel" data-slide-to="1"></li>
+  		<li data-target="#myCarousel" data-slide-to="2"></li>
+  	</ol>
+  	<!-- 轮播（Carousel）项目 -->
+  	<div class="carousel-inner">
+  		<div class="item active">
+  			<img src="https://cdn.gratisography.com/photos/440H.jpg" alt="First slide">
+  		</div>
+  		<div class="item">
+  			<img src="https://cdn.gratisography.com/photos/445H.jpg" alt="Second slide">
+  		</div>
+  		<div class="item">
+  			<img src="https://cdn.gratisography.com/photos/419H.jpg" alt="Third slide">
+  		</div>
+  	</div>
+  	<!-- 轮播（Carousel）导航 -->
+  	<a class="carousel-control left" href="#myCarousel"
+  	   data-slide="prev">&lsaquo;</a>
+  	<a class="carousel-control right" href="#myCarousel"
+  	   data-slide="next">&rsaquo;</a>
+  </div>
+</body>
+</html>
