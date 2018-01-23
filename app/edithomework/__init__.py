@@ -16,8 +16,7 @@ def homework_edit(id):
         homework = homework,\
         role = session.get('role', 'unknow'),\
         username = session.get('username', ''),\
-        id = id,\
-        active = 2)
+        id = id)
     if request.method == 'POST':
         print(request.form)
         #不为空
@@ -46,3 +45,41 @@ def homework_answer(id):
         db.session.commit()
         return 'Done'
     return '233'
+
+@edithomework.route('/score/<int:id>', methods=['POST'])
+def homework_score(id):
+    #找旧的分指表
+    oldscore = Score.query.filter_by(homework_id = id).all()
+    #没提交过
+    if oldscore == []:
+        score = Score(request.form['body'], id)
+        db.session.add(score)
+        db.session.commit()
+        return 'Done'
+    else:
+        oldscore[0].body = request.form['body']
+        db.session.commit()
+        return 'Done'
+    return '233'
+
+#查看成绩
+@edithomework.route('/score/watch/<int:id>', methods=['GET'])
+def homework_score_watch(id):
+    #有空做个排序
+    scores = Score_Student.query.filter_by(homework_id = id).all()
+    #(学生，成绩)的list
+    score_list = []
+    for i in scores:
+        scoretext = i.body
+        student = Student.query.filter_by(id = i.student_id).first()
+        print(student)
+        scoretext_list = scoretext.split("~")
+        #这里len应该是固定的吧
+        score_list.append((student, (scoretext_list[len(scoretext_list) - 1])))
+    print(score_list)
+
+    return render_template("Homework_Score_Watch.html",\
+    score_list = score_list,\
+    role = session.get('role', 'unknow'),\
+    username = session.get('username', ''),\
+    id = id)

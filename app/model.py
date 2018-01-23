@@ -126,6 +126,7 @@ class Homework(db.Model):
     class_id = db.Column(db.Integer, db.ForeignKey('class.id'))
     answer = db.relationship('Answer', backref = 'homework', lazy = 'dynamic')
     answer_student = db.relationship('Answer_Student', backref = 'homework', lazy = 'dynamic')
+    score = db.relationship('Score', backref = 'homework', lazy = 'dynamic')
 
     def __init__(self, class_id, index, name, body):
         self.class_id = class_id
@@ -161,3 +162,31 @@ class Answer_Student(db.Model):
 
     def __repr__(self):
         return '<Answer of Homework %r(Student)>' % self.homework_id
+
+#分值表
+class Score(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.String(10000), unique=False)
+    homework_id = db.Column(db.Integer, db.ForeignKey('homework.id'))
+
+    def __init__(self, body, homework_id):
+        self.homework_id = homework_id
+        self.body = body
+
+    def __repr__(self):
+        return '<Score of Homework %r>' % self.homework_id
+
+#学生分数
+class Score_Student(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.String(10000), unique=False)
+    student_id =  db.Column(db.Integer, db.ForeignKey('student.id'))
+    homework_id = db.Column(db.Integer, db.ForeignKey('homework.id'))
+
+    def __init__(self, body, student_id, homework_id):
+        self.homework_id = homework_id
+        self.student_id = student_id
+        self.body = body
+
+    def __repr__(self):
+        return '<Score of Homework %r(Student)>' % self.homework_id

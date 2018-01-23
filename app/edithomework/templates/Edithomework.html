@@ -10,6 +10,8 @@
           <br>
           <button class="btn btn-default" data-toggle="modal" data-target="#changebody">修改试题内容</button>
           <button class="btn btn-default" onclick="postform()">提交答案</button>
+          <button class="btn btn-default" onclick="postscore()">设置分值</button>
+          <button class="btn btn-default" onclick="window.location.href='/help'">帮助</button>
           <button class="btn btn-default" onclick="window.location.href='/editcourses/id/{{homework.class_id}}/homework'"> 返回</button>
         </ul>
       </div>
@@ -75,6 +77,38 @@ function postform() {
   }
 }
 
+//这里还要验证一下是不是数字
+function postscore() {
+  check = true
+  body = '0'
+  $('.inputlabel').val(function(i, origText){
+    console.log(origText)
+    if (origText == '') {
+      check = false
+    }
+    body += '~'+origText
+    return origText
+  })
+  console.log(body)
+  if (check) {
+    $.post("/edithomework/score/{{id}}",
+    {
+      body: body,
+    },
+    function(data,status){
+      console.log(data)
+      if (data == 'Done') {
+        window.location.href="./{{id}}";
+      }
+      else {
+        alert('提交失败，请检查网络连接。')
+      }
+    });
+  }
+  else {
+    alert('请标记所有题目分数')
+  }
+}
 function postbody() {
   $.post("./{{id}}",
   {

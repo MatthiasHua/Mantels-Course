@@ -24,7 +24,9 @@ db.create_all()
 
 #测试用户
 testTeacher = Teacher("123", "123@123.com", "123123", 1, 0)
+superMatthias = Teacher("superMatthias", "superMatthias@123.com", "Matthiassuper", 9, 0)
 db.session.add(testTeacher)
+db.session.add(superMatthias)
 
 #测试课程
 introduction = '''### 使用Markdown
@@ -87,6 +89,20 @@ body = '''### 测试习题
 
 '''
 testhomework = Homework(1, 1, "testhomework", body)
+#答案
+testanswer = Answer("inputlabel~2~6", 1)
+#分值
+testscore = Score("0~2~3", 1)
+#学生答案
+testanswer_student1 = Answer_Student("inputlabel~2~3", 1, 1)
+testanswer_student2 = Answer_Student("inputlabel~2~6", 2, 1)
+testanswer_student3 = Answer_Student("inputlabel~7~6", 3, 1)
+
 db.session.add(testhomework)
+db.session.add(testanswer)
+db.session.add(testscore)
+db.session.add(testanswer_student1)
+db.session.add(testanswer_student2)
+db.session.add(testanswer_student3)
 
 db.session.commit()

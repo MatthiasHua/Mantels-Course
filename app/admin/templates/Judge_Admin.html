@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container" style="margin-top: 30px">
+  <div class="row">
+    <div class="col-xs-3">
+      <ul class="nav nav-pills nav-stacked">
+        {% for i in leftbar %}
+        {% if loop.index -1 == active %}
+        <li role="presentation" class="active">
+          {% else %}
+          <li role="presentation">
+            {% endif %}
+            <a href="/admin/{{i[0]}}">{{i[1]}}</a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="col-md-9">
+        <ul class="list-group">
+          <a class="list-group-item active"> 判题测试 </a>
+          <div class="list-group-item">
+            <div class="input-group col-md-6">
+              <span class="input-group-addon">answer_student_id</span>
+              <input type="text" class="form-control" id = "homeworkid" placeholder="answer_student_id">
+            </div></br>
+            <button class="btn btn-default" onclick="judgebyanswerstudentid()">批改作业(answer_student_id)</button>
+          </div>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <script>
+  function judgebyanswerstudentid() {
+    $.post("/admin/judgebyanswerstudentid",
+    {
+        id: $("#homeworkid")[0].value,
+    },
+    function(data,status){
+        console.log(data)
+        if (data == 'Done') {
+            alert('批改成功!')
+            window.location.href="./";
+        }
+        else if (data == 'not_found') {
+            alert('未找到该作业!')
+            window.location.href="./";
+        }
+        else {
+            alert('批改失败')
+        }
+    });
+  }
+  </script>
+
+  {% endblock %}
