@@ -37,6 +37,7 @@ function postform() {
     function(data,status){
       console.log(data)
       if (data == 'Done') {
+        alert('提交成功')
         window.location.href="./{{id}}";
       }
       else {
