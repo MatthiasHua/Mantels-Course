@@ -2,7 +2,7 @@
 <html>
 <head>
    <meta charset="utf-8">
-   <title>Mantels | Courses</title>
+   <title>Mantels | Student</title>
    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}"><link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
@@ -36,11 +36,16 @@
   <nav class="navbar navbar-default " role="navigation">
   	<div class="container-fluid">
   	<div class="navbar-header">
+      {% if role == 'Teacher' %}
   		<a class="navbar-brand" href="/index">Mantels | Courses</a>
+      {% elif role == 'Student' %}
+  		<a class="navbar-brand" href="/courses/">Mantels | Courses</a>
+      {% endif %}
   	</div>
   	<div>
   		<ul class="nav navbar-nav navbar-right">
         {% if role == 'Teacher' %}
+        <li><a href="#">教师</a></li>
   			<li class="dropdown">
   				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
   					{{username}}
@@ -49,7 +54,7 @@
   				<ul class="dropdown-menu">
   					<li><a href="/teachercenter">个人中心</a></li>
   					<li class="divider"></li>
-            <li><a href="/teacher">课程中心</a></li>
+  					<li><a href="/teacher">课程中心</a></li>
             <li><a href="/markdowneditor">Markdown编辑器</a></li>
   					<li class="divider"></li>
   					<li><a href="/help">帮助文档</a></li>
@@ -58,9 +63,26 @@
   					<li><a href="/user_base/logout">注销</a></li>
   				</ul>
   			</li>
+        {% elif role == 'Student' %}
+        <li><a href="#">学生</a></li>
+  			<li class="dropdown">
+  				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+  					{{username}}
+  					<b class="caret"></b>
+  				</a>
+  				<ul class="dropdown-menu">
+  					<li><a href="/studentcenter/">个人中心</a></li>
+  					<li class="divider"></li>
+  					<li><a href="/student/">课程中心</a></li>
+  					<li><a href="/help">帮助文档</a></li>
+  					<li><a href="/about">关于</a></li>
+  					<li class="divider"></li>
+  					<li><a href="/user_base/logout">注销</a></li>
+  				</ul>
+  			</li>
         {% else %}
-			<li><a href="/user_base/signin">登录</a></li>
-			<li><a href="/user_base/register">注册</a></li>
+			<li><a href="/user_base/student/signin">登录</a></li>
+			<li><a href="/user_base/student/register">注册</a></li>
         {% endif %}
   		</ul>
   	</div>
