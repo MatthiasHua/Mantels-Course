@@ -9,16 +9,17 @@
               {% else %}
               <li role="presentation">
               {% endif %}
-                  <a href="/help/{{loop.index}}">{{i|safe}}</a>
+                  <a href="/help/{{loop.index - 1}}">{{i|safe}}</a>
               </li>
               {% endfor %}
           </ul>
       </div>
-      <div class="col-md-9" id="about">{% block helptext %}{% endblock %}</div>
+      <div class="col-md-9" id="about"></div>
+      <div id="about_markdown" style="display: none;">{% block helptext %}{% endblock %}</div>
     </div>
     <script>
     window.onload=function(){
-      $('#about').html(marked($("#about").html()))
+      $('#about').html(marked($("#about_markdown").html()))
     }
     </script>
 {% endblock %}
