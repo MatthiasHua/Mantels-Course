@@ -2,6 +2,7 @@ from app import db
 
 class Teacher(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    number = db.Column(db.String(80), unique=True)
     username = db.Column(db.String(80), unique=True)
     email = db.Column(db.String(120), unique=True)
     email_check = db.Column(db.Integer, unique=False)
@@ -10,7 +11,8 @@ class Teacher(db.Model):
     classpost = db.relationship('Class', backref = 'teacher', lazy = 'dynamic')
     administrator = db.relationship('Administrator', backref = 'teacher', lazy = 'dynamic')
 
-    def __init__(self, username, email, password, role, email_check):
+    def __init__(self, number, username, email, password, role, email_check):
+        self.number = number
         self.username = username
         self.email = email
         self.password = password
@@ -92,13 +94,15 @@ class Administrator(db.Model):
 
 class Student(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    number = db.Column(db.String(80), unique=True)
     username = db.Column(db.String(80), unique=True)
     email = db.Column(db.String(120), unique=True)
     password = db.Column(db.String(80), unique=False)
     involed_class = db.relationship('Involed_class', backref = 'student', lazy = 'dynamic')
     answer = db.relationship('Answer_Student', backref = 'student', lazy = 'dynamic')
 
-    def __init__(self, username, email, password):
+    def __init__(self, number, username, email, password):
+        self.number = number
         self.username = username
         self.email = email
         self.password = password

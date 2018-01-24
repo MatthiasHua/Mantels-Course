@@ -63,9 +63,10 @@
       function postform() {
         $.post("./register",
         {
-            username: $("input")[0].value,
-            password: $("input")[1].value,
-            email:    $("input")[2].value,
+            number:   $("input")[0].value,
+            username: $("input")[1].value,
+            password: $("input")[2].value,
+            email:    $("input")[3].value,
         },
         function(data,status){
             console.log(data)
@@ -88,15 +89,19 @@
       <form class="form-signin">
         <h2 class="form-signin-heading">Mantels 教师注册</h2>
         <label for="inputUsername" class="sr-only">Username</label>
+        <input type="username" id="inputNumber" class="form-control" placeholder="账号" required autofocus>
+        <label for="inputUsername" class="sr-only">Username</label>
         <input type="username" id="inputUsername" class="form-control" placeholder="用户名" required autofocus>
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" id="inputPassword" class="form-control" placeholder="密码" required>
         <label for="inputEmail" class="sr-only">Email address</label>
         <input type="email" id="inputEmail" class="form-control" placeholder="邮箱" required autofocus>
         <div class="checkbox">
-          <label>
+          <!-- <label>
             <input type="checkbox" value="remember-me"> Remember me
-          </label>
+          </label> -->
+          <a href="/user_base/signin">前往登陆</a>
+          <a href="/">前往主页</a>
         </div>
         <button class="btn btn-lg btn-primary btn-block" type="button" onclick="postform()">注册</button>
       </form>

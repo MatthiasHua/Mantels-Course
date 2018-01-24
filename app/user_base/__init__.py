@@ -15,7 +15,7 @@ def signin():
     if request.method == 'GET':
         return render_template("Signin.html")
     if request.method == 'POST':
-        teacher = Teacher.query.filter_by(username = request.form['username']).first()
+        teacher = Teacher.query.filter_by(number = request.form['number']).first()
         if teacher != None and teacher.password == request.form['password']:
             session['username'] = teacher.username
             session['signin'] = True
@@ -34,7 +34,7 @@ def register():
         return render_template("Register.html")
     if request.method == 'POST':
         if post_check(request.form):
-            newTeacher = Teacher(request.form['username'], request.form['email'], request.form['password'], 1, -1)
+            newTeacher = Teacher(request.form['number'], request.form['username'], request.form['email'], request.form['password'], 1, -1)
             db.session.add(newTeacher)
             db.session.commit()
             return 'Done'
@@ -56,7 +56,7 @@ def studentsignin():
     if request.method == 'GET':
         return render_template("StudentSignin.html")
     if request.method == 'POST':
-        user = Student.query.filter_by(username = request.form['username']).first()
+        user = Student.query.filter_by(number = request.form['number']).first()
         if user != None and user.password == request.form['password']:
             session['username'] = user.username
             session['signin'] = True
@@ -74,7 +74,7 @@ def studentregister():
     if request.method == 'POST':
         print(request.form)
         if post_check(request.form):
-            newStudent = Student(request.form['username'], request.form['email'], request.form['password'])
+            newStudent = Student(request.form['number'], request.form['username'], request.form['email'], request.form['password'])
             db.session.add(newStudent)
             db.session.commit()
             return 'Done'

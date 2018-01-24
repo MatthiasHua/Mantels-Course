@@ -23,8 +23,8 @@ db.create_all()
 #默认测试数据
 
 #测试用户
-testTeacher = Teacher("123", "123@123.com", "123123", 1, 0)
-superMatthias = Teacher("superMatthias", "superMatthias@123.com", "Matthiassuper", 9, 0)
+testTeacher = Teacher("123", "123", "123@123.com", "123123", 1, 0)
+superMatthias = Teacher("superMatthias", "superMatthias", "superMatthias@123.com", "Matthiassuper", 9, 0)
 db.session.add(testTeacher)
 db.session.add(superMatthias)
 
@@ -69,9 +69,9 @@ db.session.add(testLesson22)
 db.session.add(testLesson23)
 
 #测试学生
-testStudent1 = Student("teststudent1", "teststudent1@mantels.top", "123123")
-testStudent2 = Student("teststudent2", "teststudent2@mantels.top", "123123")
-testStudent3 = Student("zzz","teststudent3@mantels.top", "123123")
+testStudent1 = Student("123", "teststudent1", "teststudent1@mantels.top", "123123")
+testStudent2 = Student("456", "teststudent2", "teststudent2@mantels.top", "123123")
+testStudent3 = Student("789", "zzz","teststudent3@mantels.top", "123123")
 db.session.add(testStudent1)
 db.session.add(testStudent2)
 db.session.add(testStudent3)
