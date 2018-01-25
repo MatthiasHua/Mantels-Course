@@ -1,4 +1,3 @@
-import os
 import configparser
 #日志
 from app.logging import logging
@@ -14,17 +13,12 @@ config.read("config.ini")
 
 #建立网站实例
 app = Flask(__name__)
-#密匙
-#需要写到设置里去
-app.secret_key = 'important!!!the secret key!!!'
+#载入设置
+app.config.from_object('config')
 
-###########
-#数据库设置#
-###########
-#当前文件夹绝对位置
-basedir= os.path.abspath(os.path.dirname(__file__))
-print('sqlite:///'+ os.path.join(basedir,'data\\data.sqlite'))
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+ os.path.join(basedir,'data\\data.sqlite')
+########
+#数据库#
+########
 db = SQLAlchemy(app)
 from app.model import *
 

@@ -131,16 +131,20 @@ class Homework(db.Model):
     name = db.Column(db.String(80), unique=False)
     body = db.Column(db.String(10000), unique=False)
     class_id = db.Column(db.Integer, db.ForeignKey('class.id'))
+    start = db.Column(db.String(80), unique=False)
+    end = db.Column(db.String(80), unique=False)
     answer = db.relationship('Answer', backref = 'homework', lazy = 'dynamic')
     answer_student = db.relationship('Answer_Student', backref = 'homework', lazy = 'dynamic')
     score = db.relationship('Score', backref = 'homework', lazy = 'dynamic')
 
-    def __init__(self, class_id, index, name, body):
+    def __init__(self, class_id, index, name, body, start, end):
         self.class_id = class_id
         self.index = index
         self.name = name
         self.body = body
-
+        self.start = start
+        self.end = end
+        
     def __repr__(self):
         return '<Homework %r>' % self.id
 

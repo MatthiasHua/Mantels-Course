@@ -173,7 +173,9 @@ def get_homework_full_mark(class_id):
     scorelist = []
     homeworklist = Homework.query.filter_by(class_id = class_id).all()
     for i in homeworklist:
-        scorelist.append(Score.query.filter_by(homework_id = i.id).first())
+        s = Score.query.filter_by(homework_id = i.id).first()
+        if s != None:
+            scorelist.append(Score.query.filter_by(homework_id = i.id).first())
     for i in scorelist:
         for j in i.body.split('~'):
             mark += int(j)

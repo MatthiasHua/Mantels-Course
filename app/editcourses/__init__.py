@@ -6,6 +6,9 @@ from app.model import *
 from app import db
 #成绩管理库
 from app.modules.mark import *
+#时间管理库
+from app.modules.time import *
+
 #创建应用实例
 import tablib
 from urllib.parse import quote
@@ -81,15 +84,27 @@ def checkform_newchapter(form):
 @editcourses.route('/id/<int:id>/homework', methods=['POST', 'GET'])
 def homework_editcourses(id):
     homeworks = Homework.query.filter_by(class_id = id).all()
+    state_list = []
     print(homeworks)
+    for i in homeworks:
+        state_list.append(check_homework_state(i.id))
     return render_template("Homework_editcourses.html",\
     homeworks = homeworks,\
+    state_list = state_list,\
     role = session.get('role', 'unknow'),\
     username = session.get('username', ''),\
     id = id,\
     leftbar = leftbarlist,\
     active = 2)
 
+#创建新的课后练习
+@editcourses.route('/id/<int:id>/newhomework', methods=['POST'])
+def newhomework_editcourses(id):
+    #index貌似没什么用了。。
+    newHomework = Homework(id, -1, request.form.get('name', ''), request.form.get('body', ''), request.form.get('start', ''), request.form.get('end', ''))
+    db.session.add(newHomework)
+    db.session.commit()
+    return "Done"
 
 #实验列表
 @editcourses.route('/id/<int:id>/experimentlist', methods=['POST', 'GET'])

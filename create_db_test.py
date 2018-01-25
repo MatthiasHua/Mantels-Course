@@ -92,7 +92,7 @@ body = '''### 测试习题
 2. 2*3= ~60~
 
 '''
-testhomework = Homework(1, 1, "testhomework", body)
+testhomework = Homework(1, 1, "testhomework", body, "2018-1-25", "2018-1-28")
 #答案
 testanswer = Answer("inputlabel~2~6", 1)
 #分值
