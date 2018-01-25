@@ -4,6 +4,8 @@ from app import config
 #数据库模型
 from app.model import *
 from app import db
+from app.modules.coursemanager import *
+
 #创建应用实例
 teacher = Blueprint('teacher', __name__,  template_folder='templates')
 
@@ -34,22 +36,14 @@ def newcourse():
         leftbar = leftbarlist,\
         active = 1)
     if request.method == 'POST':
-        print(request.form)
-        if checkform_newcourse(request.form):
-            #创建新课程
-            print(request.form['start'])
-            print(request.form['end'])
-            newclass = Class(request.form['coursename'],\
-            request.form['courseid'],\
-            request.form['start'],\
-            request.form['end'],\
-            request.form['introduction'],\
-            session['id'])
-            #提交到数据库
-            db.session.add(newclass)
-            db.session.commit()
-            #返回创建课程成功
-            return "Done"
+        #从POST请求中获取表单
+        newclassform = request.form.to_dict()
+        #加入用户id
+        newclassform['id'] = session['id']
+        #创建课程
+        print(newclassform)
+        if new_course_form(newclassform) == 1:
+            return 'Done'
         else:
             #创建课程失败
             return "233"

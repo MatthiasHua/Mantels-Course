@@ -1,6 +1,7 @@
 import os
 from app import db
 from app.model import *
+from app.modules.coursemanager import *
 
 print("warning: 只用于测试环境,可能会对原数据库造成不可逆破环，请勿在生产环境中使用!")
 
@@ -39,8 +40,7 @@ introduction = '''### 使用Markdown
 ![图片范例](https://gitee.com/Matthias/Mantels-Markdown-Editor/raw/master/img.png)
 
 '''
-testClass = Class("testClass", "1212345", "2018-01-01", "2018-06-30", introduction, 1)
-db.session.add(testClass)
+testClass = new_course("testClass", "1212345", "2018-01-01", "2018-06-30", introduction, 1)
 
 #测试章节
 introduction = '''### 章节预览
@@ -77,8 +77,12 @@ db.session.add(testStudent2)
 db.session.add(testStudent3)
 
 #学生2默认选测试课程
-testInvoled_class = Involed_class(1, 2)
-db.session.add(testInvoled_class)
+testInvoled_class1 = Involed_class(1, 1)
+testInvoled_class2 = Involed_class(1, 2)
+testInvoled_class3 = Involed_class(1, 3)
+db.session.add(testInvoled_class1)
+db.session.add(testInvoled_class2)
+db.session.add(testInvoled_class3)
 
 #测试习题
 body = '''### 测试习题

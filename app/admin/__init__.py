@@ -4,6 +4,7 @@ from app import config
 #数据库模型
 from app.model import *
 from app import db
+from app.modules.mark import *
 import json
 #创建应用实例
 admin = Blueprint('admin', __name__,  template_folder='templates')
@@ -37,42 +38,12 @@ def judge_admin_m():
 @admin.route('/judgebyanswerstudentid', methods=['POST'])
 def judgebyanswerstudentid():
     if request.form.get('id', '') != '':
-        answer_student = Answer_Student.query.filter_by(id = request.form.get('id', '')).all()
-        #没找到
-        if answer_student == []:
+        id = request.form.get('id', '')
+        j = judge_homework_by_answer_student_id(id)
+        if j > 0:
+            return 'Done'
+        if j == -1:
             return 'not_found'
-        #批改结果
-        result = ''
-        sum = 0
-        #作业的id
-        homework_id = answer_student[0].homework_id
-        #标准答案
-        answer = Answer.query.filter_by(homework_id = homework_id).first()
-        #分值
-        score = Score.query.filter_by(homework_id = homework_id).first()
-
-
-        answer_list = answer.body.split('~')
-        #学生答案
-        answer_student_list = answer_student[0].body.split('~')
-        score_list = score.body.split('~')
-
-        for index, a in enumerate(answer_student_list):
-            if a == answer_list[index]:
-                result += score_list[index]+'~'
-                sum += int(score_list[index])
-            else:
-                result += '0~'
-        result += str(sum)
-        print(result)
-        old_score_student = Score_Student.query.filter_by(homework_id = homework_id, student_id = answer_student[0].student_id).all()
-        if old_score_student != []:
-            old_score_student[0].body = result
-        else:
-            score_student = Score_Student(result, answer_student[0].student_id, homework_id)
-            db.session.add(score_student)
-        db.session.commit()
-        return 'Done'
     return '233'
 
 #返回一个json的学生名单

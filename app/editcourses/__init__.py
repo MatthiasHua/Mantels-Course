@@ -1,10 +1,14 @@
-from flask import Blueprint, render_template, redirect, url_for, request, session, make_response
+from flask import Blueprint, render_template, redirect, url_for, request, session, make_response, Response
 #根目录下config.ini
 from app import config
 #数据库模型
 from app.model import *
 from app import db
+#成绩管理库
+from app.modules.mark import *
 #创建应用实例
+import tablib
+from urllib.parse import quote
 editcourses = Blueprint('editcourses', __name__,  template_folder='templates')
 
 leftbarlist = (("indexpreview", "主页预览"),\
@@ -12,7 +16,9 @@ leftbarlist = (("indexpreview", "主页预览"),\
                ("homework", "课后练习"),\
                ("experimentlist", "实验列表"),\
                ("studentlist", "学生列表"),\
-               ("scoremanager", "成绩管理"))
+               ("scoremanager", "成绩管理"),\
+               ("insertscore", "添加成绩（test)"),\
+               ("scorewatch", "查看成绩"))
 
 
 @editcourses.route('/id/<int:id>', methods=['POST', 'GET'])
@@ -88,13 +94,10 @@ def homework_editcourses(id):
 #实验列表
 @editcourses.route('/id/<int:id>/experimentlist', methods=['POST', 'GET'])
 def experiment(id):
-    currentcourses = Class.query.filter_by(id = id).first()
-    lesson = currentcourses.lesson.all()
     return render_template("Experimentlist.html",\
     role = session.get('role', 'unknow'),\
     username = session.get('username', ''),\
     id = id,\
-    lesson = lesson,\
     leftbar = leftbarlist,\
     active = 3)
 
@@ -114,7 +117,8 @@ def studentlist(id):
     active = 4)
 
 #成绩管理
-@editcourses.route('/id/<int:id>/scoremanager', methods=['POST', 'GET'])
+#修改设定的界面
+@editcourses.route('/id/<int:id>/scoremanager', methods=['GET'])
 def score(id):
     return render_template("Scoremanager.html",\
     role = session.get('role', 'unknow'),\
@@ -122,3 +126,57 @@ def score(id):
     id = id,\
     leftbar = leftbarlist,\
     active = 5)
+
+#修改设定
+@editcourses.route('/id/<int:id>/changesetting', methods=['POST'])
+def changesetting(id):
+    oldsetting = Marksetting.query.filter_by(class_id = id).first()
+    oldsetting.attendance = request.form.get('attendance', '')
+    oldsetting.homework = request.form.get('homework', '')
+    oldsetting.examination = request.form.get('examination', '')
+    oldsetting.total = request.form.get('total', '')
+    db.session.commit()
+    return "Done"
+
+#添加成绩的界面
+@editcourses.route('/id/<int:id>/insertscore', methods=['GET'])
+def insertscore(id):
+    return render_template("Insertscore.html",\
+    role = session.get('role', 'unknow'),\
+    username = session.get('username', ''),\
+    id = id,\
+    leftbar = leftbarlist,\
+    active = 6)
+
+#添加成绩(post)
+@editcourses.route('/id/<int:id>/insertscore_post', methods=['POST'])
+def insertscore_post(id):
+    newmark = Mark(request.form.get("mark", ""),\
+    request.form.get("type", ""),\
+    request.form.get("student_id", ""),\
+    id)
+    db.session.add(newmark)
+    db.session.commit()
+    return "Done"
+
+#查看成绩
+@editcourses.route('/id/<int:id>/scorewatch', methods=['POST', 'GET'])
+def scorewatch(id):
+    mark_list = update_mark_class_total(id, 1)
+    return render_template("Scorewatch.html",\
+    mark_list = mark_list,\
+    role = session.get('role', 'unknow'),\
+    username = session.get('username', ''),\
+    id = id,\
+    leftbar = leftbarlist,\
+    active = 7)
+
+#下载成绩
+@editcourses.route('/id/<int:id>/scoreexcel', methods=['POST', 'GET'])
+def testexcel(id):
+    headers = ("学号", "姓名", "成绩")
+    mark_list = update_mark_class_total(id, 1)
+    data = tablib.Dataset(*mark_list, headers=headers)
+    response = make_response(data.xls)
+    response.headers["Content-Disposition"] = "attachment; filename*=utf-8''{}".format(quote(Class.query.filter_by(id = id).first().coursename + "成绩.xls"))
+    return response
