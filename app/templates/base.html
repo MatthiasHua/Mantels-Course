@@ -30,7 +30,9 @@
        h5 {
          font-size: 16px;
        }
+
    </style>
+   {% block style %}{% endblock %}
 </head>
 <body>
   <nav class="navbar navbar-default " role="navigation">
@@ -40,6 +42,8 @@
   		<a class="navbar-brand" href="/index">Mantels | Courses</a>
       {% elif role == 'Student' %}
   		<a class="navbar-brand" href="/courses/">Mantels | Courses</a>
+      {% else %}
+      {% block unloginbrand %}{% endblock %}
       {% endif %}
   	</div>
   	<div>
@@ -81,8 +85,9 @@
   				</ul>
   			</li>
         {% else %}
-			<li><a href="/user_base/student/signin">登录</a></li>
-			<li><a href="/user_base/student/register">注册</a></li>
+        {% block unlogin %}{% endblock %}
+			  <li><a href="/user_base/student/signin">登录</a></li>
+			  <li><a href="/user_base/student/register">注册</a></li>
         {% endif %}
   		</ul>
   	</div>

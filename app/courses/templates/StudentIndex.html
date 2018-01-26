@@ -1,5 +1,69 @@
-{% extends "base_student.html" %}
+{% extends "base.html" %}
+{% block unloginbrand %}
+  <a class="navbar-brand" href="/courses/">Mantels | Courses</a>
+{% endblock %}
+{% block unlogin %}
+			  <li><a href="/">教师入口</a></li>
+{% endblock %}
+{% block style %}
+  <style text='text/css'>
+      html,body{
+        margin: 0;
+        text-align: center;
+        height: 100%;
+        vertical-align: middle;
+      }
+
+      div {
+        height: 100%;
+      }
+
+      .slide {
+        height: calc(100% - 50px);
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
+      .navbar-default {
+        border: 0;
+        margin: 0;
+        padding: 0;
+      }
+
+      .carousel-indicators li {
+        border: 1px solid white;
+      }
+      .carousel-indicators .active {
+        background: white;
+      }
+  </style>
+{% endblock %}
 {% block content %}
-<h1 style = "text-align:center">你进入了一个奇怪的地方</h1>
-<a href="/"><h1 style = "text-align:center">我是老师</h1><a>
+<div id="myCarousel" class="carousel slide">
+  <!-- 轮播（Carousel）指标 -->
+  <ol class="carousel-indicators">
+    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+    <li data-target="#myCarousel" data-slide-to="1"></li>
+    <li data-target="#myCarousel" data-slide-to="2"></li>
+  </ol>
+  <!-- 轮播（Carousel）项目 -->
+  <div class="carousel-inner">
+    <div class="item active">
+      <img src="http://mantelscourse.oss-cn-beijing.aliyuncs.com/Index/index1.jpg" alt="First slide">
+    </div>
+    <div class="item">
+      <img src="http://mantelscourse.oss-cn-beijing.aliyuncs.com/Index/index2.jpg" alt="Second slide">
+    </div>
+    <div class="item">
+      <img src="http://mantelscourse.oss-cn-beijing.aliyuncs.com/Index/index3.jpg" alt="Third slide">
+    </div>
+  </div>
+  <!-- 轮播（Carousel）导航 -->
+  <a class="carousel-control left" href="#myCarousel"
+     data-slide="prev">&lsaquo;</a>
+  <a class="carousel-control right" href="#myCarousel"
+     data-slide="next">&rsaquo;</a>
+</div>
 {% endblock %}
