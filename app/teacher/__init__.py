@@ -5,6 +5,8 @@ from app import config
 from app.model import *
 from app import db
 from app.modules.coursemanager import *
+from app.modules.time import *
+
 
 #创建应用实例
 teacher = Blueprint('teacher', __name__,  template_folder='templates')
@@ -20,7 +22,14 @@ leftbarlist = (("mycourses", "我的课程"),\
 def mycourses():
     user = Teacher.query.filter_by(username = session['username']).first()
     allclasses = user.classpost.all()
+    number = []
+    state = []
+    for i in allclasses:
+        number.append(get_number_of_student(i.id))
+        state.append(check_class_state(i.id))
     return render_template("MyCourses.html",\
+    number = number,\
+    state = state,\
 	role = session.get('role', ''),\
 	username = session.get('username', ''),\
     leftbar = leftbarlist,\

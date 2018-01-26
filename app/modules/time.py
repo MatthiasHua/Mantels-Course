@@ -6,6 +6,32 @@ from app.model import *
 #time.strftime("%Y-%m-%d", time.localtime())
 
 #---------------------------------------
+#判断课程状态
+#输入
+#int: class_id 课程id
+#输出
+#int:         result
+#     即将开始   1
+#     进行中     2
+#     已结束     3
+#---------------------------------------
+def check_class_state(class_id):
+    now = time.strftime("%Y-%m-%d", time.localtime())
+    theclass = Class.query.filter_by(id = class_id).first()
+    start = theclass.start
+    end = theclass.end
+    print(start, end)
+    c = compare_time_day(now, start)
+    if c == -1:
+        return 1
+    if c == 0:
+        return 2
+    c = compare_time_day(now, end)
+    if c <= 0:
+        return 2
+    return 3
+
+#---------------------------------------
 #判断习题状态
 #输入
 #int: homework_id 作业id
@@ -21,7 +47,6 @@ def check_homework_state(homework_id):
     homework = Homework.query.filter_by(id = homework_id).first()
     start = homework.start
     end = homework.end
-    print(start, end)
     c = compare_time_day(now, start)
     if c == -1:
         return 1

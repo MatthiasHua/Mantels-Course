@@ -5,10 +5,19 @@ from app.model import *
 #导入表单验证库
 from app.modules.checkform import *
 
+#---------------------------------------
 #创建新课程(通过表单)
-#传入一个表单
-#返回课程id
-#如果为<0表示创建失败
+#输入:
+#dict 表单
+#     coursename   课程名称
+#     courseid     课程代号(不是class_id)
+#     start        课程开始时间
+#     end          课程结束时间
+#     introduction 课程介绍
+#     id           setting_id
+#输出:
+#int: class_id 课程id 如果为<0表示创建失败
+#---------------------------------------
 def new_course_form(form):
     if checkform_new_course(form) == 1:
             #创建新课程(Class)
@@ -32,10 +41,18 @@ def new_course_form(form):
     else:
         return -1
 
+#---------------------------------------
 #创建新课程(直接给参数)
-#传入一个表单
-#返回课程id
-#如果为<0表示创建失败
+#输入:
+#string: coursename   课程名称
+#int:    courseid     课程代号(不是class_id)
+#string: start        课程开始时间
+#string: end          课程结束时间
+#string: introduction 课程介绍
+#int:    id           setting_id
+#输出:
+#int: class_id 课程id 如果为<0表示创建失败
+#---------------------------------------
 def new_course(coursename, courseid, start, end, introduction, id):
     form = {'coursename': coursename,\
     'courseid': courseid,\
@@ -43,4 +60,14 @@ def new_course(coursename, courseid, start, end, introduction, id):
     'end': end,\
     'introduction': introduction,\
     'id': id}
-    new_course_form(form)
+    return new_course_form(form)
+
+#---------------------------------------
+#学生数量
+#输入:
+#int: class_id 课程id
+#输出:
+#int: number 学生数量
+#---------------------------------------
+def get_number_of_student(class_id):
+    return len(Involed_class.query.filter_by(class_id = class_id).all())

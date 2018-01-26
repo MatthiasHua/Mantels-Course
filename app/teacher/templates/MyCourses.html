@@ -26,7 +26,7 @@
                         <a href="/editcourses/id/{{i.id}}/indexpreview" style="float: right">管理课程</a>
                         <a href="/courses/id/{{i.id}}" style="float: right">课程主页&nbsp;</a>
                         <p style="float: right;margin-right: 50px">
-                            2018学年第一学期 学生数量: 25 课程状态: 未开始</p>
+                            学生数量: {{ number[loop.index - 1] }} 课程状态: {% if state[loop.index - 1] == 1 %}未开始{% elif state[loop.index - 1] == 2 %}进行中{% else %}已结束{% endif %}</p>
                     </div>
                     {% endfor %}
                 </ul>
