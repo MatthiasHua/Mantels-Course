@@ -4,6 +4,7 @@ from app import config
 #数据库模型
 from app.model import *
 from app import db
+from app.modules.courseware import *
 #创建应用实例
 editcoursewares = Blueprint('editcoursewares', __name__,  template_folder='templates')
 
@@ -36,7 +37,6 @@ def editbychapter(id, chapter):
     #添加新课件
     if request.method == 'POST':
         print(request.form)
-        #这里做的时候还只有一个按钮所以没判断是那个按钮，在post表单里可以加一个变量来判断是那个按钮
         #不为空
         if request.form.get('introduction', '') != '':
             #修改数据
@@ -48,7 +48,8 @@ def editbychapter(id, chapter):
         #修改失败
         return '233'
 
-@editcoursewares.route('/id/<int:id>/changechaptername/<int:chapter>', methods=['POST', 'GET'])
+#修改章节名称
+@editcoursewares.route('/id/<int:id>/changechaptername/<int:chapter>', methods=['POST'])
 def changechaptername(id, chapter):
     #当前页所指的课程
     currentcourses = Class.query.filter_by(id = id).first()
@@ -56,20 +57,27 @@ def changechaptername(id, chapter):
     chapters = currentcourses.chapter.all()
     #当前页所指的章节
     currentchapter = currentcourses.chapter.filter_by(index = chapter).first()
-    if request.method == 'POST':
-        print(request.form)
-        #这里做的时候还只有一个按钮所以没判断是那个按钮，在post表单里可以加一个变量来判断是那个按钮
-        #不为空
-        if request.form.get('name', '') != '':
-            #修改数据
-            currentchapter.name = request.form['name']
-            #提交到数据库
-            db.session.commit()
-            #返回运行成功
-            return 'Done'
-        #修改失败
-        return '233'
+    print(request.form)
+    #不为空
+    if request.form.get('name', '') != '':
+        #修改数据
+        currentchapter.name = request.form['name']
+        #提交到数据库
+        db.session.commit()
+        #返回运行成功
+        return 'Done'
+    #修改失败
+    return '233'
 
+#添加新课件
+@editcoursewares.route('/id/<int:id>/newlesson/<int:chapter>', methods=['POST'])
+def newlesson(id, chapter):
+    index = get_number_of_lesson(id, chapter)
+    chapter_id = get_current_chapter(id, chapter).id
+    if new_lesson(request.form.get('name', ''), request.form.get('body', ''), chapter_id, index) == 1:
+        return 'Done'
+    #修改失败
+    return '233'
 
 @editcoursewares.route('/id/<int:id>/chapter/<int:chapter>/lesson/<int:lesson>', methods=['POST', 'GET'])
 def editbylesson(id, chapter, lesson):
