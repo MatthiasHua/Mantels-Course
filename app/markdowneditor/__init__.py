@@ -11,8 +11,6 @@ markdowneditor = Blueprint('markdowneditor', __name__,  template_folder='templat
 @markdowneditor.route('/', methods=['POST', 'GET'])
 @markdowneditor.route('/index', methods=['POST', 'GET'])
 def editor():
-    user = Teacher.query.filter_by(username = session['username']).first()
-    allclasses = user.classpost.all()
     return render_template("MarkdownEditor.html",\
 	role = session.get('role', ''),\
 	username = session.get('username', ''),\
@@ -20,8 +18,6 @@ def editor():
 
 @markdowneditor.route('/guide', methods=['POST', 'GET'])
 def markdownguide():
-    user = Teacher.query.filter_by(username = session['username']).first()
-    allclasses = user.classpost.all()
     return render_template("MarkdownGuide.html",\
 	role = session.get('role', ''),\
 	username = session.get('username', ''),\
