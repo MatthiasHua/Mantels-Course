@@ -118,3 +118,25 @@ def editbylesson(id, chapter, lesson):
             return 'Done'
         #修改失败
         return '233'
+
+@editcoursewares.route('/id/<int:id>/chapter/<int:chapter>/lesson/changename/<int:lesson>', methods=['POST', 'GET'])
+def changelessonname(id, chapter, lesson):
+    #当前页所指的课程
+    currentcourses = Class.query.filter_by(id = id).first()
+    #当前课程的所有章节
+    chapters = currentcourses.chapter.all()
+    #当前页所指的章节
+    currentchapter = currentcourses.chapter.filter_by(index = chapter).first()
+
+    if request.method == 'POST':
+        print(request.form)
+        #不为空
+        if request.form.get('name', '') != '':
+            currentlesson = currentchapter.lesson.filter_by(index = lesson).first()
+            #修改数据
+            currentlesson.name = request.form['name']
+            db.session.commit()
+            #返回运行成功
+            return 'Done'
+        #修改失败
+        return '233'
