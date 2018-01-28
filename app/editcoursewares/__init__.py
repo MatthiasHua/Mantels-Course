@@ -30,7 +30,9 @@ def editbychapter(id, chapter):
     #接收到表单
     #这一页三个按钮
     #修改章节导引
+
     #修改章节名称
+
     #添加新课件
     if request.method == 'POST':
         print(request.form)
@@ -39,6 +41,28 @@ def editbychapter(id, chapter):
         if request.form.get('introduction', '') != '':
             #修改数据
             currentchapter.introduction = request.form['introduction']
+            #提交到数据库
+            db.session.commit()
+            #返回运行成功
+            return 'Done'
+        #修改失败
+        return '233'
+
+@editcoursewares.route('/id/<int:id>/changechaptername/<int:chapter>', methods=['POST', 'GET'])
+def changechaptername(id, chapter):
+    #当前页所指的课程
+    currentcourses = Class.query.filter_by(id = id).first()
+    #当前课程的所有章节
+    chapters = currentcourses.chapter.all()
+    #当前页所指的章节
+    currentchapter = currentcourses.chapter.filter_by(index = chapter).first()
+    if request.method == 'POST':
+        print(request.form)
+        #这里做的时候还只有一个按钮所以没判断是那个按钮，在post表单里可以加一个变量来判断是那个按钮
+        #不为空
+        if request.form.get('name', '') != '':
+            #修改数据
+            currentchapter.name = request.form['name']
             #提交到数据库
             db.session.commit()
             #返回运行成功
