@@ -20,7 +20,6 @@ def check_class_state(class_id):
     theclass = Class.query.filter_by(id = class_id).first()
     start = theclass.start
     end = theclass.end
-    print(start, end)
     c = compare_time_day(now, start)
     if c == -1:
         return 1
