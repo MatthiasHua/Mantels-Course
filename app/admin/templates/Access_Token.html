@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container" style="margin-top: 30px">
+  <div class="row">
+    <div class="col-xs-3">
+      <ul class="nav nav-pills nav-stacked">
+        {% for i in leftbar %}
+        {% if loop.index -1 == active %}
+        <li role="presentation" class="active">
+          {% else %}
+          <li role="presentation">
+            {% endif %}
+            <a href="/admin/{{i[0]}}">{{i[1]}}</a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="col-md-9">
+        <ul class="list-group">
+          <a class="list-group-item active">access_token </a>
+          <div class="list-group-item">
+            <div class="input-group col-md-6">
+              <span class="input-group-addon">appid</span>
+              <input type="text" class="form-control" id = "appid" placeholder="appid">
+            </div></br>
+            <div class="input-group col-md-6">
+              <span class="input-group-addon">secert</span>
+              <input type="text" class="form-control" id = "secert" placeholder="secert">
+            </div></br>
+            <button class="btn btn-default" onclick="postform()">获取access_token</button>
+            </br></br>
+            <div id="progress"></div>
+          </div>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <script>
+  function postform() {
+    $.post("/admin/post/access_token",
+    {
+        appid: $("#appid")[0].value,
+        secert: $("#secert")[0].value,
+    },
+    function(data,status){
+        if (data == 'Done') {
+            alert('请前往后台查看!')
+            window.location.href="./";
+        }
+        else {
+            alert('获取失败')
+        }
+    });
+  }
+  function judgebyanswerstudentid(i, list) {
+    $.post("/admin/judgebyanswerstudentid",
+    {
+        id: list[i],
+    },
+    function(data,status){
+        console.log(data)
+        if (data == 'Done') {
+            if (i+1 < answer_studentid_list.length) {
+              console.log((Math.round(100.0/answer_studentid_list.length*(i+1))).toString())
+              $(".progress-bar").attr("style", "width: "+ (Math.round(100.0/answer_studentid_list.length*(i+1))).toString() +"%;")
+              //速度太快了！进度条来不及跑
+              //做个延时显得很好看
+              //然而实际没有什么用
+              //要优化的话吧延时改成0吧
+              setTimeout(judgebyanswerstudentid(i+1, list), 600)
+            }
+            else {
+              $(".progress-bar").attr("style", "width: 100%;")
+              setTimeout("alert('批改成功')",600)
+            }
+        }
+        else if (data == 'not_found') {
+            alert('未找到该作业!')
+            window.location.href="./";
+        }
+        else {
+            alert('批改失败')
+        }
+    });
+  }
+  </script>
+
+  {% endblock %}

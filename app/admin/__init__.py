@@ -5,6 +5,7 @@ from app import config
 from app.model import *
 from app import db
 from app.modules.mark import *
+import requests
 import json
 #创建应用实例
 admin = Blueprint('admin', __name__,  template_folder='templates')
@@ -33,14 +34,23 @@ def judge_admin_m():
     leftbar = leftbarlist,\
     active = 1)
 
-@admin.route('/access_token', methods=['POST', 'GET'])
+@admin.route('/access_token', methods=['GET'])
 def access_token():
     return render_template("Access_Token.html",\
     role = session.get('role', 'unknow'),\
     username = session.get('username', ''),\
     id = id,\
     leftbar = leftbarlist,\
-    active = 1)
+    active = 2)
+
+@admin.route('/post/access_token', methods=['POST'])
+def access_token_post():
+    grant_type = "client_credential"
+    appid = request.form.get("appid")
+    secret = request.form.get("secert")
+    res = requests.get("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+ appid + "&secret=" +  secret)
+    print(res.text)
+    return 'Done'
 
 
 #这个函数的名词真的是。。
