@@ -1,0 +1,22 @@
+{% extends "base_wechat.html" %}
+{% block content %}
+    <div class="container" style="margin-top: 30px; width: 100%">
+            <div class="col-md-12">
+                <ul class="list-group">
+                    <a class="list-group-item active" style="color: #337ab7;"> 课件 </a>
+                    <div class="list-group-item">
+                        <div id="introduction"></div>
+                        <br>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div id="rawintroduction" style="display: none">{{introduction|safe}}</div>
+    <script>
+    window.onload=function(){
+      console.log("233")
+      $('#introduction').html(marked($("#rawintroduction").html()))
+    }
+    </script>
+{% endblock %}
