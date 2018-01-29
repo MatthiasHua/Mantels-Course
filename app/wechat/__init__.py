@@ -89,7 +89,7 @@ def wechatindex():
         for i in root:
             receive[i.tag] = i.text
         if receive['Content'] == "你好":
-            return feedback_message(receive['FromUserName'], receive['ToUserName'], receive['content'])
+            return feedback_message(receive['FromUserName'], receive['ToUserName'], receive['Content'])
         print(receive)
 
         return "success"
