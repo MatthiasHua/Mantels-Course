@@ -89,13 +89,12 @@ def wechatindex():
         receive = {}
         for i in root:
             receive[i.tag] = i.text
-        print(receive['Content'])
         if receive['Content'] == "你好":
-            fb_content = feedback_message(receive['FromUserName'], receive['ToUserName'], receive['Content'])
-            print(fb_content)
+            fb_content = feedback_message(receive['FromUserName'], receive['ToUserName'], "你好呀~")
             return fb_content
-        print(receive)
-
+        if receive['Content'] == "测试课件":
+            fb_content = feedback_message(receive['FromUserName'], receive['ToUserName'], "http://mantels.top/wechatcoursewares/id/2/chapter/1/lesson/1")
+            return fb_content
         return "success"
 
 #回复文本消息
@@ -129,7 +128,7 @@ def feedback_message(ToUserName, FromUserName, Content):
     subElement(root, "FromUserName", FromUserName)
     subElement(root, "CreateTime", str(int(time())))
     subElement(root, "MsgType", "text")
-    subElement(root, "Content", "你好呀~")
+    subElement(root, "Content", Content)
 
     tree = ET.ElementTree(root)
     return ET.tostring(root, encoding='utf8')
