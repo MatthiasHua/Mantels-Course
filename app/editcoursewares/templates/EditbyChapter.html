@@ -123,7 +123,7 @@
       </div><!-- /.modal -->
     </div>
 
-    <div id="rawintroduction" style="display: none">{{introduction}}</div>
+    <div id="rawintroduction" style="display: none">{{introduction|safe}}</div>
     <script>
     function postintroduction() {
       $.post("./{{chapter + 1}}",

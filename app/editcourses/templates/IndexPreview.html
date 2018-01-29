@@ -62,7 +62,7 @@
     		</div><!-- /.modal-content -->
     	</div><!-- /.modal -->
     </div>
-    <div id="rawintroduction" style="display: none">{{currentcourses.introduction}}</div>
+    <div id="rawintroduction" style="display: none">{{currentcourses.introduction|safe}}</div>
     <script>
     function postintroduction() {
       $.post("./indexpreview",
