@@ -10,7 +10,8 @@ import json
 admin = Blueprint('admin', __name__,  template_folder='templates')
 
 leftbarlist = (("judge_admin", "判题测试(单份)"),\
-                ("judge_admin_m", "判题测试(Homework下所有)"))
+                ("judge_admin_m", "判题测试(Homework下所有)"),\
+                ("access_token", "access_token"))
 
 
 @admin.route('/', methods=['POST', 'GET'])
@@ -32,9 +33,18 @@ def judge_admin_m():
     leftbar = leftbarlist,\
     active = 1)
 
+@admin.route('/access_token', methods=['POST', 'GET'])
+def access_token():
+    return render_template("Access_Token.html",\
+    role = session.get('role', 'unknow'),\
+    username = session.get('username', ''),\
+    id = id,\
+    leftbar = leftbarlist,\
+    active = 1)
+
+
 #这个函数的名词真的是。。
 #按照Answer_Student中的id进行判题
-#这个函数太长了。。
 @admin.route('/judgebyanswerstudentid', methods=['POST'])
 def judgebyanswerstudentid():
     if request.form.get('id', '') != '':
