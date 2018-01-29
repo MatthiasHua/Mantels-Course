@@ -32,7 +32,6 @@ def wechatindex():
         data.sort()
 
         # 拼接成字符串
-        print(config.items("WechatToken"))
         temp = ''.join(data)
 
         # 进行sha1加密
