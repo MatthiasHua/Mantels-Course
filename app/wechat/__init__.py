@@ -52,6 +52,7 @@ def wechatindex():
     if request.method == "POST":
         #接受微信消息
         xmlcontent = request.get_data('content')
+        print(xmlcontent)
         #解析XML
         root = ET.fromstring(xmlcontent)
 
@@ -88,8 +89,10 @@ def wechatindex():
         receive = {}
         for i in root:
             receive[i.tag] = i.text
+        print(receive['Content'])
         if receive['Content'] == "你好":
             fb_content = feedback_message(receive['FromUserName'], receive['ToUserName'], receive['Content'])
+            print(fb_content)
             return fb_content
         print(receive)
 
@@ -121,7 +124,7 @@ def wechatindex():
 #MsgType           是       text
 #Content           是       回复的消息内容（换行：在content中能够换行，微信客户端就支持换行显示）
 def feedback_message(ToUserName, FromUserName, Content):
-    root = ET.Element("note")
+    root = ET.Element("xml")
     subElement(root, "ToUserName", ToUserName)
     subElement(root, "FromUserName", FromUserName)
     subElement(root, "CreateTime", str(int(time())))
@@ -129,7 +132,7 @@ def feedback_message(ToUserName, FromUserName, Content):
     subElement(root, "Content", "你好呀~")
 
     tree = ET.ElementTree(root)
-    return ET.tostring(root)
+    return ET.tostring(root, encoding='utf8')
 
 def subElement(root, tag, text):
     ele = ET.SubElement(root, tag)
