@@ -34,3 +34,18 @@ pip install -i <url>
 山东理工大学：http://pypi.sdutlinux.org/
 
 豆瓣：http://pypi.douban.com/simple/
+
+## 更新日志
+
+#### beta v1.1更新内容:
+
+----
+
+- 增加 微信课件
+- 增加 微信后台消息处理
+- 增加 课件部分按钮功能
+- 修复 权限认证
+- 修复 Markdown部分标签显示错误
+- 优化 入口程序结构
+- 优化 功能模块库
+- 优化 主页
