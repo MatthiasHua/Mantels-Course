@@ -21,7 +21,7 @@ def signin():
             session['signin'] = True
             session['id'] = teacher.id
             session['role'] = 'Teacher'
-            if teacher.role == '9':
+            if teacher.role == 9:
                 session['admin'] = 9
             return 'Done'
         else:
