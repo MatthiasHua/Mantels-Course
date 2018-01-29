@@ -59,5 +59,5 @@ def get_current_chapter(id, chapter):
 #Chapter: number 当前章节课件数
 #---------------------------------------
 def get_number_of_lesson(id, chapter):
-    currentcourses = Class.query.filter_by(id = id).first()
-    return currentcourses.chapter.count() + 1
+    chapter = get_current_chapter(id, chapter)
+    return Lesson.query.filter_by(chapter_id = chapter.id).count()

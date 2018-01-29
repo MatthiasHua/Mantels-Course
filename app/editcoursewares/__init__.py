@@ -33,8 +33,6 @@ def editbychapter(id, chapter):
     #修改章节导引
 
     #修改章节名称
-
-    #添加新课件
     if request.method == 'POST':
         print(request.form)
         #不为空
@@ -72,7 +70,7 @@ def changechaptername(id, chapter):
 #添加新课件
 @editcoursewares.route('/id/<int:id>/newlesson/<int:chapter>', methods=['POST'])
 def newlesson(id, chapter):
-    index = get_number_of_lesson(id, chapter)
+    index = get_number_of_lesson(id, chapter) + 1
     chapter_id = get_current_chapter(id, chapter).id
     if new_lesson(request.form.get('name', ''), request.form.get('body', ''), chapter_id, index) == 1:
         return 'Done'
