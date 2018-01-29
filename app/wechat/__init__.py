@@ -4,6 +4,8 @@ from app import config
 #数据库模型
 from app.model import *
 from app import db
+import hashlib
+
 #创建应用实例
 wechat = Blueprint('wechat', __name__,  template_folder='templates')
 
@@ -17,7 +19,7 @@ def wechatindex():
         my_nonce = request.args.get('nonce')        # 获取携带的nonce参数
         my_echostr = request.args.get('echostr')         # 获取携带的echostr参数
 
-        token = 'write token here'
+        token = 'kfjneke'
 
         # 进行字典排序
         data = [token,my_timestamp ,my_nonce ]
@@ -27,7 +29,7 @@ def wechatindex():
         temp = ''.join(data)
 
         # 进行sha1加密
-        mysignature = hashlib.sha1(temp).hexdigest()
+        mysignature = hashlib.sha1(temp.encode("utf8")).hexdigest()
 
         # 加密后的字符串可与signature对比，标识该请求来源于微信
         if my_signature == mysignature:
