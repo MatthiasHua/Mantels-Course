@@ -4,6 +4,7 @@ from app import config
 #数据库模型
 from app.model import *
 from app import db
+from time import time
 from app import config
 import hashlib
 
@@ -49,15 +50,92 @@ def wechatindex():
             return my_echostr
 
     if request.method == "POST":
-        print("post")
-        print(request.args)
-        print(request.form)
-        print(request.get_data('content'))
+        #接受微信消息
         xmlcontent = request.get_data('content')
+        #解析XML
         root = ET.fromstring(xmlcontent)
-        print(root.tag)
-        print(root[0].tag)
+
+        #接收文本消息
+        #范例:
+        #<xml>
+        #  <ToUserName>
+        #    < ![CDATA[toUser] ]>
+        #  </ToUserName>
+        #  <FromUserName>
+        #    < ![CDATA[fromUser] ]>
+        #  </FromUserName>
+        #  <CreateTime>
+        #    1348831860
+        #  </CreateTime>
+        #  <MsgType>
+        #    < ![CDATA[text] ]>
+        #  </MsgType>
+        #  <Content>
+        #    < ![CDATA[this is a test] ]>
+        #  </Content>
+        #  <MsgId>
+        #   1234567890123456
+        #  </MsgId>
+        #</xml>
+        #参数            描述
+        #ToUserName     开发者微信号
+        #FromUserName   发送方帐号（一个OpenID）
+        #CreateTime     消息创建时间 （整型）
+        #MsgType        text
+        #Content        文本消息内容
+        #MsgId          消息id，64位整型
+
+        receive = {}
         for i in root:
-            if i.tag == 'Content':
-                print(i.text)
+            receive[i.tag] = i.text
+        if receive['Content'] == "你好":
+            return feedback_message(receive['FromUserName'], receive['ToUserName'], receive['content'])
+        print(receive)
+
         return "success"
+
+#回复文本消息
+#范例:
+#<xml>
+#  <ToUserName>
+#    < ![CDATA[toUser] ]>
+#  </ToUserName>
+#  <FromUserName>
+#    < ![CDATA[fromUser] ]>
+#  </FromUserName>
+#  <CreateTime>
+#    12345678
+#  </CreateTime>
+#  <MsgType>
+#    < ![CDATA[text] ]>
+#  </MsgType>
+#  <Content>
+#    < ![CDATA[你好] ]>#
+#  </Content>
+#</xml>
+#参数            是否必须         描述
+#ToUserName        是       接收方帐号（收到的OpenID）
+#FromUserName      是       开发者微信号
+#CreateTime        是       消息创建时间 （整型）
+#MsgType           是       text
+#Content           是       回复的消息内容（换行：在content中能够换行，微信客户端就支持换行显示）
+def feedback_message(ToUserName, FromUserName, Content):
+    root = ET.Element("note")
+    subElement(root, "ToUserName", ToUserName)
+    subElement(root, "FromUserName", FromUserName)
+    subElement(root, "CreateTime", str(int(time())))
+    subElement(root, "MsgType", "text")
+    subElement(root, "Content", "你好呀~")
+
+    tree = ET.ElementTree(root)
+    return ET.tostring(root)
+
+def subElement(root, tag, text):
+    ele = ET.SubElement(root, tag)
+    ele.text = text
+    ele.tail = '\n'
+
+@wechat.route('/test', methods=['POST', 'GET'])
+def test():
+    feedback_message("233", "332", "refews")
+    return "test"
