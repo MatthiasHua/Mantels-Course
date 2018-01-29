@@ -7,6 +7,13 @@ from app import db
 from app import config
 import hashlib
 
+#xml解析
+try:
+    import xml.etree.cElementTree as ET
+except ImportError:
+    import xml.etree.ElementTree as ET
+
+
 #创建应用实例
 wechat = Blueprint('wechat', __name__,  template_folder='templates')
 
@@ -40,3 +47,17 @@ def wechatindex():
         # 加密后的字符串可与signature对比，标识该请求来源于微信
         if my_signature == mysignature:
             return my_echostr
+
+    if request.method == "POST":
+        print("post")
+        print(request.args)
+        print(request.form)
+        print(request.get_data('content'))
+        xmlcontent = request.get_data('content')
+        root = ET.fromstring(xmlcontent)
+        print(root.tag)
+        print(root[0].tag)
+        for i in root:
+            if i.tag == 'Content':
+                print(i.text)
+        return "success"
