@@ -144,7 +144,7 @@ class Homework(db.Model):
         self.body = body
         self.start = start
         self.end = end
-        
+
     def __repr__(self):
         return '<Homework %r>' % self.id
 
@@ -238,3 +238,31 @@ class Marksetting(db.Model):
 
     def __repr__(self):
         return '< Mark_Setting of Class %r>' % self.class_id
+
+class Token(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    teacher_id = db.Column(db.Integer, db.ForeignKey('teacher.id'))
+    content = db.Column(db.String(80), unique=False)
+
+    def __init__(self, teacher_id, content):
+        self.teacher_id = teacher_id
+        self.content = content
+
+    def __repr__(self):
+        return '< Token of Teacher %r>' % self.teacher_id
+
+class Access_Key(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    teacher_id = db.Column(db.Integer, db.ForeignKey('teacher.id'))
+    content = db.Column(db.String(80), unique=False)
+    restrict = db.Column(db.String(80), unique=False)
+    time = db.Column(db.Integer, unique=False)
+    last = db.Column(db.Integer, unique=False)
+
+    def __init__(self, teacher_id, content, time, last, restrict = "none"):
+        self.teacher_id = teacher_id
+        self.content = content
+        self.restrict = restrict
+
+    def __repr__(self):
+        return '< Access_Key of Teacher %r>' % self.teacher_id

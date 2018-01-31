@@ -37,7 +37,7 @@ pip install -i <url>
 
 ## 更新日志
 
-#### beta v1.1更新内容:
+### beta v1.1更新内容:
 
 ----
 

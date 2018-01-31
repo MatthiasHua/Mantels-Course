@@ -4,11 +4,13 @@ from app import config
 #数据库模型
 from app.model import *
 from app import db
+from app.modules.key import *
 #创建应用实例
 teachercenter = Blueprint('teachercenter', __name__,  template_folder='templates')
 
 leftbarlist = (("teacherbasicinfo", "基本信息"),\
-               ("changepassword", "修改密码"))
+               ("changepassword", "修改密码"),\
+               ("token", "安全令牌"))
 
 #基本信息
 #显示用户名和邮箱
@@ -54,6 +56,34 @@ def changepassword():
         else:
             #创建课程失败
             return "233"
+
+@teachercenter.route('/token', methods=['GET'])
+def token():
+    if Token.query.filter_by(teacher_id = session["id"]).all() == []:
+        open = False
+    else:
+        open = True
+    print(open)
+    return render_template("Token.html",\
+    open = open,\
+	role = session.get('role', ''),\
+	username = session.get('username', ''),\
+    leftbar = leftbarlist,\
+    active = 2)
+
+@teachercenter.route('/gettoken', methods=['POST'])
+def gettoken():
+    newtoken = create_key(16)
+    if Token.query.filter_by(teacher_id = session["id"]).all() == []:
+        token = Token(session["id"], newtoken)
+        db.session.add(token)
+    else:
+        token = Token.query.filter_by(teacher_id = session["id"]).first()
+        print(token)
+        token.content = newtoken
+    db.session.commit()
+    return newtoken
+
 
 #需要对表单进行验证
 #现在只简单确认表单不为空
