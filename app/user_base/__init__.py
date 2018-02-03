@@ -81,6 +81,35 @@ def studentregister():
         else:
             return '233'
 
+#学生登录至其它设备
+@user_base.route('/student_key/signin/<string:student_key>', methods=['POST', 'GET'])
+def student_key_signin(student_key):
+    studentkey = Student_Key.query.filter_by(content = student_key).all()
+    if studentkey  == [] or studentkey[0].enable == 'True':
+        return "404"
+    if request.method == 'GET':
+        return render_template("Student_Key_Signin.html",\
+        student_key = student_key)
+    if request.method == 'POST':
+        print(233)
+        user = Student.query.filter_by(number = request.form['number']).first()
+        oldstudentkey = Student_Key.query.filter_by(student_id = user.id).all()
+        if oldstudentkey  != []:
+            db.session.delete(oldstudentkey[0])
+            db.session.commit()
+        studentkey[0].student_id = user.id
+        studentkey[0].enable = 'True'
+        db.session.commit()
+        if user != None and user.password == request.form['password']:
+            session['username'] = user.username
+            session['signin'] = True
+            session['id'] = user.id
+            session['role'] = 'Student'
+            return 'Done'
+        else:
+            return '233'
+
+
 
 #检查用户名、邮箱、密码是否合法
 def post_check(form):

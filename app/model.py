@@ -263,6 +263,26 @@ class Access_Key(db.Model):
         self.teacher_id = teacher_id
         self.content = content
         self.restrict = restrict
+        self.time = time
+        self.last = last
 
     def __repr__(self):
         return '< Access_Key of Teacher %r>' % self.teacher_id
+
+class Student_Key(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    student_id = db.Column(db.Integer, unique=True)
+    content = db.Column(db.String(80), unique=False)
+    enable = db.Column(db.String(80), unique=False)
+    time = db.Column(db.Integer, unique=False)
+    last = db.Column(db.Integer, unique=False)
+
+    def __init__(self, student_id, content, enable, time, last):
+        self.student_id = student_id
+        self.content = content
+        self.time = time
+        self.last = last
+        self.enable = enable
+
+    def __repr__(self):
+        return '< Key of Student %r>' % self.student_id
