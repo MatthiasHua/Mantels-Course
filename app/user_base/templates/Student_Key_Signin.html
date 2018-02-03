@@ -54,7 +54,7 @@
      </style>
     <script>
       function postform() {
-        $.post("./signin",
+        $.post("./{{student_key}}",
         {
             number:   $("input")[0].value,
             password: $("input")[1].value,
