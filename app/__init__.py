@@ -5,6 +5,9 @@ from app.logging import logging
 from flask import Flask, session, render_template
 #orm
 from flask_sqlalchemy import SQLAlchemy
+import os
+
+basepath = os.path.dirname(__file__)
 
 #设置文件
 config = configparser.ConfigParser()

@@ -1,0 +1,41 @@
+{% extends "base_student.html" %}
+{% block content %}
+    <div class="container" style="margin-top: 30px">
+        <div class="row">
+            <div class="col-xs-3">
+                <ul class="nav nav-pills nav-stacked">
+                    {% for i in leftbar %}
+                    {% if loop.index - 1 == active %}
+                    <li role="presentation" class="active">
+                    {% else %}
+                    <li role="presentation">
+                    {% endif %}
+                        <a href="/studentcenter/{{i[0]}}">{{i[1]}}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="col-md-9">
+                <ul class="list-group">
+                    <a class="list-group-item active"> 开启人脸识别 </a>
+
+                    <div class="list-group-item">
+                        <p>此功能处于测试阶段。</p>
+                        <p>人脸识别登录主要用于第三方设备登录。服务器不会再未经授权的情况下将您的照片或面部特征发送给第三方设备，照片仅被用作第三方登录中的验证，验证环节在服务器和本服务依托的Face++服务器上进行，如果您打开了这一功能代表您已获悉这一信息并同意。</p>
+                    </div>
+                    <div class="list-group-item">
+                        <p>此功能处于测试阶段。</p>
+                        <p>现在只允许上传jpg/png/bmp 实际只有jpg可以用。。</p>
+                        <form action="" enctype='multipart/form-data' method='POST'>
+                          <input type="file" name="file">
+                          <br>
+                          <input class="btn btn-default" type="submit" value="上传">
+                        </form>
+                    </div>
+
+                </ul>
+                </div>
+        </div>
+    </div>
+{% endblock %}

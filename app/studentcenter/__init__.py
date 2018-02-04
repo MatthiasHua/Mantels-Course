@@ -1,14 +1,20 @@
 from flask import Blueprint, render_template, redirect, url_for, request, session, make_response
+from werkzeug.utils import secure_filename
 #根目录下config.ini
 from app import config
 #数据库模型
 from app.model import *
-from app import db
+from app import db, basepath
+from app.modules.face import *
+import os
+
 #创建应用实例
 studentcenter = Blueprint('studentcenter', __name__,  template_folder='templates')
 
 leftbarlist = (("studentbasicinfo", "基本信息"),\
-               ("changepassword", "修改密码"))
+               ("changepassword", "修改密码"),\
+               ("face", "开启人脸识别"),\
+               ("signin_face", "测试人脸登录"))
 
 #基本信息
 #显示用户名和邮箱
@@ -54,6 +60,59 @@ def changepassword():
         else:
             #创建课程失败
             return "233"
+
+
+#开启人脸识别
+@studentcenter.route('/face', methods=['POST', 'GET'])
+def student_face_open():
+    if request.method == 'GET':
+        user = Student.query.filter_by(username = session['username']).first()
+        #用户名：user.username或者session.get('username', '')
+        #邮箱:user.email
+        return render_template("Uploadfacepic.html",\
+    	role = session.get('role', ''),\
+    	username = session.get('username', ''),\
+        email = user.email,\
+        leftbar = leftbarlist,\
+        active = 2)
+    if request.method == 'POST':
+        f = request.files['file']
+        fname = f.filename
+        ext = fname.rsplit('.', 1)[1]
+        if not ext in ('jpg', 'png', 'bmp'):
+            return "格式错误"
+        upload_path = os.path.join(basepath, 'pic\\face', str(session['id']) + '.' + ext)  #注意：没有的文件夹一定要先创建，不然会提示没有该路径
+        f.save(upload_path)
+        return "上传成功，当前处于测试版可能无法在网站上看到成功状态"
+
+#测试登录
+@studentcenter.route('/signin_face', methods=['POST', 'GET'])
+def student_signin_face():
+    if request.method == 'GET':
+        user = Student.query.filter_by(username = session['username']).first()
+        #用户名：user.username或者session.get('username', '')
+        #邮箱:user.email
+        return render_template("Signin_Face_Studentcenter.html",\
+    	role = session.get('role', ''),\
+    	username = session.get('username', ''),\
+        email = user.email,\
+        leftbar = leftbarlist,\
+        active = 3)
+    if request.method == 'POST':
+        f = request.files['file']
+        fname = f.filename
+        ext = fname.rsplit('.', 1)[1]
+        if not ext in ('jpg', 'png', 'bmp'):
+            return "格式错误"
+        upload_path = os.path.join(basepath, 'pic\\testlogin', str(session['id']) + '.' + ext)  #注意：没有的文件夹一定要先创建，不然会提示没有该路径
+        f.save(upload_path)
+        return "上传成功，当前处于测试版可能无法在网站上看到成功状态"
+
+#测试登录
+@studentcenter.route('/signin_face_test', methods=['POST'])
+def student_signin_face_test():
+    r = test_compare('\\pic\\face\\' + str(session['id']) + '.jpg', '\\pic\\testlogin\\' + str(session['id']) + '.jpg')
+    return str(r)
 
 #需要对表单进行验证
 #现在只简单确认表单不为空

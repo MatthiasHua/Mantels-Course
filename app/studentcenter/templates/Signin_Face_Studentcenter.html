@@ -1,0 +1,66 @@
+{% extends "base_student.html" %}
+{% block content %}
+    <div class="container" style="margin-top: 30px">
+        <div class="row">
+            <div class="col-xs-3">
+                <ul class="nav nav-pills nav-stacked">
+                    {% for i in leftbar %}
+                    {% if loop.index - 1 == active %}
+                    <li role="presentation" class="active">
+                    {% else %}
+                    <li role="presentation">
+                    {% endif %}
+                        <a href="/studentcenter/{{i[0]}}">{{i[1]}}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="col-md-9">
+                <ul class="list-group">
+                    <a class="list-group-item active"> 开启人脸识别 </a>
+
+                    <div class="list-group-item">
+                        <p>此功能处于测试阶段。</p>
+                        <p>上传一张照片测试其是否能通过人脸识别登录。</p>
+                        <p>这个功能要钱的，虽然很便宜，还是不要大量测试。</p>
+                    </div>
+                    <div class="list-group-item">
+                        <p>此功能处于测试阶段。</p>
+                        <p>现在还是比较傻。。先上传一张被测的照片，然后点一下下面的测试吧</p>
+                        <p>现在只允许上传jpg/png/bmp 实际只有jpg可以用。。</p>
+                        <form action="" enctype='multipart/form-data' method='POST'>
+                          <input type="file" name="file">
+                          <br>
+                          <input class="btn btn-default" type="submit" value="上传">
+                        </form>
+                    </div>
+                    <div class="list-group-item">
+                        <p>此功能处于测试阶段。</p>
+                        <button type="button"class="btn btn-default" onclick="postform()">测试</button>
+                    </div>
+                </ul>
+                </div>
+        </div>
+    </div>
+    <script>
+    function postform() {
+      $.post("./signin_face_test",
+      {
+      },
+      function(data,status){
+          console.log(data)
+          if (data == '1') {
+              alert('验证成功(是同一个人)!')
+          }
+          else if (data == '4') {
+              alert('验证失败(不是同一个人)!')
+          }
+          else {
+              alert('难以确定')
+          }
+          window.location.href="./signin_face";
+      });
+    }
+    </script>
+{% endblock %}
