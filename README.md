@@ -37,6 +37,25 @@ pip install -i <url>
 
 ## 更新日志
 
+### beta v1.2更新内容:
+
+----
+
+- 增加 部分api支持
+- 增加 邮箱系统
+- 增加 用户邮箱验证
+- 增加 在课程中发布公告
+- 增加 markdown图片缩放(拓展功能, 非markdown标准内容)
+- 增加 google analytics
+- 增加 人脸识别(测试)
+- 修复 markdown中图片溢出
+- 修复 部分页面logo显示错误
+
+api部分:
+- access_key(教室功能, 需要在个人中心开启)
+- 学生二维码登录
+详情见[文档中心](http://doc.mantels.top)
+
 ### beta v1.1更新内容:
 
 ----
