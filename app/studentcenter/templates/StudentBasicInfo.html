@@ -22,11 +22,46 @@
 
                     <div class="list-group-item">
                         <h4 class="list-group-item-heading" style="color:black">用户名：{{username}}</h4>
-                        <a href="#" style="color:grey">邮箱：{{email}}</a>
+                        <span style="font-size: 18px">邮箱：{{email}}</span>
+                        {% if email_check != 1 %}
+                        <span class="spanbutton"style="font-size: 12px;color: red" data-toggle="modal" data-target="#check_email">未验证</span>
+                        {% else %}
+                        <span style="font-size: 12px;color: green">已验证</span>
+                        {% endif %}
+                        <span style="font-size: 12px;color: grey"> | 修改邮箱</span>
                     </div>
 
                 </ul>
                 </div>
         </div>
     </div>
+    <div class="modal fade" id="check_email" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">验证邮箱</h4>
+                </div>
+                <div class="modal-body">邮箱：{{email}}</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" onclick="check_email()">发送验证邮件</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    function check_email() {
+      $.post("./check_email",
+      {
+      },
+      function(data,status){
+          console.log(data)
+          if (data == 'Done') {
+              alert('请前往邮箱完成验证')
+              window.location.href="./";
+          }
+      });
+    }
+    </script>
 {% endblock %}

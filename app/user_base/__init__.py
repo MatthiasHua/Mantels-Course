@@ -47,8 +47,13 @@ def logout():
     session['signin'] = False
     session['username'] = 'unknow'
     session['id'] = ''
-    session['role'] = 'unknow'
-    return redirect(url_for("index"))
+    session['admin'] = '9'
+    if session['role'] == 'teacher':
+        session['role'] = 'unknow'
+        return redirect(url_for("index"))
+    else:
+        session['role'] = 'unknow'
+        return redirect(url_for("courses.coursesindex"))
 
 #学生登录
 @user_base.route('/student/signin', methods=['POST', 'GET'])

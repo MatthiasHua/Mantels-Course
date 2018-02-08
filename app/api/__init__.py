@@ -85,3 +85,35 @@ def student_key():
     else:
         #校验码错误
         return "40001"
+
+@api.route('/check_email/teacher/<string:key>', methods=['POST', 'GET'])
+def check_email_teacher(key):
+    find = Email_check_key_teacher.query.filter_by(key = key).all()
+    if find == []:
+        return "404"
+    elif find[0].time < time.time():
+        return "链接已失效"
+    else:
+        find[0].time = 0
+        teacher_id = find[0].teacher_id
+        teacher = Teacher.query.filter_by(id = teacher_id).first()
+        teacher.email_check = 1
+        db.session.commit()
+        return "邮箱验证成功"
+    return "404"
+
+@api.route('/check_email/student/<string:key>', methods=['POST', 'GET'])
+def check_email_student(key):
+    find = Email_check_key_student.query.filter_by(key = key).all()
+    if find == []:
+        return "404"
+    elif find[0].time < time.time():
+        return "链接已失效"
+    else:
+        find[0].time = 0
+        student_id = find[0].student_id
+        student = Student.query.filter_by(id = student_id).first()
+        student.email_check = 1
+        db.session.commit()
+        return "邮箱验证成功"
+    return "404"
