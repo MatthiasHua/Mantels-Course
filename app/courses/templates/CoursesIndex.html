@@ -20,8 +20,19 @@
                     {% endif %}
                 </ul>
             </div>
-
             <div class="col-md-9">
+                {% if announcements != [] %}
+                <ul class="list-group">
+                    <a class="list-group-item active">  公告 </a>
+                    {% for i in announcements %}
+                      <div class="list-group-item">
+                        <p style="margin:0px; color: #999;">{{i[1]}}</p>
+                        <hr style="margin-top: 0px;">
+                      <div class="announcement{{loop.index}}"></div>
+                      </div>
+                    {% endfor %}
+                </ul>
+                {% endif %}
                 <ul class="list-group">
                     <a class="list-group-item active"> 课程主页 </a>
                     <div class="list-group-item">
@@ -38,10 +49,16 @@
         </div>
     </div>
     <div id="rawintroduction" style="display: none">{{currentcourses.introduction|safe}}</div>
+    {% for i in announcements %}
+      <div class="list-group-item rawannouncement{{loop.index}}" style="display: none">{{ i[0] }}</div>
+    {% endfor %}
     <script>
     window.onload=function(){
       console.log("233")
       $('#introduction').html(marked($("#rawintroduction").html()))
+      {% for i in announcements %}
+        $('.announcement{{loop.index}}').html(marked($(".rawannouncement{{loop.index}}").html()))
+      {% endfor %}
     }
     </script>
 {% endblock %}

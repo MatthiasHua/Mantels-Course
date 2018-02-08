@@ -8,7 +8,8 @@ from app import db
 from app.modules.mark import *
 #时间管理库
 from app.modules.time import *
-
+import time
+from datetime import datetime
 #创建应用实例
 import tablib
 from urllib.parse import quote
@@ -23,17 +24,23 @@ leftbarlist = (("indexpreview", "主页预览"),\
                ("insertscore", "添加成绩（test)"),\
                ("scorewatch", "查看成绩"))
 
-
+#主页预览
 @editcourses.route('/id/<int:id>', methods=['POST', 'GET'])
 @editcourses.route('/id/<int:id>/indexpreview', methods=['POST', 'GET'])
 def courseindex(id):
     currentcourses = Class.query.filter_by(id = id).first()
     if request.method == 'GET':
+        announcements = Announcement.query.filter_by(class_id = id).order_by(Announcement.time.desc()).all()
+        announcementlist = []
+        for i in announcements:
+            print(i.body)
+            announcementlist.append((i.body, datetime.fromtimestamp(i.time).strftime("%Y-%m-%d %H:%M")))
         return render_template("IndexPreview.html",\
         role = session.get('role', 'unknow'),\
         username = session.get('username', ''),\
         id = id,\
         currentcourses = currentcourses,\
+        announcements = announcementlist,\
         leftbar = leftbarlist,\
         active = 0)
     if request.method == 'POST':
@@ -42,6 +49,16 @@ def courseindex(id):
             db.session.commit()
             return 'Done'
         return '233'
+
+#新公告 post
+@editcourses.route('/id/<int:id>/new_announcement', methods=['POST'])
+def new_announcement(id):
+    if request.form.get('announcement', '') != '':
+        new_announcement = Announcement(id, request.form['announcement'], int(time.time()))
+        db.session.add(new_announcement)
+        db.session.commit()
+        return 'Done'
+    return '233'
 
 
 @editcourses.route('/id/<int:id>/coursewarelist', methods=['POST', 'GET'])

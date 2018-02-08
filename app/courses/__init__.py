@@ -4,6 +4,7 @@ from app import config
 #数据库模型
 from app.model import *
 from app import db
+from datetime import datetime
 #创建应用实例
 courses = Blueprint('courses', __name__,  template_folder='templates')
 
@@ -27,12 +28,18 @@ def coursesindex():
 @courses.route('/id/<int:id>/courseindex', methods=['POST', 'GET'])
 def courseindex(id):
     currentcourses = Class.query.filter_by(id = id).first()
+    announcements = Announcement.query.filter_by(class_id = id).order_by(Announcement.time.desc()).all()
+    announcementlist = []
+    for i in announcements:
+        print(i.body)
+        announcementlist.append((i.body, datetime.fromtimestamp(i.time).strftime("%Y-%m-%d %H:%M")))
     print(currentcourses)
     return render_template("CoursesIndex.html",\
     role = session.get('role', 'unknow'),\
     username = session.get('username', ''),\
     id = id,\
     currentcourses = currentcourses,\
+    announcements = announcementlist,\
     leftbar = leftbarlist,\
     active = 0)
 

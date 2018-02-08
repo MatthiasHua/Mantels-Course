@@ -21,6 +21,19 @@
 
             <div class="col-md-9">
                 <ul class="list-group">
+                    <a class="list-group-item active"> 添加公告 </a>
+                    {% for i in announcements %}
+                      <div class="list-group-item">
+                        <p style="margin:0px; color: #999;">{{i[1]}}</p>
+                        <hr style="margin-top: 0px;">
+                      <div class="announcement{{loop.index}}"></div>
+                      </div>
+                    {% endfor %}
+                    <div class="list-group-item">
+                      <button class="btn btn-default" data-toggle="modal" data-target="#new_announcement">添加公告</button>
+                    </div>
+                </ul>
+                <ul class="list-group">
                     <a class="list-group-item active"> 主页预览 </a>
                     <div class="list-group-item">
                         欢迎来到 <span style="color: blue"> {{ currentcourses.coursename }} </span> 课程
@@ -31,13 +44,38 @@
                         <div id="introduction">
                         </div>
                         <br>
-                        <button class="btn btn-default" data-toggle="modal" data-target="#myModal">修改课程简介</button>
+                        <button class="btn btn-default" data-toggle="modal" data-target="#edit_introduction">修改课程简介</button>
                     </div>
                 </ul>
             </div>
         </div>
     </div>
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade" id="new_announcement" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    	<div class="modal-dialog">
+    		<div class="modal-content">
+    			<div class="modal-header">
+    				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+    					&times;
+    				</button>
+    				<h4 class="modal-title" id="myModalLabel">
+    					新公告
+    				</h4>
+    			</div>
+    			<div class="modal-body">
+    				<textarea class="form-control" rows="7"></textarea>
+            tip: 使用Markdown渲染 | <a href="/markdowneditor"> Mantels Markdown Editor </a>
+    			</div>
+    			<div class="modal-footer">
+    				<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+    				</button>
+    				<button type="button" class="btn btn-primary" onclick="post_new_announcement()">
+    					发布新公告
+    				</button>
+    			</div>
+    		</div><!-- /.modal-content -->
+    	</div><!-- /.modal -->
+    </div>
+    <div class="modal fade" id="edit_introduction" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     	<div class="modal-dialog">
     		<div class="modal-content">
     			<div class="modal-header">
@@ -63,11 +101,29 @@
     	</div><!-- /.modal -->
     </div>
     <div id="rawintroduction" style="display: none">{{currentcourses.introduction|safe}}</div>
+    {% for i in announcements %}
+      <div class="list-group-item rawannouncement{{loop.index}}" style="display: none">{{ i[0] }}</div>
+    {% endfor %}
     <script>
+    function post_new_announcement() {
+      $.post("./new_announcement",
+      {
+          announcement: $("textarea")[0].value,
+      },
+      function(data,status){
+          console.log(data)
+          if (data == 'Done') {
+              window.location.href="./indexpreview";
+          }
+          else {
+              alert('添加公告失败')
+          }
+      });
+    }
     function postintroduction() {
       $.post("./indexpreview",
       {
-          introduction: $("textarea")[0].value,
+          introduction: $("textarea")[1].value,
       },
       function(data,status){
           console.log(data)
@@ -82,6 +138,9 @@
     window.onload=function(){
       console.log("233")
       $('#introduction').html(marked($("#rawintroduction").html()))
+      {% for i in announcements %}
+        $('.announcement{{loop.index}}').html(marked($(".rawannouncement{{loop.index}}").html()))
+      {% endfor %}
     }
     </script>
 {% endblock %}

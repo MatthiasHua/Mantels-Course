@@ -11,7 +11,7 @@ class Teacher(db.Model):
     classpost = db.relationship('Class', backref = 'teacher', lazy = 'dynamic')
     administrator = db.relationship('Administrator', backref = 'teacher', lazy = 'dynamic')
 
-    def __init__(self, number, username, email, password, role, email_check):
+    def __init__(self, number, username, email, password, role, email_check = -1):
         self.number = number
         self.username = username
         self.email = email
@@ -100,15 +100,17 @@ class Student(db.Model):
     number = db.Column(db.String(80), unique=True)
     username = db.Column(db.String(80), unique=True)
     email = db.Column(db.String(120), unique=True)
+    email_check = db.Column(db.Integer, unique=False)
     password = db.Column(db.String(80), unique=False)
     involed_class = db.relationship('Involed_class', backref = 'student', lazy = 'dynamic')
     answer = db.relationship('Answer_Student', backref = 'student', lazy = 'dynamic')
 
-    def __init__(self, number, username, email, password):
+    def __init__(self, number, username, email, password, email_check = -1):
         self.number = number
         self.username = username
         self.email = email
         self.password = password
+        self.email_check = email_check
 
     def __repr__(self):
         return '<Student %r>' % self.username
@@ -286,3 +288,46 @@ class Student_Key(db.Model):
 
     def __repr__(self):
         return '< Key of Student %r>' % self.student_id
+
+class Email_check_key_teacher(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    teacher_id = db.Column(db.Integer, unique=True)
+    key = db.Column(db.String(80), unique=False)
+    time = db.Column(db.Integer, unique=False)
+
+    def __init__(self, teacher_id, key, time):
+        self.teacher_id = teacher_id
+        self.key = key
+        self.time = time
+
+    def __repr__(self):
+        return '< Email_check_key of teacher %r>' % self.teacher_id
+
+class Email_check_key_student(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    student_id = db.Column(db.Integer, unique=True)
+    key = db.Column(db.String(80), unique=False)
+    time = db.Column(db.Integer, unique=False)
+
+    def __init__(self, student_id, key, time):
+        self.student_id = student_id
+        self.key = key
+        self.time = time
+
+    def __repr__(self):
+        return '< Email_check_key of student %r>' % self.student_id
+
+#课程公告
+class Announcement(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    class_id = db.Column(db.Integer, unique=False)
+    body = db.Column(db.String(10000), unique=False)
+    time = db.Column(db.Integer, unique=False)
+
+    def __init__(self, class_id, body, time):
+        self.class_id = class_id
+        self.body = body
+        self.time = time
+
+    def __repr__(self):
+        return '< Announcement of Class %r>' % self.class_id
