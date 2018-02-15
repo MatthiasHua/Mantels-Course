@@ -17,7 +17,7 @@ def access_key():
     data = json.loads(data)
     number = data.get('number')
     token = data.get('token')
-    device_name = data.get('device_name')
+    device_name = data.get('device name')
     lasttime = int(data.get('last time', 7200))
     if lasttime > 43200:
         return '40006'
@@ -118,3 +118,46 @@ def check_email_student(key):
         db.session.commit()
         return "邮箱验证成功"
     return "404"
+
+@api.route('/experiment/new_result', methods=['POST', 'GET'])
+def cexperiment_new_result():
+    data = request.get_data('content').decode('utf8')
+    data = json.loads(data)
+    index = data.get('index')
+    access_key = data.get('access_key')
+    device_name = data.get('device_name')
+    experiment_id = data.get('experiment_id')
+    class_id = data.get('class_id')
+    student_id = data.get('student_id')
+    content = data.get('content')
+    time = data.get('time')
+    verification_code = data.get('verification code')
+    print(index, access_key, device_name, experiment_id, class_id, student_id, content, time)
+    if verificate(index + access_key + device_name + experiment_id + class_id + student_id + content + time) != verification_code:
+        #校验码错误
+        return '40006'
+    accesskey = Access_Key.query.filter_by(content = access_key, device_name = device_name).all()
+    if accesskey == []:
+        #错误的access_key或device_name
+        return '40001'
+    accesskey = accesskey[0]
+    theclass = Class.query.filter_by(id = class_id).all()
+    if accesskey == []:
+        #不存在的课程
+        return '40002'
+    theclass = theclass[0]
+    theexperiment = Experiment.query.filter_by(id = experiment_id)
+    if accesskey == []:
+        #不存在的实验
+        return '40003'
+    theexperiment = theexperiment[0]
+    if accesskey.teacher_id != theclass.teacher_id:
+        #当前教师权限不足
+        return '40004'
+    if theexperiment.class_id != theclass.id:
+        #experiment_id错误
+        return '40005'
+    newexperimentresult = ExperimentResult(index, device_name, experiment_id, class_id, student_id, content, time)
+    db.session.add(newexperimentresult)
+    db.session.commit()
+    return "success"

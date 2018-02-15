@@ -1,0 +1,58 @@
+{% extends "base_student.html" %}
+{% block content %}
+    <div class="container" style="margin-top: 30px">
+        <div class="row">
+            <div class="col-xs-3">
+                <ul class="nav nav-pills nav-stacked">
+                    {% for i in leftbar %}
+                    {% if loop.index - 1 == active %}
+                    <li role="presentation" class="active">
+                    {% else %}
+                    <li role="presentation">
+                    {% endif %}
+                        <a href="/experiment/id/{{id}}/{{i[0]}}">{{i[1]}}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-md-9">
+                <ul class="list-group">
+                    <a class="list-group-item active"> 实验结果 </a>
+                    <div class="list-group-item">
+                        {% if results != [] %}
+                        <div id="guide">{{result | safe}}</div>
+                        {% else %}
+                        <h3>未完成实验</h3>
+                        {% endif %}
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script>
+    //判断函数是否存在
+    function isExitsFunction(funcName) {
+      try {
+        if (typeof(eval(funcName)) == "function") {
+          return true;
+        }
+      } catch(e) {}
+      return false;
+    }
+    window.onload = function() {
+      var result = new Array();
+      {% for i in results %}
+        newresult = {
+          index: {{ i.index }} ,
+          content: "{{ i.content }}",
+          time: "{{ i.time }}",
+        }
+        result.push(newresult)
+      {% endfor %}
+      if (isExitsFunction("result_onload")) {
+        console.log(result)
+        result_onload(result)
+      }
+    }
+    </script>
+{% endblock %}

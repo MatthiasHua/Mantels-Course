@@ -356,6 +356,7 @@ class Experiment(db.Model):
 class ExperimentResult(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     index = db.Column(db.Integer, unique=False)
+    device_name = db.Column(db.String(80), unique=False)
     experiment_id = db.Column(db.Integer, unique=False)
     class_id = db.Column(db.Integer, unique=False)
     student_id = db.Column(db.Integer, unique=False)
@@ -363,8 +364,9 @@ class ExperimentResult(db.Model):
     time = db.Column(db.Integer, unique=False)
 
 
-    def __init__(self, index, experiment_id, class_id, student_id, content, time):
+    def __init__(self, index, device_name, experiment_id, class_id, student_id, content, time):
         self.index = index
+        self.device_name = device_name
         self.experiment_id = experiment_id
         self.class_id = class_id
         self.student_id = student_id
