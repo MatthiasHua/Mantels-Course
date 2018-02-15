@@ -87,6 +87,18 @@ db.session.add(testInvoled_class3)
 #测试习题
 body = '''### 测试习题
 ---
+选择:
+
+1.1+1 =
+
+%2-4-6-9%
+
+2.2*3 =
+
+%2-4-6-9%
+
+填空:
+
 1. 1+1= ~120-提示~
 
 2. 2*3= ~60~
@@ -94,13 +106,17 @@ body = '''### 测试习题
 '''
 testhomework = Homework(1, 1, "testhomework", body, "2018-1-25", "2018-1-28")
 #答案
-testanswer = Answer("inputlabel~2~6", 1)
+testanswer = Answer("inputradio~0~2~inputlabel~2~6", 1)
 #分值
-testscore = Score("0~2~3", 1)
+testscore = Score("0~2~3~0~2~3", 1)
 #学生答案
-testanswer_student1 = Answer_Student("inputlabel~2~3", 1, 1)
-testanswer_student2 = Answer_Student("inputlabel~2~6", 2, 1)
-testanswer_student3 = Answer_Student("inputlabel~7~6", 3, 1)
+testanswer_student1 = Answer_Student("inputradio~1~2~inputlabel~2~3", 1, 1)
+testanswer_student2 = Answer_Student("inputradio~0~2~inputlabel~2~6", 2, 1)
+testanswer_student3 = Answer_Student("inputradio~1~3~inputlabel~7~6", 3, 1)
+
+#测试实验
+testexperiment = Experiment(1, 1, "测试实验", "# 测试实验\n --- \n 实验指南", "<h3>这里可以使用html</h3>")
+db.session.add(testexperiment)
 
 db.session.add(testhomework)
 db.session.add(testanswer)
