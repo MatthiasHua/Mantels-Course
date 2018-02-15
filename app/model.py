@@ -256,13 +256,15 @@ class Token(db.Model):
 class Access_Key(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     teacher_id = db.Column(db.Integer, db.ForeignKey('teacher.id'))
+    device_name = db.Column(db.String(80), unique=True)
     content = db.Column(db.String(80), unique=False)
     restrict = db.Column(db.String(80), unique=False)
     time = db.Column(db.Integer, unique=False)
     last = db.Column(db.Integer, unique=False)
 
-    def __init__(self, teacher_id, content, time, last, restrict = "none"):
+    def __init__(self, teacher_id, device_name, content, time, last, restrict = "none"):
         self.teacher_id = teacher_id
+        self.device_name = device_name
         self.content = content
         self.restrict = restrict
         self.time = time
@@ -331,3 +333,65 @@ class Announcement(db.Model):
 
     def __repr__(self):
         return '< Announcement of Class %r>' % self.class_id
+
+#实验
+class Experiment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), unique=False)
+    class_id = db.Column(db.Integer, unique=False)
+    teacher_id = db.Column(db.Integer, unique=False)
+    guide = db.Column(db.String(10000), unique=False)
+    result = db.Column(db.String(10000), unique=False)
+
+    def __init__(self, class_id, teacher_id, name, guide = '', result = ''):
+        self.class_id = class_id
+        self.guide = guide
+        self.name = name
+        self.result = result
+
+    def __repr__(self):
+        return '< Experiment %r>' % self.id
+
+#实验结果
+class ExperimentResult(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    index = db.Column(db.Integer, unique=False)
+    experiment_id = db.Column(db.Integer, unique=False)
+    class_id = db.Column(db.Integer, unique=False)
+    student_id = db.Column(db.Integer, unique=False)
+    content = db.Column(db.String(10000), unique=False)
+    time = db.Column(db.Integer, unique=False)
+
+
+    def __init__(self, index, experiment_id, class_id, student_id, content, time):
+        self.index = index
+        self.experiment_id = experiment_id
+        self.class_id = class_id
+        self.student_id = student_id
+        self.content = content
+        self.time = time
+
+    def __repr__(self):
+        return '< ExperimentResult %r>' % self.id
+
+#实验结果_教师测试用
+class ExperimentResultteacher(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    index = db.Column(db.Integer, unique=False)
+    experiment_id = db.Column(db.Integer, unique=False)
+    class_id = db.Column(db.Integer, unique=False)
+    teacher_id = db.Column(db.Integer, unique=False)
+    content = db.Column(db.String(10000), unique=False)
+    time = db.Column(db.Integer, unique=False)
+
+
+    def __init__(self, index, experiment_id, class_id, teacher_id, content, time):
+        self.index = index
+        self.experiment_id = experiment_id
+        self.class_id = class_id
+        self.teacher_id = teacher_id
+        self.content = content
+        self.time = time
+
+    def __repr__(self):
+        return '< ExperimentResult - teacher %r>' % self.id

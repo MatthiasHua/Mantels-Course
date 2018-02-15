@@ -17,6 +17,7 @@ def access_key():
     data = json.loads(data)
     number = data.get('number')
     token = data.get('token')
+    device_name = data.get('device_name')
     lasttime = int(data.get('last time', 7200))
     if lasttime > 43200:
         return '40006'
@@ -32,13 +33,13 @@ def access_key():
         return '40003'
     verification_code = data.get('verification code')
     print(number, token, verification_code)
-    if verificate(number + token) == verification_code:
+    if verificate(number + token + device_name) == verification_code:
         accesskey = create_key(16)
         try:
-            newaccesskey = Access_Key.query.filter_by(teacher_id = teacher[0].id).all()
+            newaccesskey = Access_Key.query.filter_by(teacher_id = teacher[0].id, device_name = device_name).all()
             if newaccesskey == []:
                 print(int(time.time()))
-                newaccesskey = Access_Key(teacher[0].id, accesskey, int(time.time()), int(time.time()) + lasttime, 'none')
+                newaccesskey = Access_Key(teacher[0].id, device_name, accesskey, int(time.time()), int(time.time()) + lasttime, 'none')
                 db.session.add(newaccesskey)
             else:
                 newaccesskey = newaccesskey[0]
