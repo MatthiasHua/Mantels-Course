@@ -47,13 +47,20 @@
 <script>
 function postform() {
   check = true
-  body = 'inputlabel'
+  body = 'inputradio'
+  for (j = 1; j <= i; j++) {
+    val = $('input:radio[name="radio' + j + '"]:checked').val()
+    if (val != undefined) {
+      body += '~' + val
+    }
+  }
+  body +='~inputlabel'
   $('.inputlabel').val(function(i, origText){
     console.log(origText)
     if (origText == '') {
       check = false
     }
-    body += '~'+origText
+    body += '~' + origText
     return origText
   })
   console.log(body)
@@ -124,8 +131,15 @@ function postbody() {
     }
   });
 }
+var i = 0;
 window.onload = function(){
   $('#body').html(marked($("#raw").html()))
+  $('.inputradio').attr('class', function() {
+    i += 1
+    return 'inputradio' + i})
+  for (j = 1; j <= i; j++) {
+    $('.inputradio' + j).children('input').attr("name", "radio" + j)
+  }
 }
 </script>
 {% endblock %}

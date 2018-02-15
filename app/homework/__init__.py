@@ -21,10 +21,10 @@ def homework_edit(id):
     if request.method == 'POST':
         if request.form.get('body', '') != '':
             #旧的提交记录
-            oldanswer = Answer_Student.query.filter_by(homework_id = id, student_id = session.get('username', '')).all()
+            oldanswer = Answer_Student.query.filter_by(homework_id = id, student_id = session.get('id', '')).all()
             #没提交过
             if oldanswer == []:
-                answer = Answer_Student(request.form['body'], session.get('username', ''), id)
+                answer = Answer_Student(request.form['body'], session.get('id', ''), id)
                 db.session.add(answer)
                 db.session.commit()
                 return 'Done'
