@@ -126,12 +126,25 @@ def newhomework_editcourses(id):
 #实验列表
 @editcourses.route('/id/<int:id>/experimentlist', methods=['POST', 'GET'])
 def experiment(id):
+    experiments = Experiment.query.filter_by(class_id = id).all()
+    print(experiments)
     return render_template("Experimentlist.html",\
     role = session.get('role', 'unknow'),\
     username = session.get('username', ''),\
+    experiments = experiments,\
     id = id,\
     leftbar = leftbarlist,\
     active = 3)
+
+#添加实验
+@editcourses.route('/id/<int:id>/newexperiment', methods=['POST'])
+def newexperiment(id):
+    if request.form.get('name', '') != '':
+        newExperiment = Experiment(id, session['id'], request.form['name'])
+        db.session.add(newExperiment)
+        db.session.commit()
+        return 'Done'
+    return '233'
 
 #学生列表
 @editcourses.route('/id/<int:id>/studentlist', methods=['POST', 'GET'])

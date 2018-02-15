@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base_student.html" %}
 {% block content %}
     <div class="container" style="margin-top: 30px">
         <div class="row">
@@ -10,34 +10,23 @@
                     {% else %}
                     <li role="presentation">
                     {% endif %}
-                        <a href="/editcourses/id/{{id}}/{{i[0]}}">{{i[1]}}</a>
+                        <a href="/editexperiment/id/{{id}}/{{i[0]}}">{{i[1]}}</a>
                     </li>
                     {% endfor %}
-                    <li role="presentation" class="active">
-          					<a href="/courses/id/{{id}}/courseindex">返回课程主页</a>
-          					</li>
                 </ul>
             </div>
-
             <div class="col-md-9">
                 <ul class="list-group">
-                    <a class="list-group-item active"> 实验列表 </a>
-                    {% for i in experiments %}
-                      <div class="list-group-item">
-                        <h4 class="list-group-item-heading" style="color:black">实验:{{i.name}}</h4>
-                        <a href="#" style="color:grey"># {{i.id}}</a>
-                        <a href="/editexperiment/id/{{i.id}}/index" style="float: right">管理实验</a>
-                        <a href="/courses/id/{{i.id}}" style="float: right">实验预览&nbsp;</a>
-                      </div>
-                    {% endfor %}
+                    <a class="list-group-item active"> 实验指南 </a>
                     <div class="list-group-item">
-                      <button class="btn btn-default" data-toggle="modal" data-target="#newExperiment">添加实验</button>
+                        <div id="guide"></div>
+                        <button class="btn btn-default" data-toggle="modal" data-target="#editguide">修改实验指导</button>
                     </div>
                 </ul>
             </div>
         </div>
     </div>
-    <div class="modal fade" id="newExperiment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade" id="editguide" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     	<div class="modal-dialog">
     		<div class="modal-content">
     			<div class="modal-header">
@@ -45,39 +34,43 @@
     					&times;
     				</button>
     				<h4 class="modal-title" id="myModalLabel">
-    					新实验
+    					修改实验指导
     				</h4>
     			</div>
     			<div class="modal-body">
-            <span>实验名称：</span>
-            <input type="text" class="form-control" placeholder="实验名称">
-            <br>
+            <p>实验指导：</p>
+    				<textarea class="form-control" rows="7"></textarea>
+            tip: 使用Markdown渲染 | <a href="/markdowneditor"> Mantels Markdown Editor </a>
     			</div>
     			<div class="modal-footer">
     				<button type="button" class="btn btn-default" data-dismiss="modal">关闭
     				</button>
     				<button type="button" class="btn btn-primary" onclick="postform()">
-    					添加新实验
+    					修改
     				</button>
     			</div>
     		</div><!-- /.modal-content -->
     	</div><!-- /.modal -->
     </div>
+    <div id="rawguide" style="display: none">{{guide|safe}}</div>
     <script>
     function postform() {
-      $.post("./newexperiment",
+      $.post("./editguide",
       {
-          name: $("input")[0].value,
+          guide: $("textarea")[0].value,
       },
       function(data,status){
           console.log(data)
           if (data == 'Done') {
-              window.location.href="./experimentlist";
+              window.location.href="./index";
           }
           else {
-              alert('添加新实验失败')
+              alert('修改实验指导失败')
           }
       });
+    }
+    window.onload=function(){
+      $('#guide').html(marked($("#rawguide").html()))
     }
     </script>
 {% endblock %}

@@ -9,13 +9,13 @@ def check_need_login():
         return
     #教师限制访问
     if session.get('role', '') == 'Teacher' and session.get('admin', '') !=  9:
-        allowlist = ('teacher', 'teachercenter', 'editcourses', 'editcoursewares', 'edithomework',\
-        'courses', 'coursewares', 'markdowneditor', 'user_base', 'about', 'help', 'index')
+        allowlist = ('teacher', 'teachercenter', 'editcourses', 'editcoursewares', 'edithomework', 'editexperiment',\
+        'courses', 'coursewares', 'markdowneditor', 'user_base', 'about', 'help', 'index', 'homework')
         if request.endpoint.split('.')[0] not in allowlist:
             return redirect(url_for('index'))
     #学生限制访问
     if session.get('role', '') == 'Student':
         allowlist = ('student', 'studentcenter',\
-        'courses', 'coursewares', 'markdowneditor', 'user_base', 'about', 'help', 'index')
+        'courses', 'coursewares', 'markdowneditor', 'user_base', 'about', 'help', 'index', 'homework')
         if request.endpoint.split('.')[0] not in allowlist:
             return redirect(url_for('student.studentindex'))
