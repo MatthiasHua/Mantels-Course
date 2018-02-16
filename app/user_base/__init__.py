@@ -48,7 +48,7 @@ def logout():
     session['username'] = 'unknow'
     session['id'] = ''
     session['admin'] = '9'
-    if session['role'] == 'teacher':
+    if session['role'] == 'Teacher':
         session['role'] = 'unknow'
         return redirect(url_for("index"))
     else:
