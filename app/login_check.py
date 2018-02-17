@@ -5,7 +5,7 @@ from app import app
 @app.before_request
 def check_need_login():
     print(request.endpoint)
-    if request.endpoint.split('.')[0] in ('wechat', 'wechatcoursewares', 'api'):
+    if request.endpoint.split('.')[0] in ('wechat', 'wechatcoursewares', 'api', 'error_404'):
         return
     #教师限制访问
     if session.get('role', '') == 'Teacher' and session.get('admin', '') !=  9:

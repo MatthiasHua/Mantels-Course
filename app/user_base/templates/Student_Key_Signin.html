@@ -54,6 +54,16 @@
      </style>
     <script>
       function postform() {
+        if ($("input")[0].value == '') {
+          $('#inputNumber').attr('data-content', "请输入账号")
+          $('#inputNumber').popover('show')
+          return
+        }
+        if ($("input")[1].value == '') {
+          $('#inputPassword').attr('data-content', "请输入密码")
+          $('#inputPassword').popover('show')
+          return
+        }
         $.post("./{{student_key}}",
         {
             number:   $("input")[0].value,
@@ -61,14 +71,25 @@
         },
         function(data,status){
             console.log(data)
-            if (data == 'Done') {
-                alert('登录成功')
-                top.location.href="/courses/";
+            if (data == '1') {
+                top.location.href="/user_base/success";
             }
             else {
+              if (data == '-1') {
+                $('#inputNumber').attr('data-content', "账号或密码错误。")
+                $('#inputNumber').popover('show')
+                return
+              }
+              else {
                 alert('登录失败')
+              }
             }
         });
+      }
+      window.onload = function() {
+        $(".form-control").bind("input propertychange", function(){
+          $(this).popover('hide')
+        })
       }
     </script>
   </head>
@@ -78,17 +99,13 @@
     <div class="container">
 
       <form class="form-signin">
-        <h2 class="form-signin-heading">Mantels 学生登录</h2>
+        <h2 class="form-signin-heading">Mantels 第三方登录</h2>
         <label for="inputUsername" class="sr-only">Username</label>
         <input type="username" id="inputNumber" class="form-control" placeholder="账户" required autofocus>
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" id="inputPassword" class="form-control" placeholder="密码" required>
         <div class="checkbox">
-          <!-- <label>
-            <input type="checkbox" value="remember-me"> Remember me
-          </label> -->
-          <a href="/user_base/student/register">前往注册</a>
-          <a href="/">前往主页</a>
+          <p>注意:登录后您将授权第三方设备访问您的账户，并获取基本信息，请不要在不信任的设备上登录。</p>
         </div>
         <button class="btn btn-lg btn-primary btn-block" type="button" onclick="postform()">登录</button>
       </form>

@@ -61,6 +61,26 @@
      </style>
     <script>
       function postform() {
+        if ($("input")[0].value == '') {
+          $('#inputNumber').attr('data-content', "请输入账号")
+          $('#inputNumber').popover('show')
+          return
+        }
+        if ($("input")[1].value == '') {
+          $('#inputUsername').attr('data-content', "请输入用户名")
+          $('#inputUsername').popover('show')
+          return
+        }
+        if ($("input")[2].value == '') {
+          $('#inputPassword').attr('data-content', "请输入密码")
+          $('#inputPassword').popover('show')
+          return
+        }
+        if ($("input")[3].value == '') {
+          $('#inputEmail').attr('data-content', "请输入邮箱")
+          $('#inputEmail').popover('show')
+          return
+        }
         $.post("./register",
         {
             number:   $("input")[0].value,
@@ -70,14 +90,47 @@
         },
         function(data,status){
             console.log(data)
-            if (data == 'Done') {
-                alert('注册成功')
+            if (data == '1') {
                 top.location.href="/";
             }
             else {
-                alert('注册失败')
+              if (data == '-1') {
+                $('#inputNumber').attr('data-content', "账号已存在。")
+                $('#inputNumber').popover('show')
+                return
+              }
+              if (data == '-2') {
+                $('#inputEmail').attr('data-content', "邮箱已被注册。")
+                $('#inputEmail').popover('show')
+                return
+              }
+              if (data == '-11') {
+                $('#inputNumber').attr('data-content', "账号格式错误。请使用6~12位数字。")
+                $('#inputNumber').popover('show')
+                return
+              }
+              if (data == '-12') {
+                $('#inputUsername').attr('data-content',"用户名格式错误。请使用汉字、英语字母。")
+                $('#inputUsername').popover('show')
+                return
+              }
+              if (data == '-13') {
+                $('#inputPassword').attr('data-content', "密码格式错误。请使用6~20位数字、字母。")
+                $('#inputPassword').popover('show')
+                return
+              }
+              if (data == '-14') {
+                $('#inputEmail').attr('data-content', "邮箱格式错误。")
+                $('#inputEmail').popover('show')
+                return
+              }
             }
         });
+      }
+      window.onload = function() {
+        $(".form-control").bind("input propertychange", function(){
+          $(this).popover('hide')
+        })
       }
     </script>
   </head>
@@ -89,7 +142,8 @@
       <form class="form-signin">
         <h2 class="form-signin-heading">Mantels 教师注册</h2>
         <label for="inputUsername" class="sr-only">Username</label>
-        <input type="usernumber" id="inputNumber" class="form-control" placeholder="账号" required autofocus>
+        <input type="usernumber" id="inputNumber" class="form-control" placeholder="账号" required autofocus
+            data-container="body" data-toggle="popover" data-placement="right" data-content="">
         <label for="inputUsername" class="sr-only">Username</label>
         <input type="username" id="inputUsername" class="form-control" placeholder="用户名" required autofocus>
         <label for="inputPassword" class="sr-only">Password</label>

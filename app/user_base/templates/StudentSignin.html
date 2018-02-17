@@ -54,6 +54,16 @@
      </style>
     <script>
       function postform() {
+        if ($("input")[0].value == '') {
+          $('#inputNumber').attr('data-content', "请输入账号")
+          $('#inputNumber').popover('show')
+          return
+        }
+        if ($("input")[1].value == '') {
+          $('#inputPassword').attr('data-content', "请输入密码")
+          $('#inputPassword').popover('show')
+          return
+        }
         $.post("./signin",
         {
             number:   $("input")[0].value,
@@ -61,14 +71,26 @@
         },
         function(data,status){
             console.log(data)
-            if (data == 'Done') {
+            if (data == '1') {
                 alert('登录成功')
                 top.location.href="/courses/";
             }
             else {
+              if (data == '-1') {
+                $('#inputNumber').attr('data-content', "账号或密码错误。")
+                $('#inputNumber').popover('show')
+                return
+              }
+              else {
                 alert('登录失败')
+              }
             }
         });
+      }
+      window.onload = function() {
+        $(".form-control").bind("input propertychange", function(){
+          $(this).popover('hide')
+        })
       }
     </script>
   </head>
