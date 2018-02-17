@@ -23,7 +23,7 @@ def send_email(to_addr, title, p):
 	msg['To'] = _format_addr('用户 <%s>' % to_addr)
 	msg['Subject'] = Header(title, 'utf-8').encode()
 
-	server = smtplib.SMTP(smtp_server, 25)
+	server = smtplib.SMTP_SSL(smtp_server, 465, timeout = 120)
 	server.set_debuglevel(1)
 	server.login(from_addr, password)
 	server.sendmail(from_addr, [to_addr], msg.as_string())
