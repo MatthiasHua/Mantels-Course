@@ -34,7 +34,7 @@
                         {% else %}
                             <a href="#" onclick="postform({{i.id}}, 'select')" href="#" style="float: right">选课</a>
                         {% endif%}
-                        <p style="float: right;margin-right: 20px">2018学年第一学期 学生数量: 25 课程状态: 未开始</p>
+                        <p style="float: right;margin-right: 20px">学生数量: {{ number[loop.index - 1] }} 课程状态: {% if state[loop.index - 1] == 1 %}未开始{% elif state[loop.index - 1] == 2 %}进行中{% else %}已结束{% endif %}</p>
                     </div>
                     {% endfor %}
                 </ul>

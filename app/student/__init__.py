@@ -4,6 +4,8 @@ from app import config
 #数据库模型
 from app.model import *
 from app import db
+from app.modules.coursemanager import *
+from app.modules.time import *
 #创建应用实例
 student = Blueprint('student', __name__,  template_folder='templates')
 
@@ -34,10 +36,17 @@ def courseselection():
     ic = student.involed_class.all()
     if request.method == 'GET':
         allclasses = Class.query.all()
+        number = []
+        state = []
+        for i in allclasses:
+            number.append(get_number_of_student(i.id))
+            state.append(check_class_state(i.id))
         involedclasses = []
         for i in ic:
             involedclasses.append(i.class_id)
         return render_template("Courseselection.html",\
+        number = number,\
+        state = state,\
         allclasses = allclasses,\
         involedclasses = involedclasses,\
         role = session.get('role', 'unknow'),\
