@@ -33,8 +33,10 @@ def register():
 #注销
 @user_base.route('/logout')
 def logout():
+
     session['signin'] = False
     session['username'] = 'unknow'
+    session['number'] = ''
     session['id'] = ''
     session['admin'] = '9'
     if session['role'] == 'Teacher':

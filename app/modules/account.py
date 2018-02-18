@@ -15,6 +15,7 @@ from app.modules import checkform
 def teacher_sign_in(form):
     teacher = Teacher.query.filter_by(number = form['number']).first()
     if teacher != None and teacher.password == form['password']:
+        session['number'] = teacher.number
         session['username'] = teacher.username
         session['signin'] = True
         session['id'] = teacher.id
@@ -61,6 +62,7 @@ def teacher_register(form):
 def student_sign_in(form):
     student = Student.query.filter_by(number = request.form['number']).first()
     if student != None and student.password == form['password']:
+        session['number'] = student.number 
         session['username'] = student.username
         session['signin'] = True
         session['id'] = student.id

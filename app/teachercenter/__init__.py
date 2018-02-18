@@ -20,7 +20,7 @@ leftbarlist = (("teacherbasicinfo", "基本信息"),\
 @teachercenter.route('/index', methods=['POST', 'GET'])
 @teachercenter.route('/teacherbasicinfo', methods=['POST', 'GET'])
 def teacherbasicinfo():
-    user = Teacher.query.filter_by(username = session['username']).first()
+    user = Teacher.query.filter_by(id = session['id']).first()
     email_check = user.email_check
     #用户名：user.username或者session.get('username', '')
     #邮箱:user.email
@@ -34,7 +34,7 @@ def teacherbasicinfo():
 
 @teachercenter.route('/check_email', methods=['POST'])
 def check_email_teacher():
-    user = Teacher.query.filter_by(username = session['username']).first()
+    user = Teacher.query.filter_by(id = session['id']).first()
     email = user.email
     email_check = user.email_check
     if email_check == 1:
@@ -49,7 +49,7 @@ def check_email_teacher():
         new.time = int(time.time()) + 1800;
         new.key = key
     db.session.commit()
-    send_email(email, "Mantels邮箱验证", "请在半小时内点击以下链接对邮箱账号进行验证: <br>mantels.top/api/check_email/teacher/" + key + "<br>如果不是您本人操作，请不要点击此链接！")
+    send_email(email, "Mantels邮箱验证", '请在半小时内点击以下链接对邮箱账号进行验证: <br><a href="http://mantels.top/api/check_email/teacher/' + key + '">http://mantels.top/api/check_email/teacher/' + key + "</a><br>如果不是您本人操作，请不要点击此链接！")
     #用户名：user.username或者session.get('username', '')
     #邮箱:user.email
     return 'Done'
@@ -69,7 +69,7 @@ def changepassword():
         active = 1)
     #验证并修改密码
     if request.method == 'POST':
-        user = Teacher.query.filter_by(username = session['username']).first()
+        user = Teacher.query.filter_by(id = session['id']).first()
         print(request.form)
         #验证旧密码是否正确和新密码是否合法
         if checkform_changepassword(request.form):
@@ -114,7 +114,7 @@ def gettoken():
 #需要对表单进行验证
 #现在只简单确认表单不为空
 def checkform_changepassword(form):
-    user = Teacher.query.filter_by(username = session['username']).first()
+    user = Teacher.query.filter_by(id = session['id']).first()
     if form['oldpassword'] != user.password:
         return False
     if form['newpassowrd'] == '':
