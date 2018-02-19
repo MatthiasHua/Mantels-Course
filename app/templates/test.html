@@ -1,0 +1,98 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Mantels | TEST</title>
+   <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}"><link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <!-- Bootstrap core CSS -->
+   <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+   <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+   <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+     <style type="text/css">
+         body {
+           padding-top: 40px;
+           padding-bottom: 40px;
+           background-color: #eee;
+         }
+
+         .form-signin {
+           max-width: 330px;
+           padding: 15px;
+           margin: 0 auto;
+         }
+         .form-signin .form-signin-heading,
+         .form-signin .checkbox {
+           margin-bottom: 10px;
+         }
+         .form-signin .checkbox {
+           font-weight: normal;
+         }
+         .form-signin .form-control {
+           position: relative;
+           height: auto;
+           -webkit-box-sizing: border-box;
+              -moz-box-sizing: border-box;
+                   box-sizing: border-box;
+           padding: 10px;
+           font-size: 16px;
+         }
+         .form-signin .form-control:focus {
+           z-index: 2;
+         }
+         .form-signin input[type="username"] {
+           margin-bottom: -1px;
+           border-bottom-right-radius: 0;
+           border-bottom-left-radius: 0;
+         }
+         .form-signin input[type="password"] {
+           margin-bottom: 10px;
+           border-top-left-radius: 0;
+           border-top-right-radius: 0;
+         }
+     </style>
+     <script>
+            //设备检测
+            function detectmob() {
+                if( navigator.userAgent.match(/Android/i)
+                || navigator.userAgent.match(/webOS/i)
+                || navigator.userAgent.match(/iPhone/i)
+                || navigator.userAgent.match(/iPad/i)
+                || navigator.userAgent.match(/iPod/i)
+                || navigator.userAgent.match(/BlackBerry/i)
+                || navigator.userAgent.match(/Windows Phone/i)
+                ){
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+            window.onload = function() {
+              if (detectmob() == true) {
+                $('.a').html("当前版本为电脑端，请在电脑上访问此网站获得完整体验。")
+              }
+            }
+    </script>
+  </head>
+
+  <body>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-8 col-xs-offset-2">
+          <h2 class="form-signin-heading">感谢您参与Mantels公测</h2>
+          <p class="a" style="color: red"></p>
+          <br>
+          <button class="btn btn-lg btn-primary btn-block" type="button" onclick="window.location='./'">我是老师</button>
+          <button class="btn btn-lg btn-primary btn-block" type="button" onclick="window.location='./courses/'">我是学生</button>
+          <br>
+          <a href="./about/">关于Mantels | Course</a>
+          <p>如果您在体验过程中发现问题或对使用过程有所疑问，可以即使联系开发者。</p>
+        </div>
+      </div>
+    </div> <!-- /container -->
+
+  </body>
+</html>
