@@ -78,9 +78,11 @@ def homework_courses(id):
 
 @courses.route('/id/<int:id>/experiment', methods=['POST', 'GET'])
 def experiment(id):
+    experiments = Experiment.query.filter_by(class_id = id).all()
     return render_template("Experiment.html",\
     role = session.get('role', 'unknow'),\
     username = session.get('username', ''),\
+    experiments = experiments,\
     id = id,\
     leftbar = leftbarlist,\
     active = 3)

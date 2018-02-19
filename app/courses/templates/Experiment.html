@@ -19,8 +19,13 @@
             <div class="col-md-9">
                 <ul class="list-group">
                     <a class="list-group-item active"> 实验 </a>
-                    <div class="list-group-item">
-                        开发中。。。
+                      {% for i in experiments %}
+                        <div class="list-group-item">
+                          <h4 class="list-group-item-heading" style="color:black">实验:{{i.name}}</h4>
+                          <a href="#" style="color:grey"># {{i.id}}</a>
+                          <a href="/experiment/id/{{i.id}}" style="float: right">进入实验&nbsp;</a>
+                        </div>
+                      {% endfor %}
                     </div>
                 </ul>
             </div>
