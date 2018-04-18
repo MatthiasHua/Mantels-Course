@@ -104,7 +104,18 @@ body = '''### 测试习题
 2. 2*3= ~60~
 
 '''
-testhomework = Homework(1, 1, "testhomework", body, "2018-1-25", "2018-1-28")
+testhomework = Homework("testhomework", 1, 100, 1, "2018-1-25", "2018-1-28", 50)
+testquestion1_content = '''1.1+1 =
+
+%2-4-6-9%
+'''
+testquestion2_content = '''2.2*3 =
+
+%2-4-6-9%
+'''
+testquestion1 = Question(1, 1, 1, 3, testquestion1_content)
+testquestion2 = Question(2, 1, 1, 3, testquestion2_content)
+'''
 #答案
 testanswer = Answer("inputradio~0~2~inputlabel~2~6", 1)
 #分值
@@ -113,16 +124,19 @@ testscore = Score("0~2~3~0~2~3", 1)
 testanswer_student1 = Answer_Student("inputradio~1~2~inputlabel~2~3", 1, 1)
 testanswer_student2 = Answer_Student("inputradio~0~2~inputlabel~2~6", 2, 1)
 testanswer_student3 = Answer_Student("inputradio~1~3~inputlabel~7~6", 3, 1)
+'''
 
 #测试实验
 testexperiment = Experiment(1, 1, "测试实验", "# 测试实验\n --- \n 实验指南", "<h3>这里可以使用html</h3>")
 db.session.add(testexperiment)
 
 db.session.add(testhomework)
-db.session.add(testanswer)
-db.session.add(testscore)
-db.session.add(testanswer_student1)
-db.session.add(testanswer_student2)
-db.session.add(testanswer_student3)
+db.session.add(testquestion1)
+db.session.add(testquestion2)
+#db.session.add(testanswer)
+#db.session.add(testscore)
+#db.session.add(testanswer_student1)
+#db.session.add(testanswer_student2)
+#db.session.add(testanswer_student3)
 
 db.session.commit()

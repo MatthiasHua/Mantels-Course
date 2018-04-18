@@ -31,9 +31,9 @@ class Class(db.Model):
     body = db.Column(db.String(1000), unique=False)
     introduction = db.Column(db.String(1000), unique=False)
     teacher_id = db.Column(db.Integer, db.ForeignKey('teacher.id'))
-    setting = db.Column(db.Integer, db.ForeignKey('marksetting.id'))
+    #setting = db.Column(db.Integer, db.ForeignKey('marksetting.id'))
     chapter = db.relationship('Chapter', backref = 'theclass', lazy = 'dynamic')
-    homework = db.relationship('Homework', backref = 'theclass', lazy = 'dynamic')
+    #homework = db.relationship('Homework', backref = 'theclass', lazy = 'dynamic')
     #marksetting = db.relationship('Marksetting', backref = 'theclass', lazy = 'dynamic')
     administrator = db.relationship('Administrator', backref = 'theclass', lazy = 'dynamic')
     involed_class = db.relationship('Involed_class', backref = 'theclass', lazy = 'dynamic')
@@ -103,7 +103,7 @@ class Student(db.Model):
     email_check = db.Column(db.Integer, unique=False)
     password = db.Column(db.String(80), unique=False)
     involed_class = db.relationship('Involed_class', backref = 'student', lazy = 'dynamic')
-    answer = db.relationship('Answer_Student', backref = 'student', lazy = 'dynamic')
+    #answer = db.relationship('Answer_Student', backref = 'student', lazy = 'dynamic')
 
     def __init__(self, number, username, email, password, email_check = -1):
         self.number = number
@@ -127,6 +127,7 @@ class Involed_class(db.Model):
     def __repr__(self):
         return '<Involed_class %r>' % self.class_id
 
+'''
 class Homework(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     index = db.Column(db.Integer, unique=False)
@@ -240,6 +241,92 @@ class Marksetting(db.Model):
 
     def __repr__(self):
         return '< Mark_Setting of Class %r>' % self.class_id
+'''
+
+class Homework(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), unique=False)
+    type = db.Column(db.Integer, unique=False)
+    score = db.Column(db.Integer, unique=False)
+    class_id = db.Column(db.Integer, unique=False)
+    start = db.Column(db.String(80), unique=False)
+    end = db.Column(db.String(80), unique=False)
+    finish_award_rate = db.Column(db.Integer, unique=False)
+
+    def __init__(self, name, type, score, class_id, start, end, finish_award_rate):
+        self.name = name
+        self.type = type
+        self.score = score
+        self.class_id = class_id
+        self.start = start
+        self.end = end
+        self.finish_award_rate = finish_award_rate
+
+    def __repr__(self):
+        return '< Homework %r>' % self.id
+
+class Question(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    index = db.Column(db.Integer, unique=False)
+    homework_id = db.Column(db.Integer, unique=False)
+    type = db.Column(db.Integer, unique=False)
+    score = db.Column(db.String(80), unique=False)
+    content = db.Column(db.String(80), unique=False)
+
+    def __init__(self, index, homework_id, type, score, content):
+        self.index = index
+        self.homework_id = homework_id
+        self.type = type
+        self.score = score
+        self.content = content
+
+    def __repr__(self):
+        return '< Question %r>' % self.id
+
+class Answer(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    question_id = db.Column(db.Integer, unique=False)
+    student_id = db.Column(db.Integer, unique=False)
+    content = db.Column(db.String(80), unique=False)
+
+    def __init__(self, question_id, content):
+        self.question_id = question_id
+        self.student_id = student_id
+        self.content = content
+
+    def __repr__(self):
+        return '< Answer %r>' % self.id
+
+class Solution(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    question_id = db.Column(db.Integer, unique=False)
+    content = db.Column(db.String(80), unique=False)
+
+    def __init__(self, question_id, content):
+        self.question_id = question_id
+        self.content = content
+
+    def __repr__(self):
+        return '< Answer %r>' % self.id
+
+class Score(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    index = db.Column(db.Integer, unique=False)
+    type = db.Column(db.Integer, unique=False)
+    value = db.Column(db.Integer, unique=False)
+    student_id = db.Column(db.Integer, unique=False)
+    class_id = db.Column(db.Integer, unique=False)
+
+    def __init__(self, index, homework_id, type, value, student_id, class_id):
+        self.index = index
+        self.homework_id = homework_id
+        self.type = type
+        self.value = value
+        self.student_id = student_id
+        self.class_id = class_id
+
+    def __repr__(self):
+        return '< Score %r>' % self.id
 
 class Token(db.Model):
     id = db.Column(db.Integer, primary_key=True)

@@ -32,11 +32,11 @@ def new_course_form(form):
             db.session.add(newclass)
             db.session.commit()
             #创建新的课程设定
-            newsetting = Marksetting(1, 1, 1, 100, newclass.id)
-            newclass.setting = newsetting.id
+            #newsetting = Marksetting(1, 1, 1, 100, newclass.id)
+            #newclass.setting = newsetting.id
             #提交到数据库
-            db.session.add(newsetting)
-            db.session.commit()
+            #db.session.add(newsetting)
+            #db.session.commit()
             return 1
     else:
         return -1

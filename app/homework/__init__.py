@@ -11,9 +11,11 @@ homework = Blueprint('homework', __name__,  template_folder='templates')
 def homework_edit(id):
     if request.method == 'GET':
         homework = Homework.query.filter_by(id = id).first()
-        print(homework)
+        questions = Question.query.filter_by(homework_id = id).order_by(Question.index).all()
+        print(questions)
         return render_template("Homework.html",\
         homework = homework,\
+        questions = questions,\
         role = session.get('role', 'unknow'),\
         username = session.get('username', ''),\
         id = id,\

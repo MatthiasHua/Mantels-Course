@@ -100,11 +100,13 @@ def checkform_newchapter(form):
 #课后练习
 @editcourses.route('/id/<int:id>/homework', methods=['POST', 'GET'])
 def homework_editcourses(id):
+
     homeworks = Homework.query.filter_by(class_id = id).all()
     state_list = []
     print(homeworks)
     for i in homeworks:
-        state_list.append(check_homework_state(i.id))
+        #state_list.append(check_homework_state(i.id))
+        state_list.append(1)
     return render_template("Homework_editcourses.html",\
     homeworks = homeworks,\
     state_list = state_list,\
