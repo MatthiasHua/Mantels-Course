@@ -5,6 +5,7 @@ from app import config
 from app.model import *
 from app import db
 from datetime import datetime
+from app.modules import mark
 #创建应用实例
 courses = Blueprint('courses', __name__,  template_folder='templates')
 
@@ -67,9 +68,21 @@ def courseware(id):
 @courses.route('/id/<int:id>/homework', methods=['POST', 'GET'])
 def homework_courses(id):
     homeworks = Homework.query.filter_by(class_id = id).all()
+    scores = []
+    sumscores = []
+    for i in homeworks:
+        mark.update_homework_scoce(i, session.get('id'), id)
+        s = Score.query.filter_by(student_id = session.get('id'), class_id = id, index = i.id, type = 'homework').first()
+        if s == None:
+            scores.append(0)
+        else:
+            scores.append(s.value)
+        sumscores.append(i.score)
     print(homeworks)
     return render_template("Homework_courses.html",\
     homeworks = homeworks,\
+    sumscores = sumscores,\
+    scores = scores,\
     role = session.get('role', 'unknow'),\
     username = session.get('username', ''),\
     id = id,\

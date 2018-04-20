@@ -212,3 +212,20 @@ def get_setting(class_id, setting = {'given': 1}):
 def score_list_to_full_mark(body):
     body_list = body.split("~")
     return int(body_list[len(body_list) - 1])
+
+def update_homework_scoce(homework, student_id, class_id):
+    val = 0
+    questions = Question.query.filter_by(homework_id = homework.id).all()
+    for q in questions:
+        answer = Answer.query.filter_by(question_id = q.id, student_id = student_id).first()
+        solution = Solution.query.filter_by(question_id = q.id).first()
+        if answer != None and solution != None and answer.content == solution.content:
+            val += int(q.score)
+    oldscore = Score.query.filter_by(type = "homework", student_id = student_id, class_id = class_id, index = homework.id).first()
+    if oldscore == None:
+        score = Score(homework.id, "homework", val, student_id, homework.id)
+        db.session.add(score)
+    else:
+        oldscore.value = val
+    db.session.commit()
+    pass

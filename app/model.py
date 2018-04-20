@@ -285,11 +285,13 @@ class Question(db.Model):
 
 class Answer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    #index = db.Column(db.Inbteger, unique=False)
     question_id = db.Column(db.Integer, unique=False)
     student_id = db.Column(db.Integer, unique=False)
     content = db.Column(db.String(80), unique=False)
 
-    def __init__(self, question_id, content):
+    def __init__(self, question_id, student_id, content):
+        #self.index = index
         self.question_id = question_id
         self.student_id = student_id
         self.content = content
@@ -317,9 +319,8 @@ class Score(db.Model):
     student_id = db.Column(db.Integer, unique=False)
     class_id = db.Column(db.Integer, unique=False)
 
-    def __init__(self, index, homework_id, type, value, student_id, class_id):
+    def __init__(self, index, type, value, student_id, class_id):
         self.index = index
-        self.homework_id = homework_id
         self.type = type
         self.value = value
         self.student_id = student_id

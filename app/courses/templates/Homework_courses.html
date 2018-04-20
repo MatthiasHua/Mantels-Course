@@ -24,6 +24,7 @@
                         <h4 class="list-group-item-heading" style="color:black">{{i.name}}</h4>
                         <a href="#" style="color:green">进行中</a>
                         <a href="/homework/id/{{i.id}}" style="float: right">开始答题</a>
+                        <span style="float: right">{{ scores[loop.index - 1] }} / {{ sumscores[loop.index - 1] }} &nbsp;&nbsp;</span>
                     </div>
                     {% endfor %}
                 </ul>

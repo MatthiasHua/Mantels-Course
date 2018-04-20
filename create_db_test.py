@@ -104,7 +104,7 @@ body = '''### 测试习题
 2. 2*3= ~60~
 
 '''
-testhomework = Homework("testhomework", 1, 100, 1, "2018-1-25", "2018-1-28", 50)
+testhomework = Homework("testhomework", 1, 6, 1, "2018-1-25", "2018-1-28", 50)
 testquestion1_content = '''1.1+1 =
 
 %2-4-6-9%
