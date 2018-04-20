@@ -20,6 +20,7 @@ def homework_edit(id):
         print(answer_list)
         return render_template("Homework.html",\
         homework = homework,\
+        answer_list = answer_list,\
         questions = questions,\
         role = session.get('role', 'unknow'),\
         username = session.get('username', ''),\

@@ -64,13 +64,17 @@ window.onload = function(){
     $('#question' + (p + 1)).html(marked($("#raw_question" + (p + 1)).html()))
   var numInuptradio = 0
   for (var i = 0; i < {{ questions|length }}; i++) {
-    //$('#question' + (i + 1)).children('div.inputradio').children('input:radio[name="radio"]:checked').val()
     var q = $('#question' + (i + 1)).children('div.inputradio')
     for (var j = 0; j < q.size(); j++) {
         console.log(q[j])
         console.log(q.eq(j).children('input').attr("name", "radio" + '-' + (i + 1) + '-' + (j + 1)));
     }
   }
+  {% for i in questions %}
+      {% if i.type == 1 %}
+          $("input:radio[name='radio-{{loop.index}}-1']").eq({{answer_list[loop.index - 1]}}).attr("checked",true)
+      {% endif %}
+  {% endfor %}
 }
 </script>
 {% endblock %}
