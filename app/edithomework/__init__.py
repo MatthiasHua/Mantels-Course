@@ -10,25 +10,29 @@ edithomework = Blueprint('edithomework', __name__,  template_folder='templates')
 @edithomework.route('/id/<int:id>', methods=['POST', 'GET'])
 def homework_edit(id):
     homework = Homework.query.filter_by(id = id).first()
+    questions = Question.query.filter_by(homework_id = id).order_by(Question.index).all()
     if request.method == 'GET':
-        print(homework)
         return render_template("Edithomework.html",\
         homework = homework,\
+        questions = questions,\
         role = session.get('role', 'unknow'),\
         username = session.get('username', ''),\
         id = id)
     if request.method == 'POST':
-        print(request.form)
-        #不为空
-        if request.form.get('body', '') != '':
-            #修改数据
-            homework.body = request.form['body']
-            #提交到数据库
-            db.session.commit()
-            #返回运行成功
-            return 'Done'
-        #修改失败
-        return '233'
+        form = request.form
+        question_id = questions[int(form.get('question')) - 1].id
+        if form.get('question', '') == '':
+            return 'question id miss'
+        if form.get('content', '') == '' or form.get('content') == None:
+            return 'content id miss'
+        oldsolution = Solution.query.filter_by(question_id = question_id).first()
+        if oldsolution == None:
+            solution = Solution(question_id, form.get('content'))
+            db.session.add(solution)
+        else:
+            oldsolution.content = form.get('content')
+        db.session.commit()
+        return 'Done'
 
 @edithomework.route('/answer/<int:id>', methods=['POST'])
 def homework_answer(id):
@@ -66,20 +70,18 @@ def homework_score(id):
 @edithomework.route('/score/watch/<int:id>', methods=['GET'])
 def homework_score_watch(id):
     #有空做个排序
-    scores = Score_Student.query.filter_by(homework_id = id).all()
+    scores = Score.query.filter_by(type = "homework", index = id).all()
+    sumscore = Homework.query.filter_by(id = id).first().score
     #(学生，成绩)的list
     score_list = []
     for i in scores:
-        scoretext = i.body
         student = Student.query.filter_by(id = i.student_id).first()
-        print(student)
-        scoretext_list = scoretext.split("~")
-        #这里len应该是固定的吧
-        score_list.append((student, (scoretext_list[len(scoretext_list) - 1])))
+        score_list.append((student, i.value))
     print(score_list)
 
     return render_template("Homework_Score_Watch.html",\
     score_list = score_list,\
+    sumscore = sumscore,\
     role = session.get('role', 'unknow'),\
     username = session.get('username', ''),\
     id = id)

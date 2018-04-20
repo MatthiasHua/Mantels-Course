@@ -8,7 +8,7 @@
         {% for i in score_list %}
         <div class="list-group-item" style="height: 39px;">
           <span style="float: left;">学生: {{i[0].username}}</span>
-          <span style="float: right;">成绩: {{i[1]}}</span>
+          <span style="float: right;">成绩: {{i[1]}} / {{sumscore}}</span>
         </div>
         {% endfor %}
         <div class="list-group-item">
