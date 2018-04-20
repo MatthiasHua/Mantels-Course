@@ -102,8 +102,26 @@ def experiment(id):
 
 @courses.route('/id/<int:id>/score', methods=['POST', 'GET'])
 def score(id):
-    return render_template("Score.html",\
+    types = ScoreType.query.filter_by(class_id = id).all()
+    full = 0
+    value = 0
+    scorelist = []
+    for t in types:
+        kleinlist = []
+        scores = Score.query.filter_by(class_id = id, student_id = session.get("id"), type = t.type).all()
+        for s in scores:
+            full += float(s.full)
+            value += float(s.value)
+            kleinlist.append((s.name, s.value, s.full))
+        kleinlist.append(("合计", value, full))
+        scorelist.append((t.type, kleinlist))
+    sum = mark.update_mark_student_total(types, id, session.get("id"))
+    print(scorelist)
+
+    return render_template("ScoreStudent.html",\
     role = session.get('role', 'unknow'),\
+    sum = sum,\
+    scorelist = scorelist,\
     username = session.get('username', ''),\
     id = id,\
     leftbar = leftbarlist,\

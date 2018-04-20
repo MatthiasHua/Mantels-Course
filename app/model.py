@@ -315,19 +315,50 @@ class Score(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     index = db.Column(db.Integer, unique=False)
     type = db.Column(db.Integer, unique=False)
+    name = db.Column(db.String(80), unique=False)
     value = db.Column(db.Integer, unique=False)
+    full = db.Column(db.Integer, unique=False)
     student_id = db.Column(db.Integer, unique=False)
     class_id = db.Column(db.Integer, unique=False)
 
-    def __init__(self, index, type, value, student_id, class_id):
+    def __init__(self, index, type, name, value, full, student_id, class_id):
         self.index = index
         self.type = type
         self.value = value
+        self.full = full
         self.student_id = student_id
         self.class_id = class_id
 
     def __repr__(self):
         return '< Score %r>' % self.id
+
+class ScoreConvert(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    type = db.Column(db.Integer, unique=False)
+    sum = db.Column(db.Integer, unique=False)
+    value = db.Column(db.Integer, unique=False)
+    class_id = db.Column(db.Integer, unique=False)
+
+    def __init__(self, type, value, class_id):
+        self.type = type
+        self.sum = sum
+        self.value = value
+        self.class_id = class_id
+
+    def __repr__(self):
+        return '< ScoreConvert %r>' % self.id
+
+class ScoreType(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    type = db.Column(db.Integer, unique=False)
+    class_id = db.Column(db.Integer, unique=False)
+
+    def __init__(self, type, class_id):
+        self.type = type
+        self.class_id = class_id
+
+    def __repr__(self):
+        return '< ScoreType %r>' % self.id
 
 class Token(db.Model):
     id = db.Column(db.Integer, primary_key=True)

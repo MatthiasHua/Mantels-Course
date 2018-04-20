@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block style %}
+    <style>
+        table {
+          width: 100%;
+        }
+
+        th {
+          text-align: center;
+          align: center;
+        }
+
+        td {
+          text-align: center;
+          align: center;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="container" style="margin-top: 30px">
+        <div class="row">
+          <div class="col-xs-3">
+              <ul class="nav nav-pills nav-stacked">
+                  {% for i in leftbar %}
+                  {% if loop.index - 1 == active %}
+                  <li role="presentation" class="active">
+                  {% else %}
+                  <li role="presentation">
+                  {% endif %}
+                      <a href="/courses/id/{{id}}/{{i[0]}}">{{i[1]}}</a>
+                  </li>
+                  {% endfor %}
+              </ul>
+          </div>
+
+            <div class="col-md-9">
+                <ul class="list-group">
+                    <a class="list-group-item active"> 查看成绩 </a>
+                    {% for i in scorelist %}
+                    <div class="list-group-item">
+                      {{ i[0] }}
+                      <table border="1">
+                        <tr>
+                          <th>名称</th>
+                          <th>成绩</th>
+                          <th>总分</th>
+                        </tr>
+                        {% for j in i[1] %}
+                        <tr>
+                          {% for k in j %}
+                            <td>{{k}}</td>
+                          {% endfor %}
+                        </tr>
+                        {% endfor %}
+                      </table>
+                    </div>
+                    {% endfor %}
+                    <div class="list-group-item">
+                      <p>总评: {{ sum }}</p>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

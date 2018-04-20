@@ -27,69 +27,34 @@ function postform() {
   var f = true;
   for (var i = 0; i < {{ questions|length }}; i++) {
     val = $('#question' + (i + 1)).children('div').children('input:radio[name="radio-' + (i + 1) + '-1"]:checked').val()
-    console.log(val)
-    $.post("./{{id}}",
-    {
-      question: i + 1,
-      content: val,
-    },
-    function(data,status){
-      console.log(data)
-      if (data == 'Done') {
-        //alert('提交成功')
-        //window.location.href="./{{id}}";
-      }
-      else {
-        f = false
-        alert('提交失败，请检查网络连接。')
-      }
-    });
+    if (val == undefined) {
+        if (f)
+          alert("有试题未完成!")
+        f = false;
+    }
+    else {
+        $.post("./{{id}}",
+        {
+          question: i + 1,
+          content: val,
+        },
+        function(data,status){
+          console.log(data)
+          if (data == 'Done') {
+            //alert('提交成功')
+            //window.location.href="./{{id}}";
+          }
+          else {
+            f = false
+            alert('提交失败，请检查网络连接。')
+          }
+        });
+    }
   }
   if (f) {
       alert('提交成功')
       window.location.href="./{{id}}";
   }
-  //console.log(v)
-  //console.log(val)
-  /*
-  check = true
-  body = 'inputradio'
-  for (j = 1; j <= i; j++) {
-    val = $('input:radio[name="radio' + j + '"]:checked').val()
-    if (val != undefined) {
-      body += '~' + val
-    }
-  }
-  body +='~inputlabel'
-  $('.inputlabel').val(function(i, origText){
-    console.log(origText)
-    if (origText == '') {
-      check = false
-    }
-    body += '~' + origText
-    return origText
-  })
-  console.log(body)
-  if (check) {
-    $.post("./{{id}}",
-    {
-      body: body,
-    },
-    function(data,status){
-      console.log(data)
-      if (data == 'Done') {
-        alert('提交成功')
-        window.location.href="./{{id}}";
-      }
-      else {
-        alert('提交失败，请检查网络连接。')
-      }
-    });
-  }
-  else {
-    alert('请完成所有练习后提交')
-  }
-  */
 }
 var i = 0;
 window.onload = function(){
@@ -105,25 +70,7 @@ window.onload = function(){
         console.log(q[j])
         console.log(q.eq(j).children('input').attr("name", "radio" + '-' + (i + 1) + '-' + (j + 1)));
     }
-    //console.log($('#question' + (i + 1)).children('div.inputradio').children('input').attr("name", function() {
-    //  numInuptradio++
-    //  return "radio" + numInuptradio
-    //}))
   }
-  //$('#body').html(marked($("#raw").html()))
-  /*
-  $('.inputradio').attr('class', function() {
-    i += 1
-    return 'inputradio' + i})
-  for (var j = 1; j <= i; j++) {
-    $('.inputradio' + j).children('input').attr("name", "radio" + j)
-  }
-  inputlabelindex = 0
-  console.log($('.inputlabel').attr('id', function(){
-    inputlabelindex ++
-    return 'inputlabel'+ (inputlabelindex-1)
-  }))
-  */
 }
 </script>
 {% endblock %}

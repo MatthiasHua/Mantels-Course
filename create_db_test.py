@@ -115,6 +115,11 @@ testquestion2_content = '''2.2*3 =
 '''
 testquestion1 = Question(1, 1, 1, 3, testquestion1_content)
 testquestion2 = Question(2, 1, 1, 3, testquestion2_content)
+
+scoretype = ScoreType("homework", 1)
+solution1 = Solution(1, 2)
+solution2 = Solution(2, 2)
+
 '''
 #答案
 testanswer = Answer("inputradio~0~2~inputlabel~2~6", 1)
@@ -130,6 +135,9 @@ testanswer_student3 = Answer_Student("inputradio~1~3~inputlabel~7~6", 3, 1)
 testexperiment = Experiment(1, 1, "测试实验", "# 测试实验\n --- \n 实验指南", "<h3>这里可以使用html</h3>")
 db.session.add(testexperiment)
 
+db.session.add(scoretype)
+db.session.add(solution1)
+db.session.add(solution2)
 db.session.add(testhomework)
 db.session.add(testquestion1)
 db.session.add(testquestion2)

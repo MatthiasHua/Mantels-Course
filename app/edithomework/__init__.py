@@ -69,15 +69,8 @@ def homework_score(id):
 #查看成绩
 @edithomework.route('/score/watch/<int:id>', methods=['GET'])
 def homework_score_watch(id):
-    #有空做个排序
-    scores = Score.query.filter_by(type = "homework", index = id).all()
+    score_list = get_score_list(id)
     sumscore = Homework.query.filter_by(id = id).first().score
-    #(学生，成绩)的list
-    score_list = []
-    for i in scores:
-        student = Student.query.filter_by(id = i.student_id).first()
-        score_list.append((student, i.value))
-    print(score_list)
 
     return render_template("Homework_Score_Watch.html",\
     score_list = score_list,\
@@ -85,3 +78,15 @@ def homework_score_watch(id):
     role = session.get('role', 'unknow'),\
     username = session.get('username', ''),\
     id = id)
+
+def get_score_list(id):
+    score_list = []
+    class_id = Homework.query.filter_by(id = id).first().class_id
+    ic = Involed_class.query.filter_by(class_id = class_id).all()
+    for i in ic:
+        student = Student.query.filter_by(id = i.student_id).first()
+        score = Score.query.filter_by(type = "homework", index = id, student_id = i.student_id).first()
+        if score == None:
+            score = 0
+        score_list.append((student, score))
+    return score_list

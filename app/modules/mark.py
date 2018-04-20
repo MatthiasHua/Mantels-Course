@@ -14,17 +14,35 @@ from app import db
 #homework_full_mark: 作业的总分（实际满分）
 #---------------------------------------
 
+def update_mark_student_type(type, class_id, id):
+    val = 0
+    scoreconvert = ScoreConvert.query.filter_by(type = type.type, class_id = class_id).first()
+    scores = Score.query.filter_by(class_id = class_id, student_id = id, type = type.type).all()
+    for s in scores:
+        val += s.value
+    if scoreconvert != None:
+        val = val * scoreconvert.value / scoreconvert.sum
+    return val
+
+
 #---------------------------------------
 #计算学生在一门课程中的总分，在数据库中更新，并返回
 #输入:
-#int: student_id 学生id
-#int: class_id 课程id
-#int: sub(可选) 是否重新计算分项小分（0为不计算, 1为计算） 默认为0
-#dict: setting(可选) 课程成绩设置 setting ['given'] 是否给定成绩设定(0为未给, 1为给定) 默认为0
+
 #输出:
-#int: mark 总分
+
 #---------------------------------------
-def update_mark_student_total(student_id, class_id, sub = 0, setting = {'given': 0}):
+def update_mark_student_total(types, class_id, id):
+    val = 0
+    for t in types:
+        val += update_mark_student_type(t, class_id, id)
+    oldScore = Score.query.filter_by(type = "total", class_id = class_id, student_id  = id)
+    if oldScore == None:
+        score = Score(0, "total", val, id, class_id)
+    return val
+
+
+    '''
     #存放总成绩
     mark = 0
     #存放平时成绩
@@ -66,6 +84,7 @@ def update_mark_student_total(student_id, class_id, sub = 0, setting = {'given':
         mark_total[0].mark = mark
     db.session.commit()
     return mark
+    '''
 
 #---------------------------------------
 #计算某一门课程中所有学生的总分，在数据库中更新并返回
@@ -79,6 +98,18 @@ def update_mark_student_total(student_id, class_id, sub = 0, setting = {'given':
 #      mark: 成绩
 #---------------------------------------
 def update_mark_class_total(class_id, sub = 0):
+    mark_list = []
+    types = ScoreType.query.filter_by(class_id = class_id).all()
+    ic = Involed_class.query.filter_by(class_id = class_id).all()
+    print(ic)
+    for i in ic:
+        student = Student.query.filter_by(id = i.id).first()
+        val = update_mark_student_total(types, class_id, i.id)
+        mark_list.append((student.number, student.username, int(val)))
+    print(mark_list)
+    return mark_list
+
+    '''
     setting = get_setting(class_id, {'given': '1'})
     involed_class = Involed_class.query.filter_by(class_id = class_id).all()
     mark_list = []
@@ -86,6 +117,7 @@ def update_mark_class_total(class_id, sub = 0):
         mark = update_mark_student_total(i.student_id, class_id, sub, setting)
         mark_list.append((i.student.number, i.student.username, mark))
     return mark_list
+    '''
 
 #---------------------------------------
 #计算学生在一门课程中的作业总分，在数据库中更新并返回
@@ -219,13 +251,17 @@ def update_homework_scoce(homework, student_id, class_id):
     for q in questions:
         answer = Answer.query.filter_by(question_id = q.id, student_id = student_id).first()
         solution = Solution.query.filter_by(question_id = q.id).first()
-        if answer != None and solution != None and answer.content == solution.content:
-            val += int(q.score)
+        if answer != None and solution != None:
+            if answer.content == solution.content:
+                val += int(q.score)
+            else:
+                val += homework.finish_award_rate * int(q.score) / 100
     oldscore = Score.query.filter_by(type = "homework", student_id = student_id, class_id = class_id, index = homework.id).first()
     if oldscore == None:
-        score = Score(homework.id, "homework", val, student_id, homework.id)
+        score = Score(homework.id, "homework", homework.name, val, homework.score, student_id, homework.id)
         db.session.add(score)
     else:
         oldscore.value = val
+        oldscore.name = homework.name
     db.session.commit()
     pass
