@@ -120,8 +120,22 @@ def homework_editcourses(id):
 @editcourses.route('/id/<int:id>/newhomework', methods=['POST'])
 def newhomework_editcourses(id):
     #index貌似没什么用了。。
-    newHomework = Homework(id, -1, request.form.get('name', ''), request.form.get('body', ''), request.form.get('start', ''), request.form.get('end', ''))
+    body = request.form.get('body', '')
+    newHomework = Homework(request.form.get('name', ''), 1, 6, id, request.form.get('start', ''), request.form.get('end', ''), 50)
     db.session.add(newHomework)
+    db.session.commit()
+    questions = body.split("~~")
+    index = 0
+    questions.remove("")
+    for question in questions:
+        index = index + 1
+        type = question.split("-")[0]
+        score = question.split("-")[1]
+        question = question[question.index("-") + 1 :]
+        question = question[question.index("-") + 1 :]
+        print(question)
+        q = Question(index, newHomework.id, type, score, question)
+        db.session.add(q)
     db.session.commit()
     return "Done"
 

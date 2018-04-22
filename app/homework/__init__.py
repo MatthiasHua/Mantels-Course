@@ -15,8 +15,12 @@ def homework_edit(id):
     if request.method == 'GET':
         answer_list = []
         for q in questions:
-            answer = Answer.query.filter_by(question_id = q.id, student_id = id).first()
-            answer_list.append(answer.content)
+            print(q.id)
+            answer = Answer.query.filter_by(question_id = q.id, student_id = session.get("id")).first()
+            if answer != None:
+                answer_list.append(answer.content)
+            else:
+                answer_list.append(None)
         print(answer_list)
         return render_template("Homework.html",\
         homework = homework,\
