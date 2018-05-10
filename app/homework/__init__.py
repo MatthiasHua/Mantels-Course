@@ -33,6 +33,7 @@ def homework_edit(id):
 
     if request.method == 'POST':
         form = request.form
+        print(form)
         question_id = questions[int(form.get('question')) - 1].id
         if form.get('question', '') == '':
             return 'question id miss'

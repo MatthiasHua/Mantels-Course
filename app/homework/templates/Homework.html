@@ -25,6 +25,16 @@
 <script>
 function postform() {
   var f = true;
+  {% for i in questions %}
+      {% if i.type == 1 %}
+          val = $('#question' + {{loop.index}}).children('div').children('input:radio[name="radio-' + {{loop.index}} + '-1"]:checked').val()
+          f = post(val, f, {{loop.index}})
+      {% elif i.type == 2 %}
+          val = $('#question' + {{loop.index}}).children('p').children('input').val()
+          f = post(val, f, {{loop.index}})
+      {% endif %}
+  {% endfor %}
+  /*
   for (var i = 0; i < {{ questions|length }}; i++) {
     val = $('#question' + (i + 1)).children('div').children('input:radio[name="radio-' + (i + 1) + '-1"]:checked').val()
     if (val == undefined) {
@@ -51,11 +61,40 @@ function postform() {
         });
     }
   }
+  */
   if (f) {
       alert('提交成功')
       window.location.href="./{{id}}";
   }
 }
+
+function post(val, f, i) {
+  if (val == undefined) {
+      if (f)
+        alert("有试题未完成!")
+      f = false;
+  }
+  else {
+      $.post("./{{id}}",
+      {
+        question: i,
+        content: val,
+      },
+      function(data,status){
+        console.log(data)
+        if (data == 'Done') {
+          //alert('提交成功')
+          //window.location.href="./{{id}}";
+        }
+        else {
+          f = false
+          alert('提交失败，请检查网络连接。')
+        }
+      })
+  }
+  return f
+}
+
 var i = 0;
 window.onload = function(){
   //渲染试题
@@ -73,6 +112,9 @@ window.onload = function(){
   {% for i in questions %}
       {% if i.type == 1 %}
           $("input:radio[name='radio-{{loop.index}}-1']").eq({{answer_list[loop.index - 1]}}).attr("checked",true)
+      {% endif %}
+      {% if i.type == 2 %}
+          $('#question' + {{loop.index}}).children('p').children('input').val({{answer_list[loop.index - 1]}})
       {% endif %}
   {% endfor %}
 }

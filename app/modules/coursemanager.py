@@ -31,6 +31,9 @@ def new_course_form(form):
             #提交到数据库(为了获取id先提交一次)
             db.session.add(newclass)
             db.session.commit()
+            st = ScoreType("homework", newclass.id)
+            db.session.add(st)
+            db.session.commit()
             #创建新的课程设定
             #newsetting = Marksetting(1, 1, 1, 100, newclass.id)
             #newclass.setting = newsetting.id

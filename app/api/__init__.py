@@ -19,6 +19,14 @@ def access_key():
     data = json.loads(data)
     return apimodule.get_access_key(data)
 
+#iot设备获取access_key
+@api.route('/access_key_iot', methods=['POST'])
+def access_key_iot():
+    data = request.get_data('content').decode('utf8')
+    data = json.loads(data)
+    return apimodule.get_access_key_iot(data)
+
+
 @api.route('/student_key', methods=['POST', 'GET'])
 def student_key():
     data = request.get_data('content').decode('utf8')
