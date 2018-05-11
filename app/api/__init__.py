@@ -139,6 +139,46 @@ def cexperiment_new_result():
     db.session.commit()
     return "success"
 
+@api.route('/experiment/new_result_iot', methods=['POST', 'GET'])
+def cexperiment_new_result_iot():
+    data = request.get_data('content').decode('utf8')
+    data = json.loads(data)
+    index = 1
+    access_key = data.get('access_key')
+    device_name = data.get('device_name')
+    experiment_id = data.get('experiment_id')
+    class_id = 1
+    student_key = data.get('student_key')
+    student_id = 1
+    content = data.get('content')
+    time = data.get('time')
+    print(index, access_key, device_name, experiment_id, class_id, student_id, content, time)
+    accesskey = Access_Key.query.filter_by(content = access_key, device_name = device_name).all()
+    if accesskey == []:
+        #错误的access_key或device_name
+        return '40001'
+    accesskey = accesskey[0]
+    theclass = Class.query.filter_by(id = class_id).all()
+    if accesskey == []:
+        #不存在的课程
+        return '40002'
+    theclass = theclass[0]
+    theexperiment = Experiment.query.filter_by(id = experiment_id)
+    if accesskey == []:
+        #不存在的实验
+        return '40003'
+    theexperiment = theexperiment[0]
+    if accesskey.teacher_id != theclass.teacher_id:
+        #当前教师权限不足
+        return '40004'
+    if theexperiment.class_id != theclass.id:
+        #experiment_id错误
+        return '40005'
+    newexperimentresult = ExperimentResult(index, device_name, experiment_id, class_id, student_id, content, time)
+    db.session.add(newexperimentresult)
+    db.session.commit()
+    return "success"
+
 @api.route('/get/student_key_status/<string:key>', methods=['GET'])
 def get_student_key_status(key):
     find = Student_Key.query.filter_by(content = key).first()
