@@ -138,3 +138,13 @@ def cexperiment_new_result():
     db.session.add(newexperimentresult)
     db.session.commit()
     return "success"
+
+@api.route('/get/student_key_status/<string:key>', methods=['GET'])
+def get_student_key_status(key):
+    find = Student_Key.query.filter_by(content = key).first()
+    if find == None :
+        return "404"
+    elif find.enable == "True" :
+        return "enable"
+    else:
+        return "404"
