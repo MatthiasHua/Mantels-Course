@@ -93,8 +93,11 @@ def wechatindex():
         if receive['Content'] == "你好":
             fb_content = feedback_message(receive['FromUserName'], receive['ToUserName'], "你好呀~")
             return fb_content
-        if receive['Content'] == "测试课件":
+        else if receive['Content'] == "测试课件":
             fb_content = feedback_message(receive['FromUserName'], receive['ToUserName'], "http://mantels.top/wechatcoursewares/id/2/chapter/1/lesson/1")
+            return fb_content
+        else:
+            fb_content = feedback_message(receive['FromUserName'], receive['ToUserName'], "http://mantels.top/user_base/wechat/signin/" + receive['Content'])
             return fb_content
         return "success"
 

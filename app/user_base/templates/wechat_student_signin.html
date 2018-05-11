@@ -1,0 +1,113 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Mantels | Sign In</title>
+   <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}"><link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <!-- Bootstrap core CSS -->
+   <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+   <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+   <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+     <style type="text/css">
+         body {
+           padding-top: 40px;
+           padding-bottom: 40px;
+           background-color: #eee;
+         }
+
+         .form-signin {
+           max-width: 330px;
+           padding: 15px;
+           margin: 0 auto;
+         }
+         .form-signin .form-signin-heading,
+         .form-signin .checkbox {
+           margin-bottom: 10px;
+         }
+         .form-signin .checkbox {
+           font-weight: normal;
+         }
+         .form-signin .form-control {
+           position: relative;
+           height: auto;
+           -webkit-box-sizing: border-box;
+              -moz-box-sizing: border-box;
+                   box-sizing: border-box;
+           padding: 10px;
+           font-size: 16px;
+         }
+         .form-signin .form-control:focus {
+           z-index: 2;
+         }
+         .form-signin input[type="username"] {
+           margin-bottom: -1px;
+           border-bottom-right-radius: 0;
+           border-bottom-left-radius: 0;
+         }
+         .form-signin input[type="password"] {
+           margin-bottom: 10px;
+           border-top-left-radius: 0;
+           border-top-right-radius: 0;
+         }
+     </style>
+    <script>
+      function postform() {
+        if ($("input")[0].value == '') {
+          $('#inputNumber').attr('data-content', "请输入账号")
+          $('#inputNumber').popover('show')
+          return
+        }
+        if ($("input")[1].value == '') {
+          $('#inputPassword').attr('data-content', "请输入密码")
+          $('#inputPassword').popover('show')
+          return
+        }
+        $.post("./{{student_key}}",
+        {
+            number:   $("input")[0].value,
+            password: $("input")[1].value,
+        },
+        function(data,status){
+            console.log(data)
+            if (data == '1') {
+                top.location.href="/user_base/success";
+            }
+            else {
+              if (data == '-1') {
+                $('#inputNumber').attr('data-content', "账号或密码错误。")
+                $('#inputNumber').popover('show')
+                return
+              }
+              else {
+                alert('登录失败')
+              }
+            }
+        });
+      }
+      window.onload = function() {
+        $(".form-control").bind("input propertychange", function(){
+          $(this).popover('hide')
+        })
+      }
+    </script>
+  </head>
+
+  <body>
+
+    <div class="container">
+
+      <form class="form-signin">
+        <h2 class="form-signin-heading">Mantels WeChat登录</h2>
+        <label for="inputUsername" class="sr-only">Username</label>
+        <input type="username" id="inputNumber" class="form-control" placeholder="账户" required autofocus>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" class="form-control" placeholder="密码" required>
+        <button class="btn btn-lg btn-primary btn-block" type="button" onclick="postform()">登录</button>
+      </form>
+
+    </div> <!-- /container -->
+
+  </body>
+</html>

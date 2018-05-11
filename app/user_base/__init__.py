@@ -76,6 +76,18 @@ def student_key_signin(student_key):
     if request.method == 'POST':
         return str(account.student_key_sign_in(request.form, student_key))
 
+#学生在微信上登录
+@user_base.route('/wechat/signin/<string:student_key>', methods=['POST', 'GET'])
+def wechat_signin(student_key):
+    studentkey = Student_Key.query.filter_by(content = student_key).first()
+    if studentkey  == None or studentkey.enable == 'True':
+        return redirect(url_for('error_404'))
+    if request.method == 'GET':
+        return render_template("wechat_student_signin.html",\
+        student_key = student_key)
+    if request.method == 'POST':
+        return str(account.student_key_sign_in(request.form, student_key))
+
 #登录成功(仅提升成功)
 @user_base.route('/success', methods=['GET'])
 def signin_success():
