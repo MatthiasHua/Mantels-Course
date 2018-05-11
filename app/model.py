@@ -394,7 +394,7 @@ class Access_Key(db.Model):
 
 class Student_Key(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    student_id = db.Column(db.Integer, unique=True)
+    student_id = db.Column(db.Integer, unique=False)
     content = db.Column(db.String(80), unique=False)
     enable = db.Column(db.String(80), unique=False)
     time = db.Column(db.Integer, unique=False)
