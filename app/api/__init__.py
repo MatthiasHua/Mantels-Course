@@ -51,6 +51,19 @@ def student_key():
         #校验码错误
         return "40001"
 
+@api.route('/student_key_iot', methods=['POST', 'GET'])
+def student_key_iot():
+    data = request.get_data('content').decode('utf8')
+    data = json.loads(data)
+    access_key = data.get('access_key')
+    lasttime = int(data.get('last time', 7200))
+    newkey = create_key(6)
+    newStudent_Key = Student_Key(0, newkey, 'False', int(time.time()), int(time.time()) + lasttime)
+    db.session.add(newStudent_Key)
+    db.session.commit()
+    return newkey
+
+
 @api.route('/check_email/teacher/<string:key>', methods=['POST', 'GET'])
 def check_email_teacher(key):
     find = Email_check_key_teacher.query.filter_by(key = key).all()

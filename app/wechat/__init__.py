@@ -89,6 +89,7 @@ def wechatindex():
         receive = {}
         for i in root:
             receive[i.tag] = i.text
+        print(receive['Content'])
         if receive['Content'] == "你好":
             fb_content = feedback_message(receive['FromUserName'], receive['ToUserName'], "你好呀~")
             return fb_content
