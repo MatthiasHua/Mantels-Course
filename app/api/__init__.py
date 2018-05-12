@@ -144,12 +144,12 @@ def cexperiment_new_result_iot():
     data = request.get_data('content').decode('utf8')
     data = json.loads(data)
     index = 1
-    access_key = data.get('access_key')
-    device_name = "卫龙小面筋"
+    access_key = data.get('accesskey')
+    device_name = data.get('devicename')
     class_id = 1
     experiment_id = Current_Experiment.query.filter_by(class_id = class_id).first().experiment_id
-    student_key = data.get('student_key')
-    student_id = 1
+    student_key = data.get('studentkey')
+    student_id = Student_Key.query.filter_by(current = student_key).first().student_id
     content = data.get('content')
     time = data.get('time')
     print(index, access_key, device_name, experiment_id, class_id, student_id, content, time)
