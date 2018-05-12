@@ -145,9 +145,9 @@ def cexperiment_new_result_iot():
     data = json.loads(data)
     index = 1
     access_key = data.get('access_key')
-    device_name = data.get('device_name')
-    experiment_id = data.get('experiment_id')
+    device_name = "卫龙小面筋"
     class_id = 1
+    experiment_id = Current_Experiment.query.filter_by(class_id = class_id).first().experiment_id
     student_key = data.get('student_key')
     student_id = 1
     content = data.get('content')
