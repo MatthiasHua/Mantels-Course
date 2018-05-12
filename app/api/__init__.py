@@ -149,7 +149,7 @@ def cexperiment_new_result_iot():
     class_id = 1
     experiment_id = Current_Experiment.query.filter_by(class_id = class_id).first().experiment_id
     student_key = data.get('student key')
-    print(student_key)
+    print("student key:", student_key)
     student_id = Student_Key.query.filter_by(content = student_key).first().student_id
     content = data.get('content')
     time = time.time()
