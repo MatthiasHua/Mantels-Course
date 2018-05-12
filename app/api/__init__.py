@@ -139,7 +139,7 @@ def cexperiment_new_result():
     db.session.commit()
     return "success"
 
-@api.route('/experiment/new_result_iot', methods=['POST', 'GET'])
+@api.route('/experiment/new_result_iot', methods=['POST'])
 def cexperiment_new_result_iot():
     data = request.get_data('content').decode('utf8')
     data = json.loads(data)
@@ -188,3 +188,15 @@ def get_student_key_status(key):
         return "enable"
     else:
         return "404"
+
+@api.route('/get/current_experiment/test_case', methods=['POST'])
+def get_current_experiment_case():
+    data = request.get_data('content').decode('utf8')
+    data = json.loads(data)
+    index = 1
+    access_key = data.get('access key')
+    device_name = data.get('device name')
+    class_id = 1
+    experiment_id = Current_Experiment.query.filter_by(class_id = class_id).first().experiment_id
+    test_case = Experiment.query.filter_by(id = experiment_id).first().test_case
+    return test_case

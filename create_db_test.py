@@ -132,7 +132,7 @@ testanswer_student3 = Answer_Student("inputradio~1~3~inputlabel~7~6", 3, 1)
 '''
 
 #测试实验
-testexperiment = Experiment(1, 1, "测试实验", "# 测试实验\n --- \n 实验指南", "<h3>这里可以使用html</h3>")
+testexperiment = Experiment(1, 1, "测试实验", "# 测试实验\n --- \n 实验指南", "<h3>这里可以使用html</h3>","卫龙小辣条")
 db.session.add(testexperiment)
 
 db.session.add(scoretype)
