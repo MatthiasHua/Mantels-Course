@@ -461,15 +461,29 @@ class Experiment(db.Model):
     teacher_id = db.Column(db.Integer, unique=False)
     guide = db.Column(db.String(10000), unique=False)
     result = db.Column(db.String(10000), unique=False)
+    current = db.Column(db.Integer, unique=False)
 
     def __init__(self, class_id, teacher_id, name, guide = '', result = ''):
         self.class_id = class_id
         self.guide = guide
         self.name = name
         self.result = result
+        self.current = 0
 
     def __repr__(self):
         return '< Experiment %r>' % self.id
+
+class Current_Experiment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    class_id = db.Column(db.Integer, unique=False)
+    experiment_id = db.Column(db.Integer, unique=False)
+
+    def __init__(self, class_id, experiment_id):
+        self.class_id = class_id
+        self.experiment_id = experiment_id
+
+    def __repr__(self):
+        return '< Current_Experiment %r>' % self.id
 
 #实验结果
 class ExperimentResult(db.Model):

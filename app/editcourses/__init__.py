@@ -152,6 +152,32 @@ def experiment(id):
     leftbar = leftbarlist,\
     active = 3)
 
+@editcourses.route('/id/<int:id>/set_current_experiment', methods=['POST'])
+def set_current_experiment(id):
+    experiment_id = request.form.get("experiment_id")
+    find = Experiment.query.filter_by(id = experiment_id).first()
+    if find == None :
+        return "404"
+    else :
+        if find.current == 0 :
+            old_current = Experiment.query.filter_by(class_id = id, current = 1).first()
+            if old_current != None :
+                old_current.current = 0
+        find.current = (find.current + 1) % 2
+        db.session.commit()
+        now = Current_Experiment.query.filter_by(class_id = id).first()
+        if now == None :
+            new_current_experiment = Current_Experiment(id, experiment_id)
+            db.session.add(new_current_experiment)
+            db.session.commit()
+        else :
+            if find.current == 0 :
+                now.experiment_id = 0
+            else :
+                now.experiment_id = experiment_id
+            db.session.commit()
+        return "success"
+
 #添加实验
 @editcourses.route('/id/<int:id>/newexperiment', methods=['POST'])
 def newexperiment(id):

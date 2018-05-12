@@ -28,6 +28,11 @@
                         <a href="#" style="color:grey"># {{i.id}}</a>
                         <a href="/editexperiment/id/{{i.id}}/index" style="float: right">管理实验</a>
                         <a href="/experiment/id/{{i.id}}" style="float: right">实验预览&nbsp;</a>
+                        {% if i.current == 0 %}
+                        <a style="float: right" onclick="setexperiment({{ i.id }})">设为当前&nbsp;</a>
+                        {% else %}
+                        <a style="float: right" onclick="setexperiment({{ i.id }})">取消设为当前&nbsp;</a>
+                        {% endif %}
                       </div>
                     {% endfor %}
                     <div class="list-group-item">
@@ -79,5 +84,22 @@
           }
       });
     }
+
+    function setexperiment(id) {
+      $.post("./set_current_experiment",
+      {
+          experiment_id: id,
+      },
+      function(data,status){
+          console.log(data)
+          if (data == 'success') {
+              window.location.href="./experimentlist";
+          }
+          else {
+              alert('设定失败')
+          }
+      });
+    }
+
     </script>
 {% endblock %}
