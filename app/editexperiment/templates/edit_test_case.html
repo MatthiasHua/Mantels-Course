@@ -1,0 +1,97 @@
+{% extends "base_student.html" %}
+{% block content %}
+    <div class="container" style="margin-top: 30px">
+        <div class="row">
+            <div class="col-xs-3">
+                <ul class="nav nav-pills nav-stacked">
+                    {% for i in leftbar %}
+                    {% if loop.index - 1 == active %}
+                    <li role="presentation" class="active">
+                    {% else %}
+                    <li role="presentation">
+                    {% endif %}
+                        <a href="/editexperiment/id/{{id}}/{{i[0]}}">{{i[1]}}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-md-9">
+                <ul class="list-group">
+                    <a class="list-group-item active"> 验证数据 </a>
+                    <div class="list-group-item">
+                        <div id="guide"></div>
+                        <p>{{testcase}}</p>
+                        <button class="btn btn-default" data-toggle="modal" data-target="#editguide">添加验证数据</button>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="editguide" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    	<div class="modal-dialog">
+    		<div class="modal-content">
+    			<div class="modal-header">
+    				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+    					&times;
+    				</button>
+    				<h4 class="modal-title" id="myModalLabel">
+    					添加验证数据
+    				</h4>
+    			</div>
+    			<div class="modal-body">
+            <p>验证数据：</p>
+    				<textarea class="form-control" rows="7"></textarea>
+            tip: 使用Markdown渲染 | <a href="/markdowneditor"> Mantels Markdown Editor </a>
+    			</div>
+    			<div class="modal-footer">
+    				<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+    				</button>
+    				<button type="button" class="btn btn-primary" onclick="postform()">
+    					修改
+    				</button>
+    			</div>
+    		</div><!-- /.modal-content -->
+    	</div><!-- /.modal -->
+    </div>
+    <script>
+    function postform() {
+      $.post("./change_testcase",
+      {
+          testcase: $("textarea")[0].value,
+      },
+      function(data,status){
+          console.log(data)
+          if (data == 'Done') {
+              window.location.href="./testcase";
+          }
+          else {
+              alert('修改验证数据失败')
+          }
+      });
+    }
+    //判断函数是否存在
+    function isExitsFunction(funcName) {
+      try {
+        if (typeof(eval(funcName)) == "function") {
+          return true;
+        }
+      } catch(e) {}
+      return false;
+    }
+    window.onload = function() {
+      var result = new Array();
+      {% for i in results %}
+        newresult = {
+          index: {{ i.index }} ,
+          content: "{{ i.content }}",
+          time: "{{ i.time }}",
+        }
+        result.push(newresult)
+      {% endfor %}
+      if (isExitsFunction("result_onload")) {
+        console.log(result)
+        result_onload(result)
+      }
+    }
+    </script>
+{% endblock %}

@@ -11,7 +11,8 @@ editexperiment = Blueprint('editexperiment', __name__,  template_folder='templat
 
 leftbarlist = (("guide", "实验指导"),\
                ("result", "实验结果"),\
-               ("testresultdata", "测试数据"))
+               ("testresultdata", "测试数据"),\
+               ("testcase", "验证数据"))
 
 @editexperiment.route('/id/<int:id>', methods=['POST', 'GET'])
 @editexperiment.route('/id/<int:id>/index', methods=['POST', 'GET'])
@@ -47,6 +48,26 @@ def edit_experiment_result(id):
     leftbar = leftbarlist,\
     results = results,\
     active = 1)
+
+@editexperiment.route('/id/<int:id>/testcase', methods=['POST', 'GET'])
+def test_case(id):
+    testcase = Experiment.query.filter_by(id = id).first().test_case
+    return render_template("edit_test_case.html",\
+    testcase = testcase,\
+    role = session.get('role', 'unknow'),\
+    username = session.get('username', ''),\
+    id = id,\
+    leftbar = leftbarlist,\
+    active = 3)
+
+@editexperiment.route('/id/<int:id>/change_testcase', methods=['POST'])
+def change_testcase(id):
+    if request.form.get('testcase', '') != '':
+        experiment = Experiment.query.filter_by(id = id).first()
+        experiment.test_case = request.form['testcase']
+        db.session.commit()
+        return 'Done'
+    return '233'
 
 @editexperiment.route('/id/<int:id>/editresult', methods=['POST', 'GET'])
 def edit_result(id):
