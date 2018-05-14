@@ -6,6 +6,7 @@ from app.model import *
 from app import db
 from app.modules.key import *
 from app.modules import api as apimodule
+from app.modules import qrcode
 import json
 import time
 
@@ -200,3 +201,8 @@ def get_current_experiment_case():
     experiment_id = Current_Experiment.query.filter_by(class_id = class_id).first().experiment_id
     test_case = Experiment.query.filter_by(id = experiment_id).first().test_case
     return test_case
+
+@api.route('/get/qr_code/iot_login/<string:key>', methods=['GET'])
+def get_qr_code_iot_login(key):
+    return qrcode.get_qr_string("http://mantels.top/user_base/wechat/signin/" + key)
+    return "233"
