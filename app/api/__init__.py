@@ -144,7 +144,6 @@ def cexperiment_new_result():
 def cexperiment_new_result_iot():
     data = request.get_data('content').decode('utf8')
     data = json.loads(data)
-    index = 1
     access_key = data.get('access key')
     device_name = data.get('device name')
     class_id = 1
@@ -155,6 +154,8 @@ def cexperiment_new_result_iot():
     time = data.get('time')
     print(index, access_key, device_name, experiment_id, class_id, student_id, content, time)
     accesskey = Access_Key.query.filter_by(content = access_key, device_name = device_name).all()
+    experimenet_results = Experiment.query.filter_by(experiment_id = experimenet_id, student_id = student_id).all()
+    index = len(experimenet_results)
     if accesskey == []:
         #错误的access_key或device_name
         return '40001'
