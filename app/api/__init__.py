@@ -153,7 +153,7 @@ def cexperiment_new_result_iot():
     content = data.get('content')
     time = data.get('time')
     accesskey = Access_Key.query.filter_by(content = access_key, device_name = device_name).all()
-    experimenet_results = ExperimentResult.query.filter_by(experiment_id = experimenet_id, student_id = student_id).all()
+    experimenet_results = ExperimentResult.query.filter_by(experiment_id = experiment_id, student_id = student_id).all()
     index = len(experimenet_results)
     print(index)
     if accesskey == []:
