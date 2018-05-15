@@ -156,6 +156,7 @@ def cexperiment_new_result_iot():
     accesskey = Access_Key.query.filter_by(content = access_key, device_name = device_name).all()
     experimenet_results = Experiment.query.filter_by(experiment_id = experimenet_id, student_id = student_id).all()
     index = len(experimenet_results)
+    print(index)
     if accesskey == []:
         #错误的access_key或device_name
         return '40001'
