@@ -1,98 +1,395 @@
+<!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://unpkg.com/draggabilly@2/dist/draggabilly.pkgd.min.js"></script>
+	<style>
+		.block_1 {
+			position: absolute;
+			border: 1px solid #cdcdcd;
+			height: 50px;
+			width: 100px;
+		}
 
-    <title>Mantels | TEST</title>
-   <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}"><link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    <!-- Bootstrap core CSS -->
-   <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
-   <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
-   <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		.block_2 {
+			position: absolute;
+			border: 1px solid #cdcdcd;
+			height: 100px;
+			width: 200px;
+		}
+		.std_port {
+			position: absolute;
+			height: 6px;
+			width: 6px;
+			background: black;
+		}
 
-     <style type="text/css">
-         body {
-           padding-top: 40px;
-           padding-bottom: 40px;
-           background-color: #eee;
-         }
+		.c_name {
+			position: absolute;
+			top: 25px;
+			left: 20px;
+		}
+	</style>
+	<script type="text/javascript">
+		'use strict'
 
-         .form-signin {
-           max-width: 330px;
-           padding: 15px;
-           margin: 0 auto;
-         }
-         .form-signin .form-signin-heading,
-         .form-signin .checkbox {
-           margin-bottom: 10px;
-         }
-         .form-signin .checkbox {
-           font-weight: normal;
-         }
-         .form-signin .form-control {
-           position: relative;
-           height: auto;
-           -webkit-box-sizing: border-box;
-              -moz-box-sizing: border-box;
-                   box-sizing: border-box;
-           padding: 10px;
-           font-size: 16px;
-         }
-         .form-signin .form-control:focus {
-           z-index: 2;
-         }
-         .form-signin input[type="username"] {
-           margin-bottom: -1px;
-           border-bottom-right-radius: 0;
-           border-bottom-left-radius: 0;
-         }
-         .form-signin input[type="password"] {
-           margin-bottom: 10px;
-           border-top-left-radius: 0;
-           border-top-right-radius: 0;
-         }
-     </style>
-     <script>
-            //设备检测
-            function detectmob() {
-                if( navigator.userAgent.match(/Android/i)
-                || navigator.userAgent.match(/webOS/i)
-                || navigator.userAgent.match(/iPhone/i)
-                || navigator.userAgent.match(/iPad/i)
-                || navigator.userAgent.match(/iPod/i)
-                || navigator.userAgent.match(/BlackBerry/i)
-                || navigator.userAgent.match(/Windows Phone/i)
-                ){
-                    return true;
-                }
-                else {
-                    return false;
-                }
-            }
-            window.onload = function() {
-              if (detectmob() == true) {
-                $('.a').html("当前版本为电脑端，请在电脑上访问此网站获得完整体验。")
-              }
-            }
-    </script>
-  </head>
+		var wire;
+		var led;
+		var sw1;
+		var sw2;
+		var sw3;
+		var sw4;
+		var c10;
 
-  <body>
+		$(document).ready(function(){
+			led = new LED("l1");
+			led.init();
+			led.setPosition(50, 240);
+			sw1 = new Switch("sw1");
+			sw1.init();
+			sw1.setPosition(300, 50);
+			sw2 = new Switch("sw2");
+			sw2.init();
+			sw2.setPosition(300, 170);
+			sw3 = new Switch("sw3");
+			sw3.init();
+			sw3.setPosition(100, 40);
+			sw4 = new Switch("sw4");
+			sw4.init();
+			sw4.setPosition(300, 290);
+			c10 = new C74LS10("c10-1");
+			c10.init();
+			c10.setPosition(150, 167);
 
-    <div class="container">
-      <div class="row">
-        <div class="col-xs-8 col-xs-offset-2">
-          <h2 class="form-signin-heading">感谢您参与Mantels公测</h2>
-          <p class="a" style="color: red"></p>
-          <br>
-          <button class="btn btn-lg btn-primary btn-block" type="button" onclick="window.location='./'">我是老师</button>
-          <button class="btn btn-lg btn-primary btn-block" type="button" onclick="window.location='./courses/'">我是学生</button>
-          <br>
-          <a href="./about/">关于Mantels | Course</a>
-          <p>如果您在体验过程中发现问题或对使用过程有所疑问，可以即使联系开发者。</p>
-        </div>
-      </div>
-    </div> <!-- /container -->
+			//wire = new Wire("l1-port", "s1-port");
+			//wire.update();
+			led.getPort().connect(c10.getPorts()[4]);
+			sw3.getPort().connect(c10.getPorts()[0]);
+			sw1.getPort().connect(c10.getPorts()[7]);
+			sw2.getPort().connect(c10.getPorts()[8]);
+			sw4.getPort().connect(c10.getPorts()[9]);
+			//sw.getPort().connect(led.getPort());
+		});
 
-  </body>
+		function Switch(id) {
+			var num_port = 1;
+			var port;
+			this.id = id;
+
+			this.update = function() {
+
+			}
+
+			this.println = function() {
+				console.log(id);
+			}
+
+			this.getPort = function() {
+				return port;
+			}
+
+			this.setPosition = function(top, left) {
+				$("#" + this.id).css("top", top);
+				$("#" + this.id).css("left", left);
+			}
+
+			this.init = function() {
+				port = new Port(0, this, id + "-port");
+				$(".ep").append('<div  class="block_1"  id="' + id + '">S</div>');
+				$("#" + id).append('<div id="' + id + '-port" style="position: absolute; top:10px; left: 47px; height: 6px; width: 6px; background: black;"></div>');
+				$("#" + id).append('<div id="' + id + '-switch" style="position: absolute; top:20px; left: 38px;">OFF</div>');
+				$("#" + id + '-switch').click(function() {
+					port.val = (port.val + 1) % 2;
+					if (port.val == 0)
+						$(this).html("OFF");
+					else
+						$(this).html("ON");
+					port.updateNext();
+				});
+				var $draggable = $("#" + id).draggabilly();
+				$draggable.on('dragMove', function() {port.updatePosition()});
+			}
+		}
+
+		function LED(id) {
+			var num_port = 1;
+			var port;
+			this.id = id;
+
+			this.update = function() {
+				if (port.val == 1) {
+					$("#" + id + '-led').css("background", 'yellow');
+				}
+				else {
+					$("#" + id + '-led').css("background", 'white');
+				}
+			}
+
+			this.println = function() {
+				console.log(id);
+			}
+
+			this.getPort = function() {
+				return port;
+			}
+
+			this.setPosition = function(top, left) {
+				$("#" + this.id).css("top", top);
+				$("#" + this.id).css("left", left);
+			}
+
+			this.init = function() {
+				port = new Port(0, this, id + "-port");
+				$(".ep").append('<div class="block_1" id="' + id + '">L</div>');
+				$("#" + id).append('<div class="std_port" id="' + id + '-port" style="top: 30px; left: 47px;"></div>');
+				$("#" + id).append('<div id="' + id + '-led" style="position: absolute; top: 6px; left: 41px; height: 18px; width: 18px; border: 1px solid #cdcdcd;"></div>');
+				$("#" + id).draggabilly();
+				var $draggable = $("#" + id).draggabilly();
+				$draggable.on('dragMove', function() {port.updatePosition()});
+			}
+		}
+
+		function C74LS00(id) {
+			var num_port = 14;
+			var ports = Array();
+			this.id = id;
+
+			this.update = function() {
+				if (ports[0].val != 1 || ports[13].val != 0) {
+					for (var i = 3; i < num_port - 1; i += 3) {
+						ports[i].val = 0;
+						ports[i].updateNext();
+					}
+					return;
+				}
+				for (var i = 0; i < num_port - 3; i += 3) {
+					if (ports[i + 1].val * ports[i + 2].val == 1) {
+						ports[i + 3].val = 0;
+					}
+					else {
+						ports[i + 3].val = 1;
+					}
+					ports[i + 3].updateNext();
+				}
+			}
+
+			this.println = function() {
+				console.log(id);
+			}
+
+			this.getPorts = function() {
+				return ports;
+			}
+
+			this.setPosition = function(top, left) {
+				$("#" + this.id).css("top", top);
+				$("#" + this.id).css("left", left);
+			}
+
+			this.init = function() {
+				for (var i = 0; i < num_port; i++) {
+					ports[i] = new Port(0, this, id + "-port" + i);
+				}
+				$(".ep").append('<div class="block_2" id="' + id + '"></div>');
+				for (var i = 0; i < num_port / 2; i++) {
+					$("#" + id).append('<div class="std_port" id="' + id + '-port' + i + '" style="top: 10px; left: ' + 24 * (i + 1) + 'px;"></div>');
+					$("#" + id).append('<div class="std_port" id="' + id + '-port' + (i + 7) + '" style="top: 90px; left: ' + 24 * (i + 1) + 'px;"></div>');
+				}
+				//$("#" + id).append('<div class="std_port" id="' + id + '-port" style="top: 10px; left: 47px;"></div>');
+				$("#" + id).append('<div class="c_name" id="' + id + '-port">74LS00</div>');
+				$("#" + id).draggabilly();
+				var $draggable = $("#" + id).draggabilly();
+				$draggable.on('dragMove', function() {
+					for (var i = 0; i < num_port; i++) {
+						ports[i].updatePosition();
+					}
+				});
+			}
+		}
+
+		function C74LS10(id) {
+			var num_port = 14;
+			var ports = Array();
+			this.id = id;
+
+			this.update = function() {
+				if (ports[0].val != 1 || ports[13].val != 0) {
+					for (var i = 4; i < num_port - 1; i += 4) {
+						ports[i].val = 0;
+						ports[i].updateNext();
+					}
+					return;
+				}
+				for (var i = 0; i < num_port - 4; i += 4) {
+					if (ports[i + 1].val * ports[i + 2].val * ports[i + 3].val == 1) {
+						ports[i + 4].val = 0;
+					}
+					else {
+						ports[i + 4].val = 1;
+					}
+					ports[i + 4].updateNext();
+				}
+			}
+
+			this.println = function() {
+				console.log(id);
+			}
+
+			this.getPorts = function() {
+				return ports;
+			}
+
+			this.setPosition = function(top, left) {
+				$("#" + this.id).css("top", top);
+				$("#" + this.id).css("left", left);
+			}
+
+			this.init = function() {
+				for (var i = 0; i < num_port; i++) {
+					ports[i] = new Port(0, this, id + "-port" + i);
+				}
+				$(".ep").append('<div class="block_2" id="' + id + '"></div>');
+				for (var i = 0; i < num_port / 2; i++) {
+					$("#" + id).append('<div class="std_port" id="' + id + '-port' + i + '" style="top: 10px; left: ' + 24 * (i + 1) + 'px;"></div>');
+					$("#" + id).append('<div class="std_port" id="' + id + '-port' + (i + 7) + '" style="top: 90px; left: ' + 24 * (i + 1) + 'px;"></div>');
+				}
+				//$("#" + id).append('<div class="std_port" id="' + id + '-port" style="top: 10px; left: 47px;"></div>');
+				$("#" + id).append('<div class="c_name" id="' + id + '-port">74LS10</div>');
+				$("#" + id).draggabilly();
+				var $draggable = $("#" + id).draggabilly();
+				$draggable.on('dragMove', function() {
+					for (var i = 0; i < num_port; i++) {
+						ports[i].updatePosition();
+					}
+				});
+			}
+		}
+
+		function TestBlock(id) {
+			var num_port = 16;
+			var ports = new Array(num_port);
+			this.id = id;
+
+			this.next = function() {
+
+			}
+
+			this.println = function() {
+				console.log(id);
+			}
+			var init = function() {
+				for (var i = 0; i < num_port; i++) {
+					ports[i] = new Port();
+				}
+				$(".ep").append('<div class="draggable" id="' + id + '" style="height: 50px; width: 100px; background: yellow;">233</div>');
+				$("#" + id).draggabilly();
+			}
+
+			init();
+
+			return this;
+		}
+
+		function Wire(id1, id2) {
+			var ports = Array(2);
+			var id = id1 + "-" + id2;
+			ports[0] = id1;
+			ports[1] = id2;
+
+			var getPosition = function (id) {
+				console.log(id);
+				var o = {
+					top: $("#" + id).offset().top,
+					left: $("#" + id).offset().left,
+				}
+				return o;
+			}
+
+			var drawH = function(top, left, width) {
+				$(".wire").append('<div id="' + id + '" style="position: fixed; top: '+ top  + 'px; left: ' + left +'px; height: 2px; width: ' + width + 'px; border-top: 2px solid #cdcdcd;"></div>');
+			}
+
+			var drawV = function(top, left, height) {
+				$(".wire").append('<div id="' + id + '" style="position: fixed; top: '+ top  + 'px; left: ' + left +'px; width: 2px; height: ' + height + 'px; border-left: 2px solid #cdcdcd;"></div>');
+			}
+
+			this.update = function() {
+				//while ($("#" + id) != undefined) {
+				for (var i = 0; i < 3; i++) {
+					$("#" + id).remove();
+				}
+				//}
+				if (getPosition(id1).left == getPosition(id2).left) {
+					var t = Math.min(getPosition(id1).top, getPosition(id2).top) + 3;
+					var l = getPosition(id1).left + 2;
+					var h = Math.abs(getPosition(id1).top - getPosition(id2).top);
+					drawV(t, l, h);
+				}
+				else {
+					var l1 = getPosition(id1).top < getPosition(id2).top ? getPosition(id1).left : getPosition(id2).left + 2;
+					var l2 = getPosition(id1).top > getPosition(id2).top ? getPosition(id1).left : getPosition(id2).left + 2;
+					var t1 = Math.min(getPosition(id1).top, getPosition(id2).top);
+					var t2 = Math.max(getPosition(id1).top, getPosition(id2).top);
+					var h = Math.abs(getPosition(id1).top - getPosition(id2).top) / 2;
+					var vt = t1 + h;
+					var vl = Math.min(getPosition(id1).left, getPosition(id2).left) + 2;
+					var vh = Math.abs(getPosition(id1).left - getPosition(id2).left);
+					drawV(t1, l1, h);
+					drawV(t2 - h, l2, h);
+					drawH(vt, vl, vh);
+					//console.log(getPosition(id1).top,  getPosition(id2).top , h, vt)
+
+				}
+			}
+
+			return this;
+		}
+
+		function Port(val, father, id) {
+			this.val = val;
+			this.father = father;
+			this.id = id;
+			var wireList = new Array();
+			var connectList = new Array();
+			this.getPosition = function () {
+				console.log($("#" + id).offset().top);
+				console.log($("#" + id).offset().left);
+			}
+
+			this.connect = function(port) {
+				connectList[connectList.length] = port;
+				wireList[wireList.length] = new Wire(id, port.id)
+				wireList[wireList.length - 1].update();
+				port.beconnected(this, wireList[wireList.length - 1]);
+			}
+
+			this.beconnected = function(port, wire) {
+				connectList[connectList.length] = port;
+				wireList[wireList.length] = wire;
+			}
+
+			this.updatePosition = function() {
+				//console.log(wireList);
+				for (var i = 0; i < wireList.length; i++) {
+					wireList[i].update();
+				}
+			}
+
+			this.updateNext = function() {
+				for (var i = 0; i < connectList.length; i++) {
+					connectList[i].val = this.val;
+					connectList[i].father.update();
+				}
+			}
+
+		}
+
+	</script>
+</head>
+<body>
+	<div class="ep"></div>
+	<div class="wire"></div>
+</body>
 </html>
