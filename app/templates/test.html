@@ -40,13 +40,13 @@
 		var sw1;
 		var sw2;
 		var sw3;
-		var sw4;
-		var c10;
+		//var sw4;
+		var c00;
 
 		$(document).ready(function(){
 			led = new LED("l1");
 			led.init();
-			led.setPosition(50, 240);
+			led.setPosition(20, 240);
 			sw1 = new Switch("sw1");
 			sw1.init();
 			sw1.setPosition(300, 50);
@@ -56,20 +56,20 @@
 			sw3 = new Switch("sw3");
 			sw3.init();
 			sw3.setPosition(100, 40);
-			sw4 = new Switch("sw4");
-			sw4.init();
-			sw4.setPosition(300, 290);
-			c10 = new C74LS10("c10-1");
-			c10.init();
-			c10.setPosition(150, 167);
+			//sw4 = new Switch("sw4");
+			//sw4.init();
+			//sw4.setPosition(300, 290);
+			c00 = new C74LS00("c00-1");
+			c00.init();
+			c00.setPosition(150, 167);
 
 			//wire = new Wire("l1-port", "s1-port");
 			//wire.update();
-			led.getPort().connect(c10.getPorts()[4]);
-			sw3.getPort().connect(c10.getPorts()[0]);
-			sw1.getPort().connect(c10.getPorts()[7]);
-			sw2.getPort().connect(c10.getPorts()[8]);
-			sw4.getPort().connect(c10.getPorts()[9]);
+			led.getPort().connect(c00.getPorts()[9]);
+			sw3.getPort().connect(c00.getPorts()[0]);
+			sw1.getPort().connect(c00.getPorts()[7]);
+			sw2.getPort().connect(c00.getPorts()[8]);
+			//sw4.getPort().connect(c00.getPorts()[9]);
 			//sw.getPort().connect(led.getPort());
 		});
 
@@ -101,6 +101,7 @@
 				$("#" + id).append('<div id="' + id + '-port" style="position: absolute; top:10px; left: 47px; height: 6px; width: 6px; background: black;"></div>');
 				$("#" + id).append('<div id="' + id + '-switch" style="position: absolute; top:20px; left: 38px;">OFF</div>');
 				$("#" + id + '-switch').click(function() {
+					console.log(port.val)
 					port.val = (port.val + 1) % 2;
 					if (port.val == 0)
 						$(this).html("OFF");
